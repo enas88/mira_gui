@@ -1,8 +1,10 @@
 from fastapi import FastAPI, Form
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 persons = []
 
@@ -11,22 +13,24 @@ class Person(BaseModel):
     last_name: str
     age: int
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/")
 async def get_form():
-    with open("templates/form.html") as f:
-        html = f.read()
-    return HTMLResponse(content=html)
+    return FileResponse("templates/form.html")
 
-@app.post("/add_person/")
+@app.post("/person/")
 async def add_person(person: Person):
-    persons.append(person.dict())
+    persons.append(person.model_dump())
     return {"message": "Person added successfully"}
 
-@app.get("/list_persons/")
+@app.get("/person/")
 async def list_persons():
     return persons
 
-@app.delete("/delete_person/{index}/")
+@app.get("/person/{index}/")
+async def get_person(index: int):
+    return persons[index]
+
+@app.delete("/person/{index}/")
 async def delete_person(index: int):
     if 0 <= index < len(persons):
         deleted_person = persons.pop(index)
@@ -34,10 +38,11 @@ async def delete_person(index: int):
     else:
         return {"error": "Invalid index"}
 
-@app.put("/update_person/{index}/")
+@app.put("/person/{index}/")
 async def update_person(index: int, person: Person):
     if 0 <= index < len(persons):
-        persons[index] = person.dict()
+        persons[index] = person.model_dump()
         return {"message": "Person updated successfully"}
     else:
         return {"error": "Invalid index"}
+    
