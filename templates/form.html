@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cosine Similarity Calculator</title>
+</head>
+<body>
+    <h1>Cosine Similarity Calculator</h1>
+    <form method="post" onsubmit="submitForm(event)">
+        <label for="text1">Text 1:</label>
+        <input type="text" name="text1" id="text1" required><br>
+        <label for="text2">Text 2:</label>
+        <input type="text" name="text2" id="text2" required><br>
+        <button type="submit">Calculate Cosine Similarity</button>
+    </form>
+    <br>
+    <h2>Cosine Similarity:</h2>
+    <p id="similarity"></p>
+
+    <script>
+        function submitForm(event) {
+            event.preventDefault();
+            const text1 = document.getElementById("text1").value;
+            const text2 = document.getElementById("text2").value;
+
+            const data = {
+                "text1": text1,
+                "text2": text2
+            };
+
+            fetch("/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("similarity").innerText = `Cosine Similarity: ${data.similarity}`;
+            });
+        }
+    </script>
+</body>
+</html>
