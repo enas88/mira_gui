@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cosine Similarity Calculator</title>
+    <title>Manage Persons</title>
 </head>
 <body>
-    <h1>Cosine Similarity Calculator</h1>
-    <form method="post" onsubmit="submitForm(event)">
-        <label for="text1">Text 1:</label>
-        <input type="text" name="text1" id="text1" required><br>
-        <label for="text2">Text 2:</label>
-        <input type="text" name="text2" id="text2" required><br>
-        <button type="submit">Calculate Cosine Similarity</button>
+    <h1>Manage Persons</h1>
+
+    <form method="post" onsubmit="addPerson(event)">
+        <label for="first_name">First Name:</label>
+        <input type="text" name="first_name" id="first_name" required><br>
+        <label for="last_name">Last Name:</label>
+        <input type="text" name="last_name" id="last_name" required><br>
+        <label for="age">Age:</label>
+        <input type="number" name="age" id="age" required><br>
+        <button type="submit">Add Person</button>
     </form>
-    <br>
-    <h2>Cosine Similarity:</h2>
-    <p id="similarity"></p>
+
+    <h2>All Persons:</h2>
+    <ul id="person_list"></ul>
 
     <script>
-        function submitForm(event) {
+        function addPerson(event) {
             event.preventDefault();
-            const text1 = document.getElementById("text1").value;
-            const text2 = document.getElementById("text2").value;
+            const first_name = document.getElementById("first_name").value;
+            const last_name = document.getElementById("last_name").value;
+            const age = parseInt(document.getElementById("age").value);
 
             const data = {
-                "text1": text1,
-                "text2": text2
+                "first_name": first_name,
+                "last_name": last_name,
+                "age": age
             };
 
-            fetch("/", {
+            fetch("/add_person/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -35,10 +40,25 @@
                 body: JSON.stringify(data)
             })
             .then(response => response.json())
+            .then(() => listPersons());
+        }
+
+        function listPersons() {
+            fetch("/list_persons/")
+            .then(response => response.json())
             .then(data => {
-                document.getElementById("similarity").innerText = `Cosine Similarity: ${data.similarity}`;
+                const personList = document.getElementById("person_list");
+                personList.innerHTML = "";
+                data.forEach(person => {
+                    const li = document.createElement("li");
+                    li.innerText = `${person.first_name} ${person.last_name}, Age: ${person.age}`;
+                    personList.appendChild(li);
+                });
             });
         }
+        
+        // Initial list of persons
+        listPersons();
     </script>
 </body>
 </html>

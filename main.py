@@ -1,34 +1,43 @@
-from fastapi import FastAPI, Request, Form
-from fastapi.templating import Jinja2Templates
-from sentence_transformers import SentenceTransformer, util
+from fastapi import FastAPI, Form
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
 app = FastAPI()
 
-model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+persons = []
 
-class InputData(BaseModel):
-    text1: str
-    text2: str
+class Person(BaseModel):
+    first_name: str
+    last_name: str
+    age: int
 
-class OutputData(BaseModel):
-    similarity: float
+@app.get("/", response_class=HTMLResponse)
+async def get_form():
+    with open("templates/form.html") as f:
+        html = f.read()
+    return HTMLResponse(content=html)
 
-templates = Jinja2Templates(directory="templates")
+@app.post("/add_person/")
+async def add_person(person: Person):
+    persons.append(person.dict())
+    return {"message": "Person added successfully"}
 
+@app.get("/list_persons/")
+async def list_persons():
+    return persons
 
+@app.delete("/delete_person/{index}/")
+async def delete_person(index: int):
+    if 0 <= index < len(persons):
+        deleted_person = persons.pop(index)
+        return {"message": "Person deleted successfully", "deleted_person": deleted_person}
+    else:
+        return {"error": "Invalid index"}
 
-@app.get("/")
-async def read_form(request: Request):
-    return templates.TemplateResponse("form.html", {"request": request})
-
-@app.post("/", response_model=OutputData)
-async def calculate_similarity(input_data: InputData):
-    # Encode text to get embeddings
-    embeddings1 = model.encode(input_data.text1, convert_to_tensor=True)
-    embeddings2 = model.encode(input_data.text2, convert_to_tensor=True)
-
-    # Calculate cosine similarity
-    similarity = util.pytorch_cos_sim(embeddings1, embeddings2)[0][0]
-
-    return {"similarity": similarity}
+@app.put("/update_person/{index}/")
+async def update_person(index: int, person: Person):
+    if 0 <= index < len(persons):
+        persons[index] = person.dict()
+        return {"message": "Person updated successfully"}
+    else:
+        return {"error": "Invalid index"}
