@@ -1,7 +1,9 @@
-from fastapi import FastAPI, Form
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, File, UploadFile
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+import shutil
+import os
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -46,3 +48,28 @@ async def update_person(index: int, person: Person):
     else:
         return {"error": "Invalid index"}
     
+
+# Directory to store uploaded CSV files
+UPLOAD_DIR = "uploads"
+
+# A list to store CSV records
+csv_records = []
+[csv_records.append({"name": filename}) for filename in os.listdir(UPLOAD_DIR)]
+
+# Route to list CSV records
+@app.get("/csv/")
+async def list_csv_records():
+    return csv_records
+
+# Route to upload a CSV file
+@app.post("/csv/")
+async def upload_csv_file(file: UploadFile):
+    # Ensure the uploads directory exists
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+    file_path = os.path.join(UPLOAD_DIR, file.filename)
+
+    with open(file_path, "wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    csv_records.append({"name": file.filename})
+    return JSONResponse(content={"message": "CSV file uploaded successfully"}, status_code=201)
