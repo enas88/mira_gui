@@ -10,8 +10,7 @@ from pydantic import BaseModel
 
 import sentence_transformers
 from sentence_transformers import SentenceTransformer, util
-
-
+from semantic_matching.code import find_similarity
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
