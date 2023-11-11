@@ -1,13 +1,50 @@
+import os
+import shutil
+import numpy as np
+import pandas as pd
+
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-import shutil
-import os
+
+import sentence_transformers
+from sentence_transformers import SentenceTransformer, util
+
+
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+#####################################################################
+# Search API #
+
+# Create query object class
+class Query(BaseModel):
+    query_text: str
+
+
+db = np.array(['Data Scientist',' Machine Learning Engineer','Data Analyst', 'Software Developer','Front End Developer','Back End Developer','Mathematician','Physicist'])
+model = SentenceTransformer("all-mpnet-base-v2")
+encodings = model.encode(db)
+
+@app.post("/exhaustive_search/")
+async def exhaustive_search(query: Query):
+
+    k=5
+    query_emb = model.encode(query.query_text)
+    cos_sims = util.cos_sim(query_emb, encodings).numpy()[0]
+    top_k_indices = np.argsort(-cos_sims)[:k]
+
+    top_k_results = list(zip(db[top_k_indices],cos_sims[top_k_indices]))
+    top_k_results = pd.DataFrame(top_k_results, columns=['TableName','SimilarityScore']).to_dict()
+
+
+    return JSONResponse(content=top_k_results, media_type="application/json")
+
+
+
+#####################################################################
 persons = []
 
 class Person(BaseModel):
