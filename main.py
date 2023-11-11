@@ -23,9 +23,11 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 class Query(BaseModel):
     query_text: str
 
-
-db = np.array(['Data Scientist',' Machine Learning Engineer','Data Analyst', 'Software Developer','Front End Developer','Back End Developer','Mathematician','Physicist'])
+# Load model
 model = SentenceTransformer("all-mpnet-base-v2")
+
+# Define input data and create embeddings
+db = np.array(['Data Scientist','Machine Learning Engineer','Data Analyst','Software Developer','Front End Developer','Back End Developer','Mathematician','Physicist'])
 encodings = model.encode(db)
 
 @app.post("/exhaustive_search/")
