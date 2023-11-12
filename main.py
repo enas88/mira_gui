@@ -1,11 +1,14 @@
 import os
+import time
 import shutil
 import numpy as np
 import pandas as pd
 
+from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, File, UploadFile, Response
 from fastapi.responses import FileResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles
+
+
 from pydantic import BaseModel
 
 import sentence_transformers
@@ -21,7 +24,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 #####################################################################
-@app.get("/")
+@app.get("/exhaustive")
 async def get_form():
     return FileResponse("templates/index.html")
 
@@ -29,19 +32,30 @@ async def get_form():
 async def get_form():
     return FileResponse("templates/upload.html")
 
+
+@app.get("/view")
+async def get_form():
+    return FileResponse("templates/view.html")
+
 #####################################################################
 # CSV Upload API
 
 # Directory to store uploaded CSV files
 UPLOAD_DIR = "semantic_matching/data/"
 
-# A list to store CSV records
-csv_records = []
-[csv_records.append({"name": filename}) for filename in os.listdir(UPLOAD_DIR) if filename.endswith('.csv')]
+
 
 # Route to list CSV records
 @app.get("/csv/")
 async def list_csv_records():
+
+    # A list to store CSV records
+    csv_records = []
+    [csv_records.append({"name": filename,
+                        "file_size":round(os.path.getsize(UPLOAD_DIR+filename) / 1024, 2),
+                        "created_timestamp":time.ctime(os.path.getctime(UPLOAD_DIR+filename)),
+                        "modified_timestamp":time.ctime(os.path.getmtime(UPLOAD_DIR+filename))}) for filename in os.listdir(UPLOAD_DIR) if filename.endswith('.csv')]
+
     return csv_records
 
 # Route to upload a CSV file
@@ -54,7 +68,7 @@ async def upload_csv_file(file: UploadFile):
     with open(file_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
 
-    csv_records.append({"name": file.filename})
+    # csv_records.append({"name": file.filename})
 
     create_embeddings(file_path, '')
 
