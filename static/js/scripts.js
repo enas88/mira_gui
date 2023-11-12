@@ -111,6 +111,63 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
+
+
+
+
 });
 
+// ########################################################################################################################
+// Upload new dataset (CSV)
 
+
+// Show the confirmation modal
+function showConfirmationModal() {
+    var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+    myModal.show();
+}
+
+
+// Add an event listener to the form
+const csvUploadForm = document.getElementById("csvUploadForm");
+csvUploadForm.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+
+    // Show the loading spinner
+    loadingSpinner.style.display = "block";
+
+    // Get the file input element
+    const fileInput = csvUploadForm.querySelector('input[type="file"]');
+
+    // Create a FormData object to send the file
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    // Send the file using a fetch request
+    fetch("/csv/", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        // If calculations are completed successfully, show the confirmation modal
+        if (data.message === "CSV file uploaded successfully") {
+            showConfirmationModal();
+        }
+    })
+    .catch(error => {
+        console.error('Error uploading CSV file:', error);
+    })
+    .finally(() => {
+        // Hide the loading spinner after the fetch request is complete
+        loadingSpinner.style.display = "none";
+    });
+
+    // Function to show the confirmation modal
+    function showConfirmationModal() {
+        var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+        myModal.show();
+    }
+
+});

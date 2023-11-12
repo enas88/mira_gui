@@ -21,6 +21,15 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 #####################################################################
+@app.get("/")
+async def get_form():
+    return FileResponse("templates/index.html")
+
+@app.get("/upload")
+async def get_form():
+    return FileResponse("templates/upload.html")
+
+#####################################################################
 # CSV Upload API
 
 # Directory to store uploaded CSV files
