@@ -77,6 +77,9 @@ async function query_search(event) {
         if (datatablesSimple) {
             new simpleDatatables.DataTable(datatablesSimple);
         }
+
+        document.getElementById('datatablesSimple1').style.display = 'table';
+
     } catch (error) {
         console.error('Error fetching results:', error);
     }
@@ -85,6 +88,29 @@ document.addEventListener("DOMContentLoaded", function () {
     // // Attach the event listener to the form
     const form = document.querySelector('form');
     form.addEventListener('submit', query_search);
+
+
+    // Get reference to the search input and table body
+    const searchInput = document.getElementById('searchInput');
+    const tableBody = document.getElementById('datatablesSimple1').getElementsByTagName('tbody')[0];
+
+    // Add an event listener to the search input
+    searchInput.addEventListener('input', function () {
+        const searchTerm = searchInput.value.toLowerCase();
+
+        // Iterate over the rows and show/hide based on the search term
+        for (let i = 0; i < tableBody.rows.length; i++) {
+            const row = tableBody.rows[i];
+            const rowData = row.textContent.toLowerCase();
+
+            // If the search term is found in the row data, show the row; otherwise, hide it
+            if (rowData.includes(searchTerm)) {
+                row.style.display = 'table-row';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
 });
 
 
