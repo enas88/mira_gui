@@ -9,6 +9,8 @@ model = SentenceTransformer("all-mpnet-base-v2")
 
 def create_embeddings(table_name, base_path):
 
+    print(base_path + table_name)
+    
     if os.path.exists(base_path + table_name.replace('.csv', '.pt') ):
         return 'Embeddings file already exist'
 

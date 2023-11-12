@@ -10,7 +10,11 @@ from pydantic import BaseModel
 
 import sentence_transformers
 from sentence_transformers import SentenceTransformer, util
-from semantic_matching.code import find_similarity
+from semantic_matching.code.semantic_matching_tables import *
+
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -23,7 +27,7 @@ class Query(BaseModel):
     query_text: str
 
 # Load model
-model = SentenceTransformer("all-mpnet-base-v2")
+# model = SentenceTransformer("all-mpnet-base-v2")
 
 # Define input data and create embeddings
 db = np.array(['Data Scientist','Machine Learning Engineer','Data Analyst','Software Developer','Front End Developer','Back End Developer','Mathematician','Physicist'])
@@ -32,20 +36,18 @@ encodings = model.encode(db)
 @app.post("/exhaustive_search/")
 async def exhaustive_search(query: Query):
 
+    # Get all csv files:
+    base_path = 'semantic_matching/data/'
+    csv_files = [base_path+file for file in os.listdir(base_path) if file.endswith('.csv')]
     k=5
-    query_emb = model.encode(query.query_text)
-    cos_sims = util.cos_sim(query_emb, encodings).numpy()[0]
-    top_k_indices = np.argsort(-cos_sims)[:k]
+    top_k_results = batch_semantic_matching(query.query_text, csv_files, k).drop('Embeddings', axis=1)
 
-    top_k_results = list(zip(db[top_k_indices],cos_sims[top_k_indices]))
-    top_k_results = pd.DataFrame(top_k_results, columns=['TableName','SimilarityScore']).to_dict()
-
-
-    return JSONResponse(content=top_k_results, media_type="application/json")
+    return JSONResponse(content=top_k_results.to_json(), media_type="application/json")
 
 
 
 #####################################################################
+
 persons = []
 
 class Person(BaseModel):
@@ -55,7 +57,8 @@ class Person(BaseModel):
 
 @app.get("/")
 async def get_form():
-    return FileResponse("templates/form.html")
+    # return FileResponse("templates/form.html")
+    return FileResponse("templates/index.html")
 
 @app.post("/person/")
 async def add_person(person: Person):
@@ -88,7 +91,8 @@ async def update_person(index: int, person: Person):
     
 
 # Directory to store uploaded CSV files
-UPLOAD_DIR = "uploads"
+# UPLOAD_DIR = "uploads"
+UPLOAD_DIR = "semantic_matching/data/"
 
 # A list to store CSV records
 csv_records = []
@@ -110,4 +114,7 @@ async def upload_csv_file(file: UploadFile):
         shutil.copyfileobj(file.file, f)
 
     csv_records.append({"name": file.filename})
+
+    create_embeddings(file_path, '')
+
     return JSONResponse(content={"message": "CSV file uploaded successfully"}, status_code=201)
