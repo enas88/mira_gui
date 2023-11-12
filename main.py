@@ -24,7 +24,6 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # CSV Upload API
 
 # Directory to store uploaded CSV files
-# UPLOAD_DIR = "uploads"
 UPLOAD_DIR = "semantic_matching/data/"
 
 # A list to store CSV records
@@ -60,9 +59,6 @@ async def upload_csv_file(file: UploadFile):
 class Query(BaseModel):
     query_text: str
 
-# Define input data and create embeddings
-db = np.array(['Data Scientist','Machine Learning Engineer','Data Analyst','Software Developer','Front End Developer','Back End Developer','Mathematician','Physicist'])
-encodings = model.encode(db)
 
 @app.post("/exhaustive_search/")
 async def exhaustive_search(query: Query):
@@ -72,6 +68,7 @@ async def exhaustive_search(query: Query):
     csv_files = [base_path+file for file in os.listdir(base_path) if file.endswith('.csv')]
 
     k=20
+    # Calculate top-k similarities
     top_k_results = batch_semantic_matching(query.query_text, csv_files, k).drop('Embeddings', axis=1)
 
     return Response(top_k_results.to_json(orient="records"), media_type="application/json")
