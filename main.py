@@ -3,7 +3,7 @@ import shutil
 import numpy as np
 import pandas as pd
 
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Response
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -39,11 +39,10 @@ async def exhaustive_search(query: Query):
     # Get all csv files:
     base_path = 'semantic_matching/data/'
     csv_files = [base_path+file for file in os.listdir(base_path) if file.endswith('.csv')]
-    k=5
+    k=10
     top_k_results = batch_semantic_matching(query.query_text, csv_files, k).drop('Embeddings', axis=1)
 
-    return JSONResponse(content=top_k_results.to_json(), media_type="application/json")
-
+    return Response(top_k_results.to_json(orient="records"), media_type="application/json")
 
 
 #####################################################################

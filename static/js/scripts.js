@@ -48,38 +48,34 @@ async function query_search(event) {
         });
 
         const resultsObj = await response.json();
-        console.log(resultsObj)
-        // Extract data from the object
-        var tableNames = resultsObj.TableName;
-        var cellValues = resultsObj.CellValue;
-        var cellValueColumns = resultsObj.CellValue_Column;
-        var similarityScores = resultsObj.SimilaritiyScores;
-
-        console.log('tableNames:', tableNames);
-        console.log('cellValues:', cellValues);
-        console.log('cellValueColumns:', cellValueColumns);
-        console.log('similarityScores:', similarityScores);
-
+        
+        console.log(resultsObj);
+        
         // Get reference to the table body
-        var tableBody = document.getElementById('datatablesSimple').getElementsByTagName('tbody')[0];
-
+        var tableBody = document.getElementById('datatablesSimple1').getElementsByTagName('tbody')[0];
+        
         // Clear existing rows
         tableBody.innerHTML = "";
         
         // Populate the table
-        for (var i = 0; i < tableNames.length; i++) {
-            var row = tableBody.insertRow(i);
-        
+        resultsObj.forEach((result, index) => {
+            var row = tableBody.insertRow(index);
+
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);
             var cell4 = row.insertCell(3);
-        
-            // Access the properties from the nested objects
-            cell1.appendChild(document.createTextNode(tableNames[i]));
-            cell2.appendChild(document.createTextNode(cellValues[i]));
-            cell3.appendChild(document.createTextNode(cellValueColumns[i]));
-            cell4.appendChild(document.createTextNode(similarityScores[i]));
+
+            // Access the properties from each result object
+            cell1.appendChild(document.createTextNode(result.TableName));
+            cell2.appendChild(document.createTextNode(result.CellValue));
+            cell3.appendChild(document.createTextNode(result.CellValue_Column));
+            cell4.appendChild(document.createTextNode(result.SimilaritiyScores));
+        });
+
+        const datatablesSimple = document.getElementById('datatablesSimple1');
+        if (datatablesSimple) {
+            new simpleDatatables.DataTable(datatablesSimple);
         }
     } catch (error) {
         console.error('Error fetching results:', error);
