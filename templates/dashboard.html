@@ -107,74 +107,7 @@
             </div>
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">Search Dataset</h1>
-
-                        <div class="row">
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <form method="post" onsubmit="query_search(event)">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-area me-1"></i>
-                                        Input Query
-                                    </div>
-                                    <div class="input-group">
-                                        <input id="query_text" class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                                        <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
-                                    </div>
-                                </form>
-                                </div>
-                            </div>
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-bar me-1"></i>
-                                        List of Tables
-                                    </div>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                          Top Matching Tables
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                          <li><button class="dropdown-item" type="button">Table 1 </button></li>
-                                          <li><button class="dropdown-item" type="button">Table 2</button></li>
-                                          <li><button class="dropdown-item" type="button">Table 3</button></li>
-                                        </ul>
-                                      </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                Search Results
-                            </div>
-                            <div class="card-body">
-                                <input type="text" id="searchInput" placeholder="Search...">
-                                <table id="datatablesSimple1" class="table" style="display:None;">
-                                    <thead>
-                                        <tr>
-                                            <th>Table Name</th>
-                                            <th>Cell Value</th>
-                                            <th>Cell Value Column</th>
-                                            <th>Similarity Score</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Table Name</th>
-                                            <th>Cell Value</th>
-                                            <th>Cell Value Column</th>
-                                            <th>Similarity Score</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                       <!-- Existing or empty body, to be populated with JavaScript -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+        
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">

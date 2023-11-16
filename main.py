@@ -8,6 +8,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, File, UploadFile, Response
 from fastapi.responses import FileResponse, JSONResponse
 
+import qdrant_client
+from qdrant_client import QdrantClient, models
+from qdrant_client.http.models import Distance, VectorParams
 
 from pydantic import BaseModel
 
@@ -24,6 +27,11 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 #####################################################################
+
+@app.get("/")
+async def get_form():
+    return FileResponse("templates/dashboard.html")
+
 @app.get("/exhaustive")
 async def get_form():
     return FileResponse("templates/index.html")
@@ -31,7 +39,6 @@ async def get_form():
 @app.get("/upload")
 async def get_form():
     return FileResponse("templates/upload.html")
-
 
 @app.get("/view")
 async def get_form():
@@ -95,6 +102,24 @@ async def exhaustive_search(query: Query):
     top_k_results = batch_semantic_matching(query.query_text, csv_files, k).drop('Embeddings', axis=1)
 
     return Response(top_k_results.to_json(orient="records"), media_type="application/json")
+
+
+@app.post("/ann_search/")
+async def ann_search(query: Query):
+
+
+    client = QdrantClient("localhost", port=6333)
+
+    hits = client.search(
+    collection_name="miraculous",
+    query_vector=model.encode("job name").tolist(),
+    limit=5,
+    )
+    # for hit in hits:
+    #     print(hit.payload, "score:", hit.score)
+    top_k = [{'payload': hit.payload , 'score': hit.score} for hit in hits ]
+
+    return JSONResponse(content=top_k)
 
 
 #####################################################################

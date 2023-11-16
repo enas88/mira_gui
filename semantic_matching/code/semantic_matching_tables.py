@@ -5,7 +5,7 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 
 # Load SBERT model
-model = SentenceTransformer("all-mpnet-base-v2")
+model = SentenceTransformer('/sbert_model')
 
 def create_embeddings(table_name, base_path):
 
