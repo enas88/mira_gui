@@ -6,7 +6,7 @@ import pandas as pd
 import json 
 
 from fastapi.staticfiles import StaticFiles
-from fastapi import FastAPI, File, UploadFile, Response
+from fastapi import FastAPI, File, UploadFile, Response, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
 
 import qdrant_client
@@ -54,10 +54,29 @@ async def get_form():
 #####################################################################
 # CSV Upload API
 
+class CSV:
+
+    def read_csv(file_path : str):
+        df = pd.read_csv(file_path)
+
+        return df.to_dict('records')
+    
+
+@app.get("/csv/{file_name}")
+async def list_csv_records(file_name: str):
+
+    try:
+        csv_data = CSV.read_csv(UPLOAD_DIR+file_name)
+        return csv_data
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="CSV file not found")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
 
 # Route to list CSV records
 @app.get("/csv/")
-async def list_csv_records():
+async def list_all_csv_records():
 
     qdrant_is_running = True
     client = QdrantClient(host="localhost", port=6333)
