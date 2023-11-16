@@ -3,6 +3,7 @@ import time
 import shutil
 import numpy as np
 import pandas as pd
+import json 
 
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, File, UploadFile, Response
@@ -35,6 +36,10 @@ async def get_form():
 @app.get("/exhaustive")
 async def get_form():
     return FileResponse("templates/index.html")
+
+@app.get("/ann")
+async def get_form():
+    return FileResponse("templates/ann.html")
 
 @app.get("/upload")
 async def get_form():
@@ -117,9 +122,20 @@ async def ann_search(query: Query):
     )
     # for hit in hits:
     #     print(hit.payload, "score:", hit.score)
-    top_k = [{'payload': hit.payload , 'score': hit.score} for hit in hits ]
+    data = []
 
-    return JSONResponse(content=top_k)
+    for hit in hits:
+        payload_data = {
+            'TableName': hit.payload.get('TableName', None),
+            'CellValue': hit.payload.get('CellValue', None),
+            'CellValue_Column': hit.payload.get('CellValue_Column', None),
+            'SimilaritiyScores': hit.score
+        }
+        data.append(payload_data)
+
+    df = pd.DataFrame(data)
+    print("ANN SEARCH")
+    return Response(df.to_json(orient="records"), media_type="application/json")
 
 
 #####################################################################
