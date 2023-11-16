@@ -1,6 +1,7 @@
 import os
 import uuid
 import torch
+import socket
 import numpy as np
 import pandas as pd
 from config import *
@@ -194,5 +195,11 @@ def count_table_occurencies(table_name, client, collection_name):
     return result.count
 
 
+def qdrant_is_working(host, port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(1)  # Adjust the timeout as needed
+    result = sock.connect_ex((host, port))
+    sock.close()
+    return result == 0
 
 

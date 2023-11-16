@@ -78,7 +78,7 @@ async def list_csv_records(file_name: str):
 @app.get("/csv/")
 async def list_all_csv_records():
 
-    qdrant_is_running = True
+    qdrant_is_running = qdrant_is_working("localhost", 6333)
     client = QdrantClient(host="localhost", port=6333)
     # A list to store CSV records
     csv_records = []
