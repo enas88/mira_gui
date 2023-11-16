@@ -36,6 +36,10 @@ async def get_form():
 async def get_form():
     return FileResponse("templates/index.html")
 
+@app.get("/ann")
+async def get_form():
+    return FileResponse("templates/ann.html")
+
 @app.get("/upload")
 async def get_form():
     return FileResponse("templates/upload.html")
