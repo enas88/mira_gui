@@ -12,6 +12,17 @@
         <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
         
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+        <style>
+            
+            td.exists-yes {
+            color: green; /* Set the background color to green for 'Yes' */
+            }
+
+            td.exists-no {
+                color: red; /* Set the background color to red for 'No' */
+            }
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -93,7 +104,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Upload
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="view">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 View 
                             </a>
@@ -117,6 +128,7 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>File Size</th>
+                                            <th>Exists in DB</th>
                                             <th>Created At</th>
                                             <th>Modified At</th>
                                         </tr>
@@ -158,17 +170,33 @@
             .then(data => {
                 data.forEach(csvRecord => {
                     const row = document.createElement('tr');
+
                     const nameCell = document.createElement('td');
                     nameCell.textContent = csvRecord.name;
+
                     const file_size = document.createElement('td');
                     file_size.textContent = csvRecord.file_size;
+
+                    const exists_in_db = document.createElement('td');
+                    exists_in_db.textContent = csvRecord.exists_in_db;
+
+                    
+                    // Apply conditional formatting based on the value of "exists_in_db"
+                    if (csvRecord.exists_in_db === 'Yes') {
+                        exists_in_db.classList.add('exists-yes');
+                    } else if (csvRecord.exists_in_db === 'No') {
+                        exists_in_db.classList.add('exists-no');
+                    }
+
                     const created_timestamp = document.createElement('td');
                     created_timestamp.textContent = csvRecord.created_timestamp;
+
                     const modified_timestamp = document.createElement('td');
                     modified_timestamp.textContent = csvRecord.modified_timestamp;
 
                     row.appendChild(nameCell);
                     row.appendChild(file_size);
+                    row.appendChild(exists_in_db);
                     row.appendChild(created_timestamp);
                     row.appendChild(modified_timestamp);
                     csvTableBody.appendChild(row);
@@ -177,6 +205,8 @@
             .catch(error => {
                 console.error('Error fetching CSV records:', error);
             });
+
+
         </script>
    </body>
 </html>

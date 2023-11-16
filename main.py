@@ -15,6 +15,8 @@ from qdrant_client.http.models import Distance, VectorParams
 
 from pydantic import BaseModel
 
+from config import *
+
 import sentence_transformers
 from sentence_transformers import SentenceTransformer, util
 from semantic_matching.code.semantic_matching_tables import *
@@ -52,19 +54,18 @@ async def get_form():
 #####################################################################
 # CSV Upload API
 
-# Directory to store uploaded CSV files
-UPLOAD_DIR = "semantic_matching/data/"
-
-
 
 # Route to list CSV records
 @app.get("/csv/")
 async def list_csv_records():
 
+    qdrant_is_running = True
+    client = QdrantClient(host="localhost", port=6333)
     # A list to store CSV records
     csv_records = []
     [csv_records.append({"name": filename,
-                        "file_size":round(os.path.getsize(UPLOAD_DIR+filename) / 1024, 2),
+                        "file_size": str(round(os.path.getsize(UPLOAD_DIR+filename) / 1024, 2))+' KB',
+                        "exists_in_db": "-" if not qdrant_is_running else "Yes" if count_table_occurencies(filename, client, COLLECTION_NAME)>0 else "No",
                         "created_timestamp":time.ctime(os.path.getctime(UPLOAD_DIR+filename)),
                         "modified_timestamp":time.ctime(os.path.getmtime(UPLOAD_DIR+filename))}) for filename in os.listdir(UPLOAD_DIR) if filename.endswith('.csv')]
 
@@ -112,16 +113,15 @@ async def exhaustive_search(query: Query):
 @app.post("/ann_search/")
 async def ann_search(query: Query):
 
-
+    print("ANN SEARCH")
     client = QdrantClient("localhost", port=6333)
 
     hits = client.search(
-    collection_name="miraculous",
-    query_vector=model.encode("job name").tolist(),
-    limit=5,
+        collection_name=COLLECTION_NAME,
+        query_vector=model.encode(query.query_text).tolist(),
+        limit=QDRANT_TOP_K,
     )
-    # for hit in hits:
-    #     print(hit.payload, "score:", hit.score)
+
     data = []
 
     for hit in hits:
@@ -134,8 +134,12 @@ async def ann_search(query: Query):
         data.append(payload_data)
 
     df = pd.DataFrame(data)
-    print("ANN SEARCH")
+    
     return Response(df.to_json(orient="records"), media_type="application/json")
+
+
+
+
 
 
 #####################################################################
