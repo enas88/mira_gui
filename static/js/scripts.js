@@ -27,9 +27,9 @@ window.addEventListener('DOMContentLoaded', event => {
 
 // document.addEventListener("DOMContentLoaded", function () {
 
-async function query_search(event) {
-    console.log('URL:', "/exhaustive_search/");
-    console.log('Headers:', { "Content-Type": "application/json" });
+async function query_search(event, url) {
+    // console.log('URL:', "/exhaustive_search/");
+    // console.log('Headers:', { "Content-Type": "application/json" });
 
     event.preventDefault();
     const query_text = document.getElementById("query_text").value;
@@ -39,7 +39,7 @@ async function query_search(event) {
     };
 
     try {
-        const response = await fetch("/exhaustive_search/", {
+        const response = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
