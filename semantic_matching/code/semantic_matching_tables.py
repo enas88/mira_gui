@@ -173,7 +173,7 @@ def batch_semantic_matching(query, table_names, k):
     for table_name in table_names:
 
         # Calculate cosine similarities 
-        res_df = create_data(table_name, BASE_DIR+DATA_DIR, BASE_DIR+EMBEDDINGS_DIR)
+        res_df = create_data(table_name, BASE_DIR_DATA_DIR, BASE_DIR_EMBEDDINGS_DIR)
         total_results_df = pd.concat([total_results_df, res_df], ignore_index=True)
 
     # Get top-k similar results
