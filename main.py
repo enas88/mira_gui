@@ -92,10 +92,10 @@ async def list_all_csv_records():
     csv_records = []
     if len(os.listdir(UPLOAD_DIR))>0 :
         [csv_records.append({"name": filename,
-                            "file_size": str(round(os.path.getsize(UPLOAD_DIR+'/'+filename) / 1024, 2))+' KB',
+                            "file_size": str(round(os.path.getsize(UPLOAD_DIR_sp+filename) / 1024, 2))+' KB',
                             "exists_in_db": "-" if not qdrant_is_running else "Yes" if count_table_occurencies(filename, client, COLLECTION_NAME)>0 else "No",
-                            "created_timestamp":time.ctime(os.path.getctime(UPLOAD_DIR+'/'+filename)),
-                            "modified_timestamp":time.ctime(os.path.getmtime(UPLOAD_DIR+'/'+filename))}) for filename in os.listdir(UPLOAD_DIR) if filename.endswith('.csv')]
+                            "created_timestamp":time.ctime(os.path.getctime(UPLOAD_DIR_sp+filename)),
+                            "modified_timestamp":time.ctime(os.path.getmtime(UPLOAD_DIR_sp+filename))}) for filename in os.listdir(UPLOAD_DIR) if filename.endswith('.csv')]
 
     return csv_records
 
@@ -109,12 +109,12 @@ async def upload_csv_file(file: UploadFile):
     with open(file_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
 
-    create_embeddings(file.filename, UPLOAD_DIR, BASE_DIR+EMBEDDINGS_DIR+'/')
+    create_embeddings(file.filename, UPLOAD_DIR, BASE_DIR_EMBEDDINGS_DIR_SAVE )
 
     client = QdrantClient(host="localhost", port=6333)
 
     if qdrant_is_working("localhost", 6333):
-        add_to_collection(file.filename, UPLOAD_DIR, BASE_DIR+EMBEDDINGS_DIR+'/', client, COLLECTION_NAME)
+        add_to_collection(file.filename, UPLOAD_DIR, BASE_DIR_EMBEDDINGS_DIR_SAVE , client, COLLECTION_NAME)
 
     return JSONResponse(content={"message": "CSV file uploaded successfully"}, status_code=201)
 
@@ -125,7 +125,7 @@ async def upload_csv_file(file: UploadFile):
 async def run_umap():
 
     # Combine all of the available data and create embeddings
-    merged_df, all_embeddings = create_data_and_save_embeddings(BASE_DIR+DATA_DIR, BASE_DIR+EMBEDDINGS_DIR)
+    merged_df, all_embeddings = create_data_and_save_embeddings(BASE_DIR_DATA_DIR , BASE_DIR_DATA_DIR )
 
     # Precompute knn's for UMAP
     all_embeddings_array = np.vstack(all_embeddings)
@@ -134,8 +134,8 @@ async def run_umap():
     # Apply UMAP
     umap_embeddings, umap_trans, _ = generate_umap_embeddings(20, 2, all_embeddings_array, pre_computed_knn=knns_jobs, n_jobs = -1)
 
-    joblib.dump(umap_trans, BASE_DIR+DATA_DIR+"/umap_transformer.joblib")
-    joblib.dump(umap_embeddings, BASE_DIR+DATA_DIR+"/umap_embeddings.joblib")
+    joblib.dump(umap_trans, BASE_DIR_DATA_DIR +"/umap_transformer.joblib")
+    joblib.dump(umap_embeddings, BASE_DIR_DATA_DIR +"/umap_embeddings.joblib")
 
     return JSONResponse(content={"message": "Created embeddings and saved UMAP objects"}, status_code=201)
 
