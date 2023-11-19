@@ -189,3 +189,17 @@ async def ann_search(query: Query):
     
     return Response(df.to_json(orient="records"), media_type="application/json")
 
+
+@app.post("/efficient_search")
+async def efficient_search(query: Query):
+
+    print('Efficient Search')
+    client = QdrantClient("localhost", port=6333)
+    top_k_results = 10
+    top_k_clusters = 20
+    clustering_index_path = BASE_DIR+'/merged_data/'+'clustering_index.joblib'
+    umap_trans = joblib.load(BASE_DIR+'/merged_data/'+"umap_trans.joblib")
+
+    df_efficient = cluster_search(query.query_text, top_k_results, top_k_clusters,  clustering_index_path, umap_trans, client, COLLECTION_NAME_CLUSTERED)
+
+    return Response(df_efficient.to_json(orient="records"), media_type="application/json")

@@ -578,7 +578,7 @@ def add_to_collection_clustered(table_name, client, embeddings_path, collection_
 
 def cluster_search(query_text, top_k_results, top_k_clusters,  clustering_index_path, umap_trans, client, collection_name):
     
-  clustering_index = pd.read_csv(clustering_index_path)
+  clustering_index = joblib.load(clustering_index_path)
 
   query_text_emb = model.encode(query_text)
 
