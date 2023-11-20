@@ -1,9 +1,9 @@
 import os
 import time
+import json 
 import shutil
 import numpy as np
 import pandas as pd
-import json 
 
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -26,9 +26,14 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
+
+#####################################################################
+# Initialization
+
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-# templates = Jinja2Templates(directory="templates")
+client = QdrantClient("localhost", port=6333)
+
 
 
 #####################################################################
@@ -87,15 +92,15 @@ async def list_csv_records(file_name: str):
 async def list_all_csv_records():
 
     qdrant_is_running = qdrant_is_working("localhost", 6333)
-    client = QdrantClient(host="localhost", port=6333)
+
     # A list to store CSV records
     csv_records = []
     if len(os.listdir(UPLOAD_DIR))>0 :
         [csv_records.append({"name": filename,
-                            "file_size": str(round(os.path.getsize(UPLOAD_DIR_sp+filename) / 1024, 2))+' KB',
+                            "file_size": str(round(os.path.getsize(UPLOAD_DIR+filename) / 1024, 2))+' KB',
                             "exists_in_db": "-" if not qdrant_is_running else "Yes" if count_table_occurencies(filename, client, COLLECTION_NAME)>0 else "No",
-                            "created_timestamp":time.ctime(os.path.getctime(UPLOAD_DIR_sp+filename)),
-                            "modified_timestamp":time.ctime(os.path.getmtime(UPLOAD_DIR_sp+filename))}) for filename in os.listdir(UPLOAD_DIR) if filename.endswith('.csv')]
+                            "created_timestamp":time.ctime(os.path.getctime(UPLOAD_DIR+filename)),
+                            "modified_timestamp":time.ctime(os.path.getmtime(UPLOAD_DIR+filename))}) for filename in os.listdir(UPLOAD_DIR) if filename.endswith('.csv')]
 
     return csv_records
 
@@ -111,7 +116,7 @@ async def upload_csv_file(file: UploadFile):
 
     create_embeddings(file.filename, UPLOAD_DIR, BASE_DIR_EMBEDDINGS_DIR_SAVE )
 
-    client = QdrantClient(host="localhost", port=6333)
+    # client = QdrantClient(host="localhost", port=6333)
 
     if qdrant_is_working("localhost", 6333):
         add_to_collection(file.filename, UPLOAD_DIR, BASE_DIR_EMBEDDINGS_DIR_SAVE , client, COLLECTION_NAME)
@@ -166,8 +171,7 @@ async def exhaustive_search(query: Query):
 async def ann_search(query: Query):
 
     print("ANN SEARCH")
-    client = QdrantClient("localhost", port=6333)
-
+    
     hits = client.search(
         collection_name=COLLECTION_NAME,
         query_vector=model.encode(query.query_text).tolist(),
@@ -194,12 +198,19 @@ async def ann_search(query: Query):
 async def efficient_search(query: Query):
 
     print('Efficient Search')
-    client = QdrantClient("localhost", port=6333)
+
     top_k_results = 10
     top_k_clusters = 20
-    clustering_index_path = BASE_DIR+'/merged_data/'+'clustering_index.joblib'
-    umap_trans = joblib.load(BASE_DIR+'/merged_data/'+"umap_trans.joblib")
 
-    df_efficient = cluster_search(query.query_text, top_k_results, top_k_clusters,  clustering_index_path, umap_trans, client, COLLECTION_NAME_CLUSTERED)
+    clustering_index_path = BASE_DIR+'/merged_data/'+'clustering_index.joblib'
+    umap_trars_path = BASE_DIR+'/merged_data/'+"umap_trans.joblib"
+
+    assert os.path.exists(clustering_index_path), "ERROR: Clustering index joblib does not exist"
+    assert os.path.exists(umap_trars_path), "ERROR: Umap transfomation joblib does not exist"
+
+    umap_trans = joblib.load(umap_trars_path)
+
+
+    df_efficient = cluster_search(query.query_text, top_k_results, top_k_clusters, clustering_index_path, umap_trans, client, COLLECTION_NAME_CLUSTERED)
 
     return Response(df_efficient.to_json(orient="records"), media_type="application/json")
