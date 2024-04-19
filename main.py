@@ -35,13 +35,15 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 client = QdrantClient("localhost", port=6333)
 
 
-
 #####################################################################
 
 @app.get("/")
 async def get_form():
     return FileResponse("templates/dashboard.html")
 
+@app.get("/catalog")
+async def get_form():
+    return FileResponse("templates/catalog.html")
 
 @app.get("/exhaustive")
 async def get_form():
@@ -153,6 +155,24 @@ async def run_umap():
 class Query(BaseModel):
     query_text: str
 
+class Dataset(BaseModel):
+    data: list[list]  # Assuming the input data is a list of lists
+    columns: list[str]  # Column names for the DataFrame
+
+@app.post("/dataset_catalog/")
+async def read_dataset(dataset: Dataset):
+    # Try to create a DataFrame from the received data
+    try:
+        df = pd.DataFrame(data=dataset.data, columns=dataset.columns)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    # Perform operations with the DataFrame here
+    # For example, save to a CSV
+    df.to_csv("Datasets_Cataloges.csv", index=False)
+    
+    # Respond with success message
+    return {"message": "Dataset received and saved to DataFrame"}
 
 @app.post("/exhaustive_search/")
 async def exhaustive_search(query: Query):

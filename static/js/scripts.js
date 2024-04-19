@@ -26,6 +26,47 @@ window.addEventListener('DOMContentLoaded', event => {
 });
 
 // document.addEventListener("DOMContentLoaded", function () {
+async function read_data(event, url) {
+    // console.log('URL:', "/exhaustive_search/");
+    // console.log('Headers:', { "Content-Type": "application/json" });
+
+    event.preventDefault();
+    const dataset_id = document.getElementById("dataset_id").value;
+    const dataset_name = document.getElementById("dataset_name").value;
+    const dataset_model = document.getElementById("dataset_model").value;
+    const dataset_url = document.getElementById("dataset_url").value;
+    const dataset_username = document.getElementById("dataset_username").value;
+    const dataset_password = document.getElementById("dataset_password").value;
+    const dataset_path = document.getElementById("dataset_path").value;
+    const dataset_format = document.getElementById("dataset_format").value;
+    const dataset_description = document.getElementById("dataset_description").value;
+    const dataset_metadata = document.getElementById("dataset_metadata").value;
+    const dataset_schema = document.getElementById("dataset_schema").value;
+
+    const data = {
+        "data": [
+            [dataset_id, dataset_name, dataset_model, dataset_url, dataset_username, dataset_password, dataset_path, dataset_format, dataset_description, dataset_metadata, dataset_schema],
+          ],
+        "columns": ["dataset_id", "dataset_name", "dataset_model", "dataset_url", "dataset_username", "dataset_password", "dataset_path", "dataset_format", "dataset_description", "dataset_metadata", "dataset_schema"]
+    };
+    console.log(data);
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        const resultsObj = await response.json();
+        
+        console.log(resultsObj);
+
+    } catch (error) {
+        console.error('Error fetching results:', error);
+    }
+}
 
 async function query_search(event, url) {
     // console.log('URL:', "/exhaustive_search/");

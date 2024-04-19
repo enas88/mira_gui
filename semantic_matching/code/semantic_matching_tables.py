@@ -20,7 +20,7 @@ from qdrant_client.http.models import Distance, VectorParams
 
 
 # Load SBERT model
-model = SentenceTransformer(SBERT_PATH)
+model = SentenceTransformer('/Users/enaso/Library/CloudStorage/OneDrive-UniversiteitUtrecht/_GitHub/mira_gui/sbertmodel')
 
 def create_embeddings(table_name, data_path, embeddings_path):
     """
