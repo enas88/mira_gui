@@ -63,6 +63,18 @@ async function read_data(event, url) {
         
         console.log(resultsObj);
 
+        if (response.ok) {
+            // Redirect to the home page
+            document.getElementById("successMessage").classList.remove("d-none");
+
+            setTimeout(() => {
+                window.location.href = "/catalog";
+            }, 2000); 
+            
+        } else {
+            console.error('Failed to get response:', response);
+        }
+
     } catch (error) {
         console.error('Error fetching results:', error);
     }

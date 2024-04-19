@@ -8,7 +8,7 @@ from pathlib import Path
 
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from fastapi import FastAPI, File, UploadFile, Response, HTTPException, Request
 
 import qdrant_client
@@ -22,7 +22,7 @@ from pydantic import BaseModel
 import sentence_transformers
 from sentence_transformers import SentenceTransformer, util
 from semantic_matching.code.semantic_matching_tables import *
-
+ 
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -171,12 +171,12 @@ async def read_dataset(dataset: Dataset):
         mode = 'a'
         header = False
     else:
-        # If not, create a new file with headers
+        # If not, create a new file with headers 
         mode = 'w'
         header = True
 
     # Convert the data to a DataFrame
-    df = pd.DataFrame([dataset.data], columns=dataset.columns)
+    df = pd.DataFrame(dataset.data, columns=dataset.columns)
 
     # Try to append or write to the CSV file
     try:
