@@ -4,6 +4,7 @@ import json
 import shutil
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -161,18 +162,30 @@ class Dataset(BaseModel):
 
 @app.post("/dataset_catalog/")
 async def read_dataset(dataset: Dataset):
-    # Try to create a DataFrame from the received data
-    try:
-        df = pd.DataFrame(data=dataset.data, columns=dataset.columns)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    # Define the path to the CSV file
+    file_path = Path("Catalogs/Datasets_Catalog.csv")
+    
+    # Check if the file exists
+    if file_path.exists() and file_path.is_file():
+        # If it exists, append without headers
+        mode = 'a'
+        header = False
+    else:
+        # If not, create a new file with headers
+        mode = 'w'
+        header = True
 
-    # Perform operations with the DataFrame here
-    # For example, save to a CSV
-    df.to_csv("Datasets_Cataloges.csv", index=False)
+    # Convert the data to a DataFrame
+    df = pd.DataFrame([dataset.data], columns=dataset.columns)
+
+    # Try to append or write to the CSV file
+    try:
+        df.to_csv(file_path, mode=mode, index=False, header=header)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred while saving the dataset: {str(e)}")
     
     # Respond with success message
-    return {"message": "Dataset received and saved to DataFrame"}
+    return {"message": "Dataset received and appended to DataFrame"}
 
 @app.post("/exhaustive_search/")
 async def exhaustive_search(query: Query):
