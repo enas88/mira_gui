@@ -16,7 +16,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="ann.html">Miraculous</a>
+            <a class="navbar-brand ps-3" href="useful.html">Miraculous</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -50,7 +50,7 @@
                                 Dashboard
                             </a>
                             <div class="sb-sidenav-menu-heading">Dataset Discovery</div>
-                            <a class="nav-link" href="/catalog">
+                            <a class="nav-link" href="/ann">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Dataset Catalog 
                             </a>  
@@ -116,15 +116,15 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h3 class="mt-4">Approximate Search</h3>
+                        <h3 class="mt-4">Federated Query Optimizer</h3>
 
                         <div class="row">
-                            <div class="col-xl-6">
+                            <div class="col-xl-4">
                                 <div class="card mb-4">
                                     <form method="post" onsubmit="query_search(event, '/ann_search')">
                                     <div class="card-header">
                                         <i class="fas fa-chart-area me-1"></i>
-                                        Input Query
+                                        Input Table Query
                                     </div>
                                     <div class="input-group">
                                         <input id="query_text" class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
@@ -133,24 +133,7 @@
                                 </form>
                                 </div>
                             </div>
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-bar me-1"></i>
-                                        List of Tables
-                                    </div>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                          Top Matching Tables
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                          <li><button class="dropdown-item" type="button">Table 1 </button></li>
-                                          <li><button class="dropdown-item" type="button">Table 2</button></li>
-                                          <li><button class="dropdown-item" type="button">Table 3</button></li>
-                                        </ul>
-                                      </div>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="card mb-4">
                             <div class="card-header">

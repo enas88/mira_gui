@@ -46,6 +46,10 @@ async def get_form():
 async def get_form():
     return FileResponse("templates/catalog.html")
 
+@app.get("/useful")
+async def get_form():
+    return FileResponse("templates/useful.html")
+
 @app.get("/exhaustive")
 async def get_form():
     return FileResponse("templates/index.html")
