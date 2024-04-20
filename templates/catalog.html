@@ -10,6 +10,8 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="static/css/styles.css" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
         
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
@@ -111,8 +113,14 @@
             </div>
             <div id="layoutSidenav_content">
                 <main>
+                            <!-- Header Image -->
+    <div class="container-fluid d-flex flex-column align-items-center justify-content-center" style="min-height: 100vh;">
+        <div class="text-center">
+            <img src="static/img/logo6.PNG" alt="Header Image" class="img-fluid" />
+        </div>
+
+                    
                     <div class="container-fluid px-4">
-                        <h3 class="mt-4">Catalog Design</h3>
                     
                         <div class="row">
                             <div class="col-xl-9">
@@ -130,17 +138,24 @@
                                             
                                             <!-- Dataset ID Input -->
                                             <div class="mb-3 row">
-                                                <label for="dataset_id" class="col-sm-2 col-form-label">Dataset ID</label>
+                                                <label for="dataset_id" class="col-sm-2 col-form-label">Dataset ID <span class="text-danger">*</span></label>
                                                 <div class="col-sm-10">
-                                                    <input id="dataset_id" class="form-control" type="text" placeholder="Enter your dataset ID" />
+                                                    <input id="dataset_id" class="form-control" type="number" placeholder="Enter your dataset ID" required />
                                                 </div>
                                             </div>
                     
                                             
                                             <div class="mb-3 row">
-                                                <label for="dataset_name" class="col-sm-2 col-form-label">Name</label>
+                                                <label for="dataset_name" class="col-sm-2 col-form-label">Name <span class="text-danger">*</span></label>
                                                 <div class="col-sm-10">
-                                                    <input id="dataset_name" class="form-control" type="text" placeholder="String" />
+                                                    <input id="dataset_name" class="form-control" type="text" placeholder="String" required />
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mb-3 row">
+                                                <label for="dataset_date" class="col-sm-2 col-form-label">Creation Date<span class="text-danger">*</span> </label>
+                                                <div class="col-sm-10">
+                                                    <input id="dataset_date" class="form-control" type="date" placeholder="String" required />
                                                 </div>
                                             </div>
                     
@@ -160,17 +175,17 @@
                                             
                                             
                                             <div class="mb-3 row">
-                                                <label for="dataset_username" class="col-sm-2 col-form-label">Username</label>
+                                                <label for="dataset_username" class="col-sm-2 col-form-label">Username<span class="text-danger">*</span></label>
                                                 <div class="col-sm-10">
-                                                    <input id="dataset_username" class="form-control" type="text" placeholder="String" />
+                                                    <input id="dataset_username" class="form-control" type="text" placeholder="String" required />
                                                 </div>
                                             </div>
                                             
                     
                                             <div class="mb-3 row">
-                                                <label for="dataset_password" class="col-sm-2 col-form-label">Password</label>
+                                                <label for="dataset_password" class="col-sm-2 col-form-label">Password <span class="text-danger">*</span></label>
                                                 <div class="col-sm-10">
-                                                    <input id="dataset_password" class="form-control" type="text" placeholder="********" />
+                                                    <input id="dataset_password" class="form-control" type="password" placeholder="********" required />
                                                 </div>
                                             </div>
                                             
@@ -223,11 +238,12 @@
                             </div>
                         </div>
                     </div>
+                
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Miraculous 2023</div>
+                            <div class="text-muted">Copyright &copy; Miraculous 2024</div>
                             <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;

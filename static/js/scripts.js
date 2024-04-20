@@ -33,6 +33,7 @@ async function read_data(event, url) {
     event.preventDefault();
     const dataset_id = document.getElementById("dataset_id").value;
     const dataset_name = document.getElementById("dataset_name").value;
+    const dataset_date = document.getElementById("dataset_date").value;
     const dataset_model = document.getElementById("dataset_model").value;
     const dataset_url = document.getElementById("dataset_url").value;
     const dataset_username = document.getElementById("dataset_username").value;
@@ -45,9 +46,9 @@ async function read_data(event, url) {
 
     const data = {
         "data": [
-            [dataset_id, dataset_name, dataset_model, dataset_url, dataset_username, dataset_password, dataset_path, dataset_format, dataset_description, dataset_metadata, dataset_schema],
+            [dataset_id, dataset_name, dataset_date, dataset_model, dataset_url, dataset_username, dataset_password, dataset_path, dataset_format, dataset_description, dataset_metadata, dataset_schema],
           ],
-        "columns": ["dataset_id", "dataset_name", "dataset_model", "dataset_url", "dataset_username", "dataset_password", "dataset_path", "dataset_format", "dataset_description", "dataset_metadata", "dataset_schema"]
+        "columns": ["dataset_id", "dataset_name", "dataset_date", "dataset_model", "dataset_url", "dataset_username", "dataset_password", "dataset_path", "dataset_format", "dataset_description", "dataset_metadata", "dataset_schema"]
     };
     console.log(data);
     try {
