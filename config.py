@@ -8,3 +8,5 @@ UPLOAD_DIR = "semantic_matching/data/"
 # Qdrant collection name
 COLLECTION_NAME = 'miraculous'
 QDRANT_TOP_K = 10
+
+BASE_DATA_DIR = '/Users/enaso/Library/CloudStorage/OneDrive-UniversiteitUtrecht/_GitHub/mira_gui/semantic_matching/merged_data'

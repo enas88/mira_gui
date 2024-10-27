@@ -245,63 +245,45 @@ async def ann_search(query: Query):
 
 
 
-# @app.post("/efficient_search/")
-# async def efficient_search(query: Query):
+@app.post("/efficient_search")
+async def efficient_search(query: Query):
+    # Load table summaries JSON
+    table_summaries_path = 'semantic_matching/table_summaries.json'
+    with open(table_summaries_path, 'r') as f:
+        table_summaries = json.load(f)
+
+    # Perform clustering and search
+    top_k_results = 10
+    top_k_clusters = 20
+    clustering_index_path = 'semantic_matching/merged_data/clustering_index.joblib'
+    umap_trans_path = '/Users/enaso/Library/CloudStorage/OneDrive-UniversiteitUtrecht/_GitHub/mira_gui/semantic_matching/merged_data/umap_trans.joblib'
+
+    umap_trans = joblib.load(umap_trans_path)
     
-    # # Path to additional table information
-    # table_summaries_path = os.path.join(UPLOAD_DIR, "table_summaries.json")
-    
-    # # Load table summaries JSON file
-    # with open(table_summaries_path, 'r') as f:
-    #     table_summaries = json.load(f)
+    df_efficient = cluster_search(
+        query.query_text, 
+        top_k_results, 
+        top_k_clusters, 
+        clustering_index_path, 
+        umap_trans, 
+        client, 
+        COLLECTION_NAME
+    )
 
-    # # Perform the clustering and search process as before
-    # top_k_results = 10
-    # top_k_clusters = 20
-    # clustering_index_path = os.path.join(SBERT_PATH, 'clustering_index.joblib')
-    # umap_trans_path = os.path.join(SBERT_PATH, "umap_trans.joblib")
-
-    # # Ensure clustering and transformation paths exist
-    # assert os.path.exists(clustering_index_path), "Clustering index joblib does not exist"
-    # assert os.path.exists(umap_trans_path), "Umap transformation joblib does not exist"
-
-    # umap_trans = joblib.load(umap_trans_path)
-    
-    # # Call to cluster search function
-    # df_efficient = cluster_search(
-    #     query.query_text, 
-    #     top_k_results, 
-    #     top_k_clusters, 
-    #     clustering_index_path, 
-    #     umap_trans, 
-    #     client, 
-    #     COLLECTION_NAME
-    # )
-
-    # # Merge results with table summaries
-    # df_efficient['TableName'] = df_efficient['TableName'].map(lambda name: table_summaries.get(name, {}))
-
-    # # Format data for frontend display
-    # formatted_results = []
-    # for _, row in df_efficient.iterrows():
-    #     table_name = row['TableName']
-    #     cell_value = row['CellValue']
-    #     cell_value_column = row['CellValue_Column']
-    #     similarity_score = row['SimilarityScores']
-
-    #     table_info = table_summaries.get(table_name, {})
+    # Merge results with table summaries
+    formatted_results = []
+    for _, row in df_efficient.iterrows():
+        table_name = row['TableName']
+        table_info = table_summaries.get(table_name, {})
         
-    #     formatted_results.append({
-    #         "name": table_name,
-    #         "keywords": table_info.get("keywords", "N/A"),
-    #         "rows": table_info.get("rows", "N/A"),
-    #         "columns": table_info.get("columns", "N/A"),
-    #         "size": table_info.get("size", "N/A"),
-    #         "type": table_info.get("type", "N/A"),
-    #         "matching_cell_value": cell_value,
-    #         "matching_column": cell_value_column,
-    #         "similarity_score": similarity_score
-    #     })
+        formatted_results.append({
+            "TableName": table_name,
+            "Rows": table_info.get("rows", "N/A"),
+            "Columns": table_info.get("columns", "N/A"),
+            "Type": table_info.get("type", "N/A"),
+            "CellValue": row['CellValue'],
+            "CellValue_Column": row['CellValue_Column'],
+            "SimilarityScores": row['SimilaritiyScores']
+        })
 
-    # return Response(json.dumps(formatted_results), media_type="application/json")
-    # return "hi"
+    return Response(json.dumps(formatted_results), media_type="application/json")
