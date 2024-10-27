@@ -245,61 +245,63 @@ async def ann_search(query: Query):
 
 
 
-@app.post("/efficient_search/")
-async def efficient_search(query: Query):
-    # Path to additional table information
-    table_summaries_path = os.path.join(UPLOAD_DIR, "table_summaries.json")
+# @app.post("/efficient_search/")
+# async def efficient_search(query: Query):
     
-    # Load table summaries JSON file
-    with open(table_summaries_path, 'r') as f:
-        table_summaries = json.load(f)
-
-    # Perform the clustering and search process as before
-    top_k_results = 10
-    top_k_clusters = 20
-    clustering_index_path = os.path.join(SBERT_PATH, 'clustering_index.joblib')
-    umap_trans_path = os.path.join(SBERT_PATH, "umap_trans.joblib")
-
-    # Ensure clustering and transformation paths exist
-    assert os.path.exists(clustering_index_path), "Clustering index joblib does not exist"
-    assert os.path.exists(umap_trans_path), "Umap transformation joblib does not exist"
-
-    umap_trans = joblib.load(umap_trans_path)
+    # # Path to additional table information
+    # table_summaries_path = os.path.join(UPLOAD_DIR, "table_summaries.json")
     
-    # Call to cluster search function
-    df_efficient = cluster_search(
-        query.query_text, 
-        top_k_results, 
-        top_k_clusters, 
-        clustering_index_path, 
-        umap_trans, 
-        client, 
-        COLLECTION_NAME
-    )
+    # # Load table summaries JSON file
+    # with open(table_summaries_path, 'r') as f:
+    #     table_summaries = json.load(f)
 
-    # Merge results with table summaries
-    df_efficient['TableName'] = df_efficient['TableName'].map(lambda name: table_summaries.get(name, {}))
+    # # Perform the clustering and search process as before
+    # top_k_results = 10
+    # top_k_clusters = 20
+    # clustering_index_path = os.path.join(SBERT_PATH, 'clustering_index.joblib')
+    # umap_trans_path = os.path.join(SBERT_PATH, "umap_trans.joblib")
 
-    # Format data for frontend display
-    formatted_results = []
-    for _, row in df_efficient.iterrows():
-        table_name = row['TableName']
-        cell_value = row['CellValue']
-        cell_value_column = row['CellValue_Column']
-        similarity_score = row['SimilarityScores']
+    # # Ensure clustering and transformation paths exist
+    # assert os.path.exists(clustering_index_path), "Clustering index joblib does not exist"
+    # assert os.path.exists(umap_trans_path), "Umap transformation joblib does not exist"
 
-        table_info = table_summaries.get(table_name, {})
+    # umap_trans = joblib.load(umap_trans_path)
+    
+    # # Call to cluster search function
+    # df_efficient = cluster_search(
+    #     query.query_text, 
+    #     top_k_results, 
+    #     top_k_clusters, 
+    #     clustering_index_path, 
+    #     umap_trans, 
+    #     client, 
+    #     COLLECTION_NAME
+    # )
+
+    # # Merge results with table summaries
+    # df_efficient['TableName'] = df_efficient['TableName'].map(lambda name: table_summaries.get(name, {}))
+
+    # # Format data for frontend display
+    # formatted_results = []
+    # for _, row in df_efficient.iterrows():
+    #     table_name = row['TableName']
+    #     cell_value = row['CellValue']
+    #     cell_value_column = row['CellValue_Column']
+    #     similarity_score = row['SimilarityScores']
+
+    #     table_info = table_summaries.get(table_name, {})
         
-        formatted_results.append({
-            "name": table_name,
-            "keywords": table_info.get("keywords", "N/A"),
-            "rows": table_info.get("rows", "N/A"),
-            "columns": table_info.get("columns", "N/A"),
-            "size": table_info.get("size", "N/A"),
-            "type": table_info.get("type", "N/A"),
-            "matching_cell_value": cell_value,
-            "matching_column": cell_value_column,
-            "similarity_score": similarity_score
-        })
+    #     formatted_results.append({
+    #         "name": table_name,
+    #         "keywords": table_info.get("keywords", "N/A"),
+    #         "rows": table_info.get("rows", "N/A"),
+    #         "columns": table_info.get("columns", "N/A"),
+    #         "size": table_info.get("size", "N/A"),
+    #         "type": table_info.get("type", "N/A"),
+    #         "matching_cell_value": cell_value,
+    #         "matching_column": cell_value_column,
+    #         "similarity_score": similarity_score
+    #     })
 
-    return Response(json.dumps(formatted_results), media_type="application/json")
+    # return Response(json.dumps(formatted_results), media_type="application/json")
+    # return "hi"
