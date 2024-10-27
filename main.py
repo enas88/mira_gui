@@ -131,7 +131,7 @@ async def upload_csv_file(file: UploadFile):
     return JSONResponse(content={"message": "CSV file uploaded successfully"}, status_code=201)
 
 #####################################################################
-# Efficient serch
+# Efficient search
 
 @app.get("/run_umap")
 async def run_umap():
@@ -163,6 +163,18 @@ class Query(BaseModel):
 class Dataset(BaseModel):
     data: list[list]  # Assuming the input data is a list of lists
     columns: list[str]  # Column names for the DataFrame
+
+@app.post("/usefulness_search/")
+async def exhaustive_search(query: Query):
+
+    # Get all csv files:
+    csv_files = [file for file in os.listdir(UPLOAD_DIR) if file.endswith('.csv')]
+
+    k=20
+    # Calculate top-k similarities
+    top_k_results = batch_semantic_matching(query.query_text, csv_files, k).drop('Embeddings', axis=1)
+
+    return Response(top_k_results.to_json(orient="records"), media_type="application/json")
 
 @app.post("/dataset_catalog/")
 async def read_dataset(dataset: Dataset):

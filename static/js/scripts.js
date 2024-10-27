@@ -1,14 +1,12 @@
 /*!
-    * Start Bootstrap - SB Admin v7.0.7 (https://startbootstrap.com/template/sb-admin)
-    * Copyright 2013-2023 Start Bootstrap
-    * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin/blob/master/LICENSE)
-    */
-    // 
+ * Start Bootstrap - SB Admin v7.0.7 (https://startbootstrap.com/template/sb-admin)
+ * Copyright 2013-2023 Start Bootstrap
+ * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin/blob/master/LICENSE)
+ */
+
 // Scripts
-// 
 
 window.addEventListener('DOMContentLoaded', event => {
-
     // Toggle the side navigation
     const sidebarToggle = document.body.querySelector('#sidebarToggle');
     if (sidebarToggle) {
@@ -22,15 +20,12 @@ window.addEventListener('DOMContentLoaded', event => {
             localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
         });
     }
-
 });
 
-// document.addEventListener("DOMContentLoaded", function () {
+// Data handling function to read dataset details
 async function read_data(event, url) {
-    // console.log('URL:', "/exhaustive_search/");
-    // console.log('Headers:', { "Content-Type": "application/json" });
-
     event.preventDefault();
+
     const dataset_id = document.getElementById("dataset_id").value;
     const dataset_name = document.getElementById("dataset_name").value;
     const dataset_date = document.getElementById("dataset_date").value;
@@ -47,10 +42,10 @@ async function read_data(event, url) {
     const data = {
         "data": [
             [dataset_id, dataset_name, dataset_date, dataset_model, dataset_url, dataset_username, dataset_password, dataset_path, dataset_format, dataset_description, dataset_metadata, dataset_schema],
-          ],
+        ],
         "columns": ["dataset_id", "dataset_name", "dataset_date", "dataset_model", "dataset_url", "dataset_username", "dataset_password", "dataset_path", "dataset_format", "dataset_description", "dataset_metadata", "dataset_schema"]
     };
-    console.log(data);
+
     try {
         const response = await fetch(url, {
             method: "POST",
@@ -61,122 +56,120 @@ async function read_data(event, url) {
         });
 
         const resultsObj = await response.json();
-        
         console.log(resultsObj);
 
         if (response.ok) {
-            // Redirect to the home page
             document.getElementById("successMessage").classList.remove("d-none");
-
-            setTimeout(() => {
-                window.location.href = "/catalog";
-            }, 2000); 
-            
+            setTimeout(() => { window.location.href = "/catalog"; }, 2000);
         } else {
             console.error('Failed to get response:', response);
         }
-
     } catch (error) {
         console.error('Error fetching results:', error);
     }
 }
 
+// Search function to handle query search
 async function query_search(event, url) {
-    // console.log('URL:', "/exhaustive_search/");
-    // console.log('Headers:', { "Content-Type": "application/json" });
-
     event.preventDefault();
-    const query_text = document.getElementById("query_text").value;
 
-    const data = {
-        "query_text": query_text,
-    };
+    const query_text = document.getElementById("query_text").value;
+    const data = { "query_text": query_text };
 
     try {
         const response = await fetch(url, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
 
-        const resultsObj = await response.json();
+        const datasets = await response.json();
+        console.log(datasets);
         
-        console.log(resultsObj);
-        
-        // Get reference to the table body
-        var tableBody = document.getElementById('datatablesSimple1').getElementsByTagName('tbody')[0];
-        
-        // Clear existing rows
-        tableBody.innerHTML = "";
-        
-        // Populate the table
-        resultsObj.forEach((result, index) => {
-            var row = tableBody.insertRow(index);
-
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            var cell4 = row.insertCell(3);
-
-            // Access the properties from each result object
-            cell1.appendChild(document.createTextNode(result.TableName));
-            cell2.appendChild(document.createTextNode(result.CellValue));
-            cell3.appendChild(document.createTextNode(result.CellValue_Column));
-            cell4.appendChild(document.createTextNode(result.SimilaritiyScores));
-        });
-
-        const datatablesSimple = document.getElementById('datatablesSimple1');
-        if (datatablesSimple) {
-            new simpleDatatables.DataTable(datatablesSimple);
-        }
-
-        document.getElementById('datatablesSimple1').style.display = 'table';
+        displayResults(datasets);  // Call function to display results as cards
 
     } catch (error) {
         console.error('Error fetching results:', error);
     }
 }
+
+// Display search results as cards
+function displayResults(datasets) {
+    const resultsContainer = document.getElementById("resultsContainer");
+    resultsContainer.innerHTML = ""; // Clear previous results
+
+    datasets.forEach(dataset => {
+        const card = `
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card" style="background-color: #e6e6fa;">
+                    <div class="card-header">
+                        ${dataset.name}
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Keywords matches:</strong> ${dataset.keywords}</p>
+                        <p><strong>Number of rows:</strong> ${dataset.rows}</p>
+                        <p><strong>Number of columns:</strong> ${dataset.columns}</p>
+                        <p><strong>Dataset size:</strong> ${dataset.size}</p>
+                        <p><strong>Type:</strong> ${dataset.type}</p>
+                        <div class="d-flex justify-content-between mt-3">
+                            <button class="btn btn-outline-primary btn-sm" onclick="showSimilar('${dataset.name}')">Similar</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="downloadDataset('${dataset.name}')">Download</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="viewDataset('${dataset.name}')">View</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        resultsContainer.innerHTML += card;
+    });
+}
+
+// Function to show similar datasets (Placeholder)
+function showSimilar(datasetName) {
+    alert(`Showing similar datasets for: ${datasetName}`);
+    // Implement the function to fetch and display similar datasets
+}
+
+// Function to download dataset
+function downloadDataset(datasetName) {
+    window.location.href = `/download/${datasetName}`;
+}
+
+// Function to view dataset content (Placeholder)
+function viewDataset(datasetName) {
+    alert(`Viewing content for: ${datasetName}`);
+    // Implement the function to fetch and display dataset content
+}
+
+// Event listener for form submission on page load
 document.addEventListener("DOMContentLoaded", function () {
-    // // Attach the event listener to the form
     const form = document.querySelector('form');
     form.addEventListener('submit', query_search);
 
-
-    // Get reference to the search input and table body
+    // Commented out old table-based search functionality
+    /*
     const searchInput = document.getElementById('searchInput');
     const tableBody = document.getElementById('datatablesSimple1').getElementsByTagName('tbody')[0];
 
-    // Add an event listener to the search input
     searchInput.addEventListener('input', function () {
         const searchTerm = searchInput.value.toLowerCase();
 
-        // Iterate over the rows and show/hide based on the search term
         for (let i = 0; i < tableBody.rows.length; i++) {
             const row = tableBody.rows[i];
             const rowData = row.textContent.toLowerCase();
 
-            // If the search term is found in the row data, show the row; otherwise, hide it
             if (rowData.includes(searchTerm)) {
                 row.style.display = 'table-row';
             } else {
                 row.style.display = 'none';
             }
         }
-
-
-        
     });
-
-
-
-
+    */
 });
 
 // ########################################################################################################################
 // Upload new dataset (CSV)
-
 
 // Show the confirmation modal
 function showConfirmationModal() {
@@ -184,31 +177,25 @@ function showConfirmationModal() {
     myModal.show();
 }
 
-
-// Add an event listener to the form
+// Add an event listener to the CSV upload form
 const csvUploadForm = document.getElementById("csvUploadForm");
 csvUploadForm.addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent the default form submission
-
+    event.preventDefault();  // Prevent default form submission
 
     // Show the loading spinner
     loadingSpinner.style.display = "block";
 
-    // Get the file input element
     const fileInput = csvUploadForm.querySelector('input[type="file"]');
-
-    // Create a FormData object to send the file
     const formData = new FormData();
     formData.append("file", fileInput.files[0]);
 
-    // Send the file using a fetch request
+    // Send the file using fetch
     fetch("/csv/", {
         method: "POST",
         body: formData,
     })
     .then(response => response.json())
     .then(data => {
-        // If calculations are completed successfully, show the confirmation modal
         if (data.message === "CSV file uploaded successfully") {
             showConfirmationModal();
         }
@@ -217,14 +204,6 @@ csvUploadForm.addEventListener("submit", function (event) {
         console.error('Error uploading CSV file:', error);
     })
     .finally(() => {
-        // Hide the loading spinner after the fetch request is complete
         loadingSpinner.style.display = "none";
     });
-
-    // Function to show the confirmation modal
-    function showConfirmationModal() {
-        var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-        myModal.show();
-    }
-
 });
