@@ -285,5 +285,5 @@ async def efficient_search(query: Query):
             "CellValue_Column": row['CellValue_Column'],
             "SimilarityScores": row['SimilaritiyScores']
         })
-
+    print(df_efficient)    
     return Response(json.dumps(formatted_results), media_type="application/json")
