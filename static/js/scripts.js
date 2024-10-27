@@ -69,12 +69,12 @@ async function read_data(event, url) {
     }
 }
 
-// Search function to handle query search
+// Fetch search results and display them in the card format
 async function query_search(event, url) {
     event.preventDefault();
 
-    const query_text = document.getElementById("query_text").value;
-    const data = { "query_text": query_text };
+    const queryText = document.getElementById("query_text").value;
+    const data = { "query_text": queryText };
 
     try {
         const response = await fetch(url, {
@@ -83,17 +83,18 @@ async function query_search(event, url) {
             body: JSON.stringify(data)
         });
 
-        const datasets = await response.json();
-        console.log(datasets);
-        
-        displayResults(datasets);  // Call function to display results as cards
+        if (!response.ok) {
+            throw new Error("Failed to fetch results");
+        }
 
+        const datasets = await response.json();
+        displayResults(datasets);
     } catch (error) {
         console.error('Error fetching results:', error);
     }
 }
 
-// Display search results as cards
+// Display search results as cards with two sections
 function displayResults(datasets) {
     const resultsContainer = document.getElementById("resultsContainer");
     resultsContainer.innerHTML = ""; // Clear previous results
@@ -102,24 +103,25 @@ function displayResults(datasets) {
         const card = `
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card" style="background-color: #e6e6fa;">
-                    <div class="card-header">
-                        ${dataset.name}
-                    </div>
+                    <div class="card-header">${dataset.TableName}</div>
                     <div class="card-body">
-                        <p><strong>Keywords matches:</strong> ${dataset.keywords}</p>
-                        <p><strong>Number of rows:</strong> ${dataset.rows}</p>
-                        <p><strong>Number of columns:</strong> ${dataset.columns}</p>
-                        <p><strong>Dataset size:</strong> ${dataset.size}</p>
-                        <p><strong>Type:</strong> ${dataset.type}</p>
+                        <div style="border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                            <p><strong>Rows:</strong> ${dataset.Rows || "N/A"}</p>
+                            <p><strong>Columns:</strong> ${dataset.Columns || "N/A"}</p>
+                            <p><strong>Type:</strong> ${dataset.Type || "N/A"}</p>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <p><strong>Matching Cell:</strong> ${dataset.CellValue || "N/A"}</p>
+                            <p><strong>Column:</strong> ${dataset.CellValue_Column || "N/A"}</p>
+                            <p><strong>Similarity Score:</strong> ${dataset.SimilarityScores.toFixed(2)}</p>
+                        </div>
                         <div class="d-flex justify-content-between mt-3">
-                            <button class="btn btn-outline-primary btn-sm" onclick="showSimilar('${dataset.name}')">Similar</button>
-                            <button class="btn btn-outline-primary btn-sm" onclick="downloadDataset('${dataset.name}')">Download</button>
-                            <button class="btn btn-outline-primary btn-sm" onclick="viewDataset('${dataset.name}')">View</button>
+                            <button class="btn btn-outline-primary btn-sm">View</button>
+                            <button class="btn btn-outline-primary btn-sm">Download</button>
                         </div>
                     </div>
                 </div>
-            </div>
-        `;
+            </div>`;
         resultsContainer.innerHTML += card;
     });
 }

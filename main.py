@@ -2,6 +2,9 @@ import os
 import time
 import json 
 import shutil
+import config
+import logging
+
 import numpy as np
 import pandas as pd
 from pathlib import Path
@@ -22,8 +25,6 @@ from pydantic import BaseModel
 import sentence_transformers
 from sentence_transformers import SentenceTransformer, util
 from semantic_matching.code.semantic_matching_tables import *
- 
-import logging
 
 logging.basicConfig(level=logging.INFO)
 
@@ -243,23 +244,62 @@ async def ann_search(query: Query):
     return Response(df.to_json(orient="records"), media_type="application/json")
 
 
-@app.post("/efficient_search")
+
+@app.post("/efficient_search/")
 async def efficient_search(query: Query):
+    # Path to additional table information
+    table_summaries_path = os.path.join(UPLOAD_DIR, "table_summaries.json")
+    
+    # Load table summaries JSON file
+    with open(table_summaries_path, 'r') as f:
+        table_summaries = json.load(f)
 
-    print('Efficient Search')
-
+    # Perform the clustering and search process as before
     top_k_results = 10
     top_k_clusters = 20
+    clustering_index_path = os.path.join(SBERT_PATH, 'clustering_index.joblib')
+    umap_trans_path = os.path.join(SBERT_PATH, "umap_trans.joblib")
 
-    clustering_index_path = BASE_DIR+'/merged_data/'+'clustering_index.joblib'
-    umap_trars_path = BASE_DIR+'/merged_data/'+"umap_trans.joblib"
+    # Ensure clustering and transformation paths exist
+    assert os.path.exists(clustering_index_path), "Clustering index joblib does not exist"
+    assert os.path.exists(umap_trans_path), "Umap transformation joblib does not exist"
 
-    assert os.path.exists(clustering_index_path), "ERROR: Clustering index joblib does not exist"
-    assert os.path.exists(umap_trars_path), "ERROR: Umap transfomation joblib does not exist"
+    umap_trans = joblib.load(umap_trans_path)
+    
+    # Call to cluster search function
+    df_efficient = cluster_search(
+        query.query_text, 
+        top_k_results, 
+        top_k_clusters, 
+        clustering_index_path, 
+        umap_trans, 
+        client, 
+        COLLECTION_NAME
+    )
 
-    umap_trans = joblib.load(umap_trars_path)
+    # Merge results with table summaries
+    df_efficient['TableName'] = df_efficient['TableName'].map(lambda name: table_summaries.get(name, {}))
 
+    # Format data for frontend display
+    formatted_results = []
+    for _, row in df_efficient.iterrows():
+        table_name = row['TableName']
+        cell_value = row['CellValue']
+        cell_value_column = row['CellValue_Column']
+        similarity_score = row['SimilarityScores']
 
-    df_efficient = cluster_search(query.query_text, top_k_results, top_k_clusters, clustering_index_path, umap_trans, client, COLLECTION_NAME_CLUSTERED)
+        table_info = table_summaries.get(table_name, {})
+        
+        formatted_results.append({
+            "name": table_name,
+            "keywords": table_info.get("keywords", "N/A"),
+            "rows": table_info.get("rows", "N/A"),
+            "columns": table_info.get("columns", "N/A"),
+            "size": table_info.get("size", "N/A"),
+            "type": table_info.get("type", "N/A"),
+            "matching_cell_value": cell_value,
+            "matching_column": cell_value_column,
+            "similarity_score": similarity_score
+        })
 
-    return Response(df_efficient.to_json(orient="records"), media_type="application/json")
+    return Response(json.dumps(formatted_results), media_type="application/json")

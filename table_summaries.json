@@ -1,0 +1,101 @@
+[
+    {
+        "table_name": "alt_jobs",
+        "rows": 30,
+        "columns": 2,
+        "top_keywords": [
+            "Computer",
+            "Manager",
+            "Science"
+        ],
+        "dataset_type": "csv"
+    },
+    {
+        "table_name": "shopping_trends",
+        "rows": 299,
+        "columns": 18,
+        "top_keywords": [
+            "Tradings",
+            "Male",
+            "Custmoers"
+        ],
+        "dataset_type": "csv"
+    },
+    {
+        "table_name": "healthcare_dataset",
+        "rows": 300,
+        "columns": 15,
+        "top_keywords": [
+            "NCIA",
+            "music",
+            "Female"
+        ],
+        "dataset_type": "csv"
+    },
+    {
+        "table_name": "jobs",
+        "rows": 124,
+        "columns": 5,
+        "top_keywords": [
+            "Junior",
+            "Mid-Level",
+            "Senior"
+        ],
+        "dataset_type": "csv"
+    },
+    {
+        "table_name": "music",
+        "rows": 30,
+        "columns": 5,
+        "top_keywords": [
+            "Pop",
+            "Rock",
+            "Music"
+        ],
+        "dataset_type": "csv"
+    },
+    {
+        "table_name": "test",
+        "rows": 10,
+        "columns": 3,
+        "top_keywords": [
+            "Alice",
+            "28",
+            "New York"
+        ],
+        "dataset_type": "csv"
+    },
+    {
+        "table_name": "test4",
+        "rows": 10,
+        "columns": 3,
+        "top_keywords": [
+            "Alice",
+            "In",
+            "Science"
+        ],
+        "dataset_type": "csv"
+    },
+    {
+        "table_name": "test2",
+        "rows": 10,
+        "columns": 3,
+        "top_keywords": [
+            "Never",
+            "Data engineer",
+            "New"
+        ],
+        "dataset_type": "csv"
+    },
+    {
+        "table_name": "test3",
+        "rows": 10,
+        "columns": 3,
+        "top_keywords": [
+            "LLMS",
+            "Science",
+            "Curations"
+        ],
+        "dataset_type": "csv"
+    }
+]
