@@ -75,59 +75,57 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h3 class="mt-4">Optimized Search</h3>
+                    <h3 class="mt-4">Discover your dataset with Miraculous</h3>
                     
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <form method="post" onsubmit="query_search(event, '/efficient_search')">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-area me-1"></i> Input Query
-                                    </div>
-                                    <div class="input-group">
-                                        <input id="query_text" class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                                        <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-bar me-1"></i> List of Tables
-                                </div>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Top Matching Tables
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end" id="matchingTablesDropdown">
-                                        <!-- Dynamically filled by JavaScript -->
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Add the logo at the top of the form -->
+                    <div class="text-center mb-4">
+                        <img src="static/img/logo6.PNG" alt="Logo" class="img-fluid" style="max-height: 100px;">
                     </div>
-
+                    
                     <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i> Search Results
-                        </div>
-                        <div class="card-body">
+                        <form onsubmit="query_search(event, '/efficient_search')">
+                            <div class="input-group mb-3">
+                                <input id="query_text" class="form-control" type="text" placeholder="Enter your query here" aria-label="Query" />
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                            </div>
                             <div id="resultsContainer" class="row justify-content-center">
                                 <!-- Cards will be generated dynamically here -->
                             </div>
-                            <div class="d-flex justify-content-between mt-3">
-                                <button class="btn btn-secondary" onclick="prevPage()">Previous Page</button>
-                                <span>Page <span id="currentPage">1</span></span>
-                                <button class="btn btn-secondary" onclick="nextPage()">Next Page</button>
+                            <div id="paginationContainer" class="pagination-container">
+                                <!-- Pagination buttons will be dynamically generated here -->
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Top Matching Tables Section, positioned beneath the search results -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar me-1"></i> Top Matching Tables
+                        </div>
+                        <div id="matchingTablesContainer" class="p-3" style="max-height: 300px; overflow-y: auto;">
+                            <!-- JavaScript will dynamically insert matching table names here -->
+                        </div>
+                    </div>
+
+                    <!-- Modal for displaying the table -->
+                    <div class="modal fade" id="tableViewModal" tabindex="-1" aria-labelledby="tableViewModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="tableViewModalLabel">Table View</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="tableContainer">
+                                        <!-- Table content will be dynamically inserted here -->
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
-                    </div>
                 </div>
-
             </main>
 
             <footer class="py-4 bg-light mt-auto">
@@ -144,13 +142,8 @@
         </div>
     </div>
 
+    <!-- Include Bootstrap and custom JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="static/assets/demo/chart-area-demo.js"></script>
-    <script src="static/assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="static/js/scripts.js"></script>
-    <script src="static/js/datatables-simple-demo.js"></script>
 </body>
-</html>
+</html> 

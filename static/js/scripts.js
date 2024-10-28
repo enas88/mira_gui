@@ -1,19 +1,13 @@
 /*!
  * Start Bootstrap - SB Admin v7.0.7 (https://startbootstrap.com/template/sb-admin)
  * Copyright 2013-2023 Start Bootstrap
- * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin/blob/master/LICENSE)
+ * Licensed under MIT
  */
 
 // Scripts
-
 window.addEventListener('DOMContentLoaded', event => {
-    // Toggle the side navigation
     const sidebarToggle = document.body.querySelector('#sidebarToggle');
     if (sidebarToggle) {
-        // Uncomment Below to persist sidebar toggle between refreshes
-        // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-        //     document.body.classList.toggle('sb-sidenav-toggled');
-        // }
         sidebarToggle.addEventListener('click', event => {
             event.preventDefault();
             document.body.classList.toggle('sb-sidenav-toggled');
@@ -22,58 +16,10 @@ window.addEventListener('DOMContentLoaded', event => {
     }
 });
 
-// Data handling function to read dataset details
-async function read_data(event, url) {
-    event.preventDefault();
-
-    const dataset_id = document.getElementById("dataset_id").value;
-    const dataset_name = document.getElementById("dataset_name").value;
-    const dataset_date = document.getElementById("dataset_date").value;
-    const dataset_model = document.getElementById("dataset_model").value;
-    const dataset_url = document.getElementById("dataset_url").value;
-    const dataset_username = document.getElementById("dataset_username").value;
-    const dataset_password = document.getElementById("dataset_password").value;
-    const dataset_path = document.getElementById("dataset_path").value;
-    const dataset_format = document.getElementById("dataset_format").value;
-    const dataset_description = document.getElementById("dataset_description").value;
-    const dataset_metadata = document.getElementById("dataset_metadata").value;
-    const dataset_schema = document.getElementById("dataset_schema").value;
-
-    const data = {
-        "data": [
-            [dataset_id, dataset_name, dataset_date, dataset_model, dataset_url, dataset_username, dataset_password, dataset_path, dataset_format, dataset_description, dataset_metadata, dataset_schema],
-        ],
-        "columns": ["dataset_id", "dataset_name", "dataset_date", "dataset_model", "dataset_url", "dataset_username", "dataset_password", "dataset_path", "dataset_format", "dataset_description", "dataset_metadata", "dataset_schema"]
-    };
-
-    try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        });
-
-        const resultsObj = await response.json();
-        console.log(resultsObj);
-
-        if (response.ok) {
-            document.getElementById("successMessage").classList.remove("d-none");
-            setTimeout(() => { window.location.href = "/catalog"; }, 2000);
-        } else {
-            console.error('Failed to get response:', response);
-        }
-    } catch (error) {
-        console.error('Error fetching results:', error);
-    }
-}
-
-// Fetch search results and display them in the card format
-async function query_search(event, url) {
+async function query_search(event, url, displayMode = "cards") {
     event.preventDefault();
     console.log("query_search triggered");
-    
+
     const queryText = document.getElementById("query_text").value;
     const data = { "query_text": queryText };
 
@@ -89,133 +35,198 @@ async function query_search(event, url) {
         }
 
         const datasets = await response.json();
-        displayResults(datasets);
+        
+        // Choose display function based on displayMode
+        if (displayMode === "table") {
+            displayResultsInTable(datasets); // Table display for exhaustive or approximate search
+        } else {
+            paginateResults(datasets); // Card display for optimized search
+        }
+
+        populateTopMatchingTables(datasets);
     } catch (error) {
         console.error('Error fetching results:', error);
     }
 }
 
+// Manages pagination of results
+let currentPage = 1;
+const cardsPerPage = 4;
+
+function paginateResults(datasets) {
+    const totalPages = Math.ceil(datasets.length / cardsPerPage);
+    const start = (currentPage - 1) * cardsPerPage;
+    const end = start + cardsPerPage;
+    displayResults(datasets.slice(start, end)); // Show results for the current page
+
+    const paginationContainer = document.getElementById("paginationContainer");
+    paginationContainer.innerHTML = ""; // Clear previous pagination buttons
+
+    const prevButton = document.createElement("button");
+    prevButton.innerText = "Previous Page";
+    prevButton.classList.add("pagination-button");
+    prevButton.onclick = () => {
+        if (currentPage > 1) {
+            currentPage--;
+            paginateResults(datasets);
+        }
+    };
+    prevButton.disabled = currentPage === 1;
+    paginationContainer.appendChild(prevButton);
+
+    const nextButton = document.createElement("button");
+    nextButton.innerText = "Next Page";
+    nextButton.classList.add("pagination-button");
+    nextButton.onclick = () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            paginateResults(datasets);
+        }
+    };
+    nextButton.disabled = currentPage === totalPages;
+    paginationContainer.appendChild(nextButton);
+}
 
 function displayResults(datasets) {
     const resultsContainer = document.getElementById("resultsContainer");
-
-    // Check if resultsContainer exists
-    if (!resultsContainer) {
-        console.error("resultsContainer not found");
-        return;
-    }
-
     resultsContainer.innerHTML = ""; // Clear previous results
+    const colors = ["#f8d7da", "#d1ecf1", "#d4edda", "#fff3cd"];
 
     datasets.forEach(dataset => {
+        const color = colors[datasets.indexOf(dataset) % colors.length];
         const card = `
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card" style="background-color: #e6e6fa;">
-                    <div class="card-header">${dataset.TableName}</div>
-                    <div class="card-body">
-                        <div style="border-bottom: 1px solid #ccc; padding-bottom: 10px;">
-                            <p><strong>Rows:</strong> ${dataset.Rows || "N/A"}</p>
-                            <p><strong>Columns:</strong> ${dataset.Columns || "N/A"}</p>
-                            <p><strong>Type:</strong> ${dataset.Type || "N/A"}</p>
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <p><strong>Matching Cell:</strong> ${dataset.CellValue || "N/A"}</p>
-                            <p><strong>Column:</strong> ${dataset.CellValue_Column || "N/A"}</p>
-                            <p><strong>Similarity Score:</strong> ${dataset.SimilarityScores ? dataset.SimilarityScores.toFixed(2) : "N/A"}</p>
-                        </div>
-                        <div class="d-flex justify-content-between mt-3">
-                            <button class="btn btn-outline-primary btn-sm">View</button>
-                            <button class="btn btn-outline-primary btn-sm">Download</button>
-                        </div>
+            <div class="col-md-6 col-lg-6 mb-4">
+                <div class="card smaller-card" style="background-color: ${color}; display: flex; flex-direction: row;">
+                    <div class="card-body" style="flex: 1;">
+                        <p><strong>Table Name:</strong> ${dataset.TableName}</p>
+                        <p><strong>Rows:</strong> ${dataset.Rows || "N/A"}</p>
+                        <p><strong>Columns:</strong> ${dataset.Columns || "N/A"}</p>
+                        <p><strong>Type:</strong> ${dataset.Type || "N/A"}</p>
+                    </div>
+                    <div class="vertical-line"></div>
+                    <div class="card-body" style="flex: 1;">
+                        <p><strong>Matching Cell:</strong> ${dataset.CellValue || "N/A"}</p>
+                        <p><strong>Column:</strong> ${dataset.CellValue_Column || "N/A"}</p>
+                        <p><strong>Similarity Score:</strong> ${dataset.SimilarityScores ? dataset.SimilarityScores.toFixed(2) : "N/A"}</p>
                     </div>
                 </div>
-            </div>`;
+                <div class="button-container text-center">
+                    <button class="btn btn-outline-primary btn-sm" onclick="viewDataset('${dataset.TableName}')">View</button>
+                    <a href="/download/${dataset.TableName}" class="btn btn-outline-primary btn-sm" download>Download</a>
+                </div>
+            </div>
+        `;
         resultsContainer.innerHTML += card;
     });
 }
 
+function populateTopMatchingTables(datasets) {
+    const matchingTablesContainer = document.getElementById("matchingTablesContainer");
+    matchingTablesContainer.innerHTML = ''; // Clear previous entries
 
-
-// Function to show similar datasets (Placeholder)
-function showSimilar(datasetName) {
-    alert(`Showing similar datasets for: ${datasetName}`);
-    // Implement the function to fetch and display similar datasets
-}
-
-// Function to download dataset
-function downloadDataset(datasetName) {
-    window.location.href = `/download/${datasetName}`;
-}
-
-// Function to view dataset content (Placeholder)
-function viewDataset(datasetName) {
-    alert(`Viewing content for: ${datasetName}`);
-    // Implement the function to fetch and display dataset content
-}
-
-// Event listener for form submission on page load
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector('form');
-    form.addEventListener('submit', query_search);
-
-    // Commented out old table-based search functionality
-    /*
-    const searchInput = document.getElementById('searchInput');
-    const tableBody = document.getElementById('datatablesSimple1').getElementsByTagName('tbody')[0];
-
-    searchInput.addEventListener('input', function () {
-        const searchTerm = searchInput.value.toLowerCase();
-
-        for (let i = 0; i < tableBody.rows.length; i++) {
-            const row = tableBody.rows[i];
-            const rowData = row.textContent.toLowerCase();
-
-            if (rowData.includes(searchTerm)) {
-                row.style.display = 'table-row';
-            } else {
-                row.style.display = 'none';
-            }
-        }
+    datasets.forEach(dataset => {
+        const tableItem = document.createElement('div');
+        tableItem.classList.add('table-item');
+        tableItem.textContent = dataset.TableName;
+        tableItem.onclick = () => viewDataset(dataset.TableName);
+        matchingTablesContainer.appendChild(tableItem);
     });
-    */
-});
-
-// ########################################################################################################################
-// Upload new dataset (CSV)
-
-// Show the confirmation modal
-function showConfirmationModal() {
-    var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-    myModal.show();
 }
 
-// Add an event listener to the CSV upload form
-const csvUploadForm = document.getElementById("csvUploadForm");
-csvUploadForm.addEventListener("submit", function (event) {
-    event.preventDefault();  // Prevent default form submission
-
-    // Show the loading spinner
-    loadingSpinner.style.display = "block";
-
-    const fileInput = csvUploadForm.querySelector('input[type="file"]');
-    const formData = new FormData();
-    formData.append("file", fileInput.files[0]);
-
-    // Send the file using fetch
-    fetch("/csv/", {
-        method: "POST",
-        body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message === "CSV file uploaded successfully") {
-            showConfirmationModal();
+// Function to display the selected dataset in a modal
+async function viewDataset(datasetName) {
+    try {
+        const response = await fetch(`/get_table/${datasetName}`);
+        
+        if (!response.ok) {
+            throw new Error("Failed to fetch table data");
         }
-    })
-    .catch(error => {
-        console.error('Error uploading CSV file:', error);
-    })
-    .finally(() => {
-        loadingSpinner.style.display = "none";
+
+        const tableData = await response.json();
+
+        // Check if tableData contains the expected structure for either API response
+        if (tableData.columns && tableData.data) {
+            // Standard structure - most likely from efficient search
+            displayTableInModal(tableData);
+        } else if (Array.isArray(tableData) && tableData.length > 0) {
+            // Adjust if ann_search returns data in a slightly different format
+            const transformedData = {
+                columns: Object.keys(tableData[0]), // Use keys from the first item as columns
+                data: tableData.map(row => Object.values(row))
+            };
+            displayTableInModal(transformedData);
+        }
+    } catch (error) {
+        console.error('Error fetching table data:', error);
+    }
+}
+
+
+// Function to display data inside a modal as a table
+function displayTableInModal(tableData) {
+    const tableContainer = document.getElementById("tableContainer");
+    tableContainer.innerHTML = ""; // Clear previous content
+
+    let tableHTML = `<table class="table table-striped"><thead><tr>`;
+    const columns = tableData.columns;
+    columns.forEach(column => {
+        tableHTML += `<th>${column}</th>`;
     });
-});
+    tableHTML += `</tr></thead><tbody>`;
+    tableData.data.forEach(row => {
+        tableHTML += `<tr>`;
+        row.forEach(cell => {
+            tableHTML += `<td>${cell}</td>`;
+        });
+        tableHTML += `</tr>`;
+    });
+    tableHTML += `</tbody></table>`;
+
+    tableContainer.innerHTML = tableHTML;
+
+    // Show the modal
+    const modal = new bootstrap.Modal(document.getElementById('tableViewModal'));
+    modal.show();
+}
+
+
+function displayResultsInTable(datasets) {
+    const resultsContainer = document.getElementById("resultsContainer");
+    resultsContainer.innerHTML = ""; // Clear previous results
+
+    // Create a table
+    let tableHTML = `
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Table Name</th>
+                    <th>Matching Cell</th>
+                    <th>Column</th>
+                    <th>Similarity Score</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>`;
+
+    datasets.forEach(dataset => {
+        // Check if SimilarityScores is a number and format it to 2 decimal places, or default to "N/A"
+        const similarityScore = typeof dataset.SimilarityScores === 'number'
+            ? dataset.SimilarityScores.toFixed(2)
+            : "N/A";
+
+        tableHTML += `
+            <tr>
+                <td>${dataset.TableName || "N/A"}</td>
+                <td>${dataset.CellValue || "N/A"}</td>
+                <td>${dataset.CellValue_Column || "N/A"}</td>
+                <td>${similarityScore}</td>
+                <td>
+                <button class="btn btn-outline-primary btn-sm" onclick="viewDataset('${dataset.TableName}')">View</button>
+                    <a href="/download/${dataset.TableName}" class="btn btn-outline-primary btn-sm" download>Download</a>
+                </td>
+            </tr>`;
+    });
+
+    tableHTML += `</tbody></table>`;
+    resultsContainer.innerHTML = tableHTML;
+}

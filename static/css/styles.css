@@ -91,6 +91,75 @@
   }
 }
 
+
+/* ==========================
+   Search Results Card Styles
+   ========================== */
+
+/* Card adjustments */
+.smaller-card {
+  width: 150%;
+  max-width: 500px; /* Smaller card width */
+  margin: 10px auto;
+  padding: 10px;
+}
+
+/* Vertical dividing line */
+.vertical-line {
+  width: 2px;
+  background-color: #ccc;
+  margin: 0 10px;
+}
+
+/* Horizontal line under information */
+.info-separator {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+  margin: 10px 0;
+}
+
+/* Card body layout for left and right sections */
+.smaller-card .card-body {
+  padding: 10px;
+  flex: 1;
+}
+
+/* Container for buttons */
+.button-container {
+  text-align: center;
+  padding-top: 10px;
+}
+
+/* Button styling */
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.9em;
+}
+
+/* Pagination button styles */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination-button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.pagination-button.active {
+  font-weight: bold;
+}
+
+
+/* ==========================
+   End of Search Results Card Styles
+   ========================== */
+
+
 body {
   margin: 0;
   font-family: var(--bs-body-font-family);

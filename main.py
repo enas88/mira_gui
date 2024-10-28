@@ -204,17 +204,30 @@ async def read_dataset(dataset: Dataset):
     # Respond with success message
     return {"message": "Dataset received and appended to DataFrame"}
 
+
 @app.post("/exhaustive_search/")
 async def exhaustive_search(query: Query):
-
-    # Get all csv files:
+    # Get all CSV files:
     csv_files = [file for file in os.listdir(UPLOAD_DIR) if file.endswith('.csv')]
 
-    k=20
+    k = 20
     # Calculate top-k similarities
     top_k_results = batch_semantic_matching(query.query_text, csv_files, k).drop('Embeddings', axis=1)
 
+    # Rename the score column to match what your script expects if necessary
+    if 'score' in top_k_results.columns:
+        top_k_results.rename(columns={'score': 'SimilarityScores'}, inplace=True)
+
+    # Ensure all other required columns are present, even if they are empty
+    required_columns = ['TableName', 'CellValue', 'CellValue_Column', 'SimilarityScores']
+    for col in required_columns:
+        if col not in top_k_results.columns:
+            top_k_results[col] = None  # Add missing columns as empty
+
     return Response(top_k_results.to_json(orient="records"), media_type="application/json")
+
+
+
 
 
 @app.post("/ann_search/")
@@ -235,7 +248,7 @@ async def ann_search(query: Query):
             'TableName': hit.payload.get('TableName', None),
             'CellValue': hit.payload.get('CellValue', None),
             'CellValue_Column': hit.payload.get('CellValue_Column', None),
-            'SimilaritiyScores': hit.score
+            'SimilarityScores': hit.score
         }
         data.append(payload_data)
 
@@ -287,3 +300,27 @@ async def efficient_search(query: Query):
         })
     print(formatted_results)    
     return Response(json.dumps(formatted_results), media_type="application/json")
+
+@app.get("/get_table/{dataset_name}")
+async def get_table(dataset_name: str):
+    # Logic to load the dataset table (e.g., from a CSV or database)
+    # Assuming the table is loaded as a DataFrame
+    df = pd.read_csv(f"semantic_matching/data/{dataset_name}.csv")  # Adjust path as needed
+    data = {
+        "columns": df.columns.tolist(),
+        "data": df.values.tolist()
+    }
+    return JSONResponse(content=data)
+
+
+@app.get("/download/{dataset_name}")
+async def download_dataset(dataset_name: str):
+    # Path to your dataset files
+    file_path = f"semantic_matching/data/{dataset_name}.csv"  # Adjust path as needed
+
+    # Check if the file exists
+    if not os.path.isfile(file_path):
+        return {"error": "File not found."}
+    
+    # Return the file for download
+    return FileResponse(path=file_path, filename=f"{dataset_name}.csv", media_type="text/csv")
