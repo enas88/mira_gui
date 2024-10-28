@@ -1,39 +1,35 @@
-[
-    {
-        "table_name": "alt_jobs",
+{
+    "alt_jobs": {
         "rows": 30,
         "columns": 2,
         "top_keywords": [
-            "Computer",
+            "and",
             "Manager",
-            "Science"
+            "to"
         ],
-        "dataset_type": "csv"
+        "dataset_type": "original"
     },
-    {
-        "table_name": "shopping_trends",
+    "shopping_trends": {
         "rows": 299,
         "columns": 18,
         "top_keywords": [
-            "Tradings",
+            "Yes",
             "Male",
-            "Custmoers"
+            "M"
         ],
-        "dataset_type": "csv"
+        "dataset_type": "original"
     },
-    {
-        "table_name": "healthcare_dataset",
+    "healthcare_dataset": {
         "rows": 300,
         "columns": 15,
         "top_keywords": [
-            "NCIA",
-            "music",
+            "nan",
+            "and",
             "Female"
         ],
-        "dataset_type": "csv"
+        "dataset_type": "original"
     },
-    {
-        "table_name": "jobs",
+    "jobs": {
         "rows": 124,
         "columns": 5,
         "top_keywords": [
@@ -41,61 +37,56 @@
             "Mid-Level",
             "Senior"
         ],
-        "dataset_type": "csv"
+        "dataset_type": "original"
     },
-    {
-        "table_name": "music",
+    "music": {
         "rows": 30,
         "columns": 5,
         "top_keywords": [
             "Pop",
             "Rock",
-            "Music"
+            "The"
         ],
-        "dataset_type": "csv"
+        "dataset_type": "original"
     },
-    {
-        "table_name": "test",
+    "test": {
         "rows": 10,
         "columns": 3,
         "top_keywords": [
             "Alice",
             "28",
-            "New York"
+            "New"
         ],
-        "dataset_type": "csv"
+        "dataset_type": "uploaded"
     },
-    {
-        "table_name": "test4",
+    "test4": {
         "rows": 10,
         "columns": 3,
         "top_keywords": [
             "Alice",
-            "In",
-            "Science"
-        ],
-        "dataset_type": "csv"
-    },
-    {
-        "table_name": "test2",
-        "rows": 10,
-        "columns": 3,
-        "top_keywords": [
-            "Never",
-            "Data engineer",
+            "28",
             "New"
         ],
-        "dataset_type": "csv"
+        "dataset_type": "uploaded"
     },
-    {
-        "table_name": "test3",
+    "test2": {
         "rows": 10,
         "columns": 3,
         "top_keywords": [
-            "LLMS",
-            "Science",
-            "Curations"
+            "Alice",
+            "28",
+            "New"
         ],
-        "dataset_type": "csv"
+        "dataset_type": "uploaded"
+    },
+    "test3": {
+        "rows": 10,
+        "columns": 3,
+        "top_keywords": [
+            "Alice",
+            "28",
+            "New"
+        ],
+        "dataset_type": "uploaded"
     }
-]
+}

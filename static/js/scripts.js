@@ -72,7 +72,8 @@ async function read_data(event, url) {
 // Fetch search results and display them in the card format
 async function query_search(event, url) {
     event.preventDefault();
-
+    console.log("query_search triggered");
+    
     const queryText = document.getElementById("query_text").value;
     const data = { "query_text": queryText };
 
@@ -94,9 +95,16 @@ async function query_search(event, url) {
     }
 }
 
-// Display search results as cards with two sections
+
 function displayResults(datasets) {
     const resultsContainer = document.getElementById("resultsContainer");
+
+    // Check if resultsContainer exists
+    if (!resultsContainer) {
+        console.error("resultsContainer not found");
+        return;
+    }
+
     resultsContainer.innerHTML = ""; // Clear previous results
 
     datasets.forEach(dataset => {
@@ -113,7 +121,7 @@ function displayResults(datasets) {
                         <div style="margin-top: 10px;">
                             <p><strong>Matching Cell:</strong> ${dataset.CellValue || "N/A"}</p>
                             <p><strong>Column:</strong> ${dataset.CellValue_Column || "N/A"}</p>
-                            <p><strong>Similarity Score:</strong> ${dataset.SimilarityScores.toFixed(2)}</p>
+                            <p><strong>Similarity Score:</strong> ${dataset.SimilarityScores ? dataset.SimilarityScores.toFixed(2) : "N/A"}</p>
                         </div>
                         <div class="d-flex justify-content-between mt-3">
                             <button class="btn btn-outline-primary btn-sm">View</button>
@@ -125,6 +133,7 @@ function displayResults(datasets) {
         resultsContainer.innerHTML += card;
     });
 }
+
 
 
 // Function to show similar datasets (Placeholder)

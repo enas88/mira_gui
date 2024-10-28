@@ -16,7 +16,9 @@
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             <div class="input-group">
                 <input id="query_text" class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" onclick="query_search(event, '/efficient_search')"><i class="fas fa-search"></i></button>
+                <button class="btn btn-primary" id="btnNavbarSearch" onclick="query_search(event, 'http://localhost:8000/efficient_search')">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
         </form>
     </nav>
@@ -122,7 +124,10 @@
                             </div>
                         </div>
                     </div>
+                    
+                    </div>
                 </div>
+
             </main>
 
             <footer class="py-4 bg-light mt-auto">

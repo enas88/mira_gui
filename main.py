@@ -2,13 +2,13 @@ import os
 import time
 import json 
 import shutil
-import config
 import logging
 
 import numpy as np
 import pandas as pd
 from pathlib import Path
 
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
@@ -256,7 +256,7 @@ async def efficient_search(query: Query):
     top_k_results = 10
     top_k_clusters = 20
     clustering_index_path = 'semantic_matching/merged_data/clustering_index.joblib'
-    umap_trans_path = '/Users/enaso/Library/CloudStorage/OneDrive-UniversiteitUtrecht/_GitHub/mira_gui/semantic_matching/merged_data/umap_trans.joblib'
+    umap_trans_path = 'semantic_matching/merged_data/umap_trans.joblib'
 
     umap_trans = joblib.load(umap_trans_path)
     
@@ -267,23 +267,23 @@ async def efficient_search(query: Query):
         clustering_index_path, 
         umap_trans, 
         client, 
-        COLLECTION_NAME
+        COLLECTION_NAME_CLUSTERED
     )
 
     # Merge results with table summaries
     formatted_results = []
     for _, row in df_efficient.iterrows():
-        table_name = row['TableName']
-        table_info = table_summaries.get(table_name, {})
+        table_name = row['TableName'].replace('.csv', '')
+        table_info = table_summaries[table_name]
         
         formatted_results.append({
             "TableName": table_name,
-            "Rows": table_info.get("rows", "N/A"),
-            "Columns": table_info.get("columns", "N/A"),
-            "Type": table_info.get("type", "N/A"),
+            "Rows": table_info['rows'],
+            "Columns": table_info['columns'],
+            "Type": table_info['dataset_type'],
             "CellValue": row['CellValue'],
             "CellValue_Column": row['CellValue_Column'],
             "SimilarityScores": row['SimilaritiyScores']
         })
-    print(df_efficient)    
+    print(formatted_results)    
     return Response(json.dumps(formatted_results), media_type="application/json")
