@@ -91,6 +91,20 @@
   }
 }
 
+#graphContainer {
+  position: relative;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  overflow: hidden;
+}
+circle {
+  cursor: pointer;
+}
+text {
+  pointer-events: none; /* So text doesn't interfere with dragging */
+}
+
+
 
 /* ==========================
    Search Results Card Styles

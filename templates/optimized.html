@@ -7,6 +7,7 @@
     <title>Optimized Search</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="static/css/styles.css" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
@@ -125,15 +126,31 @@
                             </div>
                         </div>
                     </div>
+
+                        <!-- Graph Modal -->
+    <div class="modal fade" id="graphModal" tabindex="-1" aria-labelledby="graphModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="graphModalLabel">Semantic Relationship Graph</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="graphContainer" style="width:100%; height:600px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                 </div>
             </main>
-
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
                         <div class="text-muted">Copyright &copy; Miraculous 2024</div>
                         <div>
-                            <a href="#">Privacy Policy</a> &middot;
+                            <a href="#">Privacy Policy</a>
+                            &middot;
                             <a href="#">Terms &amp; Conditions</a>
                         </div>
                     </div>
@@ -141,6 +158,9 @@
             </footer>
         </div>
     </div>
+
+
+
 
     <!-- Include Bootstrap and custom JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

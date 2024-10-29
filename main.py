@@ -297,8 +297,7 @@ async def efficient_search(query: Query):
             "CellValue": row['CellValue'],
             "CellValue_Column": row['CellValue_Column'],
             "SimilarityScores": row['SimilaritiyScores']
-        })
-    print(formatted_results)    
+        })   
     return Response(json.dumps(formatted_results), media_type="application/json")
 
 @app.get("/get_table/{dataset_name}")

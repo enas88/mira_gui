@@ -35,19 +35,30 @@ async function query_search(event, url, displayMode = "cards") {
         }
 
         const datasets = await response.json();
-        
-        // Choose display function based on displayMode
+
+        // Display results based on the displayMode (default is "cards")
         if (displayMode === "table") {
             displayResultsInTable(datasets); // Table display for exhaustive or approximate search
         } else {
             paginateResults(datasets); // Card display for optimized search
         }
 
+        // Populate top matching tables if applicable
         populateTopMatchingTables(datasets);
+
+        // Show the "View as Graph" button only if there are results
+        const viewGraphButton = document.getElementById("viewGraphButton");
+        if (datasets.length > 0) {
+            viewGraphButton.style.display = "block";
+        } else {
+            viewGraphButton.style.display = "none";
+        }
+
     } catch (error) {
         console.error('Error fetching results:', error);
     }
 }
+
 
 // Manages pagination of results
 let currentPage = 1;
@@ -230,3 +241,59 @@ function displayResultsInTable(datasets) {
     tableHTML += `</tbody></table>`;
     resultsContainer.innerHTML = tableHTML;
 }
+
+
+// ########################################################################################################################
+// Upload new dataset (CSV)
+
+
+// Show the confirmation modal
+function showConfirmationModal() {
+    var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+    myModal.show();
+}
+
+
+// Add an event listener to the form
+const csvUploadForm = document.getElementById("csvUploadForm");
+csvUploadForm.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+
+    // Show the loading spinner
+    loadingSpinner.style.display = "block";
+
+    // Get the file input element
+    const fileInput = csvUploadForm.querySelector('input[type="file"]');
+
+    // Create a FormData object to send the file
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    // Send the file using a fetch request
+    fetch("/csv/", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        // If calculations are completed successfully, show the confirmation modal
+        if (data.message === "CSV file uploaded successfully") {
+            showConfirmationModal();
+        }
+    })
+    .catch(error => {
+        console.error('Error uploading CSV file:', error);
+    })
+    .finally(() => {
+        // Hide the loading spinner after the fetch request is complete
+        loadingSpinner.style.display = "none";
+    });
+
+    // Function to show the confirmation modal
+    function showConfirmationModal() {
+        var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+        myModal.show();
+    }
+
+});
