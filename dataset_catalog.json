@@ -184,7 +184,8 @@
             "topic": "Cultural Preservation",
             "region": "Global",
             "source": "UNESCO Reports"
-        }
+        },
+        "processed": true
     },
     {
         "id": "T002",
@@ -357,12 +358,12 @@
         "password": "password",
         "add_dataset": "yes",
         "metadata": {
-          "topic": "cartoons",
-          "region": "fictional universe",
-          "source": "The Simpsons"
+            "topic": "cartoons",
+            "region": "fictional universe",
+            "source": "The Simpsons"
         }
-      },
-      {
+    },
+    {
         "id": "T012",
         "name": "HDRO Indicators USA",
         "date": "2024-11-30T12:00",
@@ -373,12 +374,12 @@
         "password": "password",
         "add_dataset": "yes",
         "metadata": {
-          "topic": "human development",
-          "region": "USA",
-          "source": "United Nations"
+            "topic": "human development",
+            "region": "USA",
+            "source": "United Nations"
         }
-      },
-      {
+    },
+    {
         "id": "T013",
         "name": "Students Performance",
         "date": "2024-11-30T12:00",
@@ -389,12 +390,12 @@
         "password": "password",
         "add_dataset": "yes",
         "metadata": {
-          "topic": "education",
-          "region": "global",
-          "source": "academic performance data"
+            "topic": "education",
+            "region": "global",
+            "source": "academic performance data"
         }
-      },
-      {
+    },
+    {
         "id": "T014",
         "name": "UK Universities",
         "date": "2024-11-30T12:00",
@@ -405,12 +406,12 @@
         "password": "password",
         "add_dataset": "yes",
         "metadata": {
-          "topic": "education",
-          "region": "UK",
-          "source": "university rankings"
+            "topic": "education",
+            "region": "UK",
+            "source": "university rankings"
         }
-      },
-      {
+    },
+    {
         "id": "T015",
         "name": "National Per Capita",
         "date": "2024-11-30T12:00",
@@ -421,10 +422,23 @@
         "password": "password",
         "add_dataset": "yes",
         "metadata": {
-          "topic": "economics",
-          "region": "national",
-          "source": "statistical bureau"
+            "topic": "economics",
+            "region": "national",
+            "source": "statistical bureau"
         }
-      }
+    },
+    {
+        "id": "Z4",
+        "name": "klhklb",
+        "date": "2024-11-30T17:01",
+        "type": "pgsql",
+        "url": "",
+        "path": "",
+        "username": "jbjb",
+        "password": "kjbkb",
+        "add_dataset": "no",
+        "metadata": {
+            "jhb": "kjbjb"
+        }
+    }
 ]
-

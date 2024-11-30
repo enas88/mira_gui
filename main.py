@@ -404,37 +404,45 @@ async def process_single_record(record_id: str):
         if not record:
             raise HTTPException(status_code=404, detail="Record not found.")
 
+        # Check if the record is already processed
+        if record.get("processed"):
+            raise HTTPException(status_code=400, detail="Record is already processed.")
+
         # Check if the record is eligible for processing
         if record["add_dataset"] != "yes":
             raise HTTPException(status_code=400, detail="Record is not eligible for processing.")
 
-        original_file_path = record["path"]  # Use the full file path from JSON
-        logging.info(f"Original file path: {original_file_path}")
+        # Validate file existence
+        file_path = record["path"]
+        if not os.path.isfile(file_path):
+            raise HTTPException(status_code=400, detail=f"File not found: {file_path}")
 
-        # Validate file existence in its original directory
-        if not os.path.isfile(original_file_path):
-            raise HTTPException(status_code=400, detail=f"File not found: {original_file_path}")
+        # Extract the file name from the path
+        file_name = os.path.basename(file_path)
 
-        # Define the target path in the `semantic_matching/data` directory
-        target_file_path = os.path.join(UPLOAD_DIR, os.path.basename(original_file_path))
-
-        # Ensure the target directory exists
-        os.makedirs(UPLOAD_DIR, exist_ok=True)
-
-        # Copy file to `semantic_matching/data` directory
-        shutil.copy(original_file_path, target_file_path)
-        logging.info(f"Copied file to: {target_file_path}")
-
-        # Process the file
-        create_embeddings(os.path.basename(target_file_path), UPLOAD_DIR, BASE_DIR_EMBEDDINGS_DIR_SAVE)
-
+        # Process the file (e.g., create embeddings, add to collection)
+        create_embeddings(file_name, UPLOAD_DIR, BASE_DIR_EMBEDDINGS_DIR_SAVE)
         if qdrant_is_working("localhost", 6333):
-            add_to_collection(os.path.basename(target_file_path), UPLOAD_DIR, BASE_DIR_EMBEDDINGS_DIR_SAVE, client, COLLECTION_NAME)
+            add_to_collection(file_name, UPLOAD_DIR, BASE_DIR_EMBEDDINGS_DIR_SAVE, client, COLLECTION_NAME)
 
-        logging.info(f"File processed successfully: {os.path.basename(target_file_path)}")
+        # Mark the record as processed
+        record["processed"] = True
+
+        # Save the updated JSON data back to the file
+        with open("dataset_catalog.json", "w") as file:
+            json.dump(data, file, indent=4)
+
         return {"success": True, "message": f"Record {record_id} processed successfully."}
 
+    except FileNotFoundError as fnf_error:
+        logging.error(f"File not found: {fnf_error}")
+        raise HTTPException(status_code=404, detail=str(fnf_error))
+
+    except HTTPException as http_error:
+        logging.error(f"HTTP error: {http_error.detail}")
+        raise http_error
+
     except Exception as e:
-        logging.error(f"Error processing record: {e}")
-        return {"success": False, "message": str(e)}
+        logging.error(f"Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
 
