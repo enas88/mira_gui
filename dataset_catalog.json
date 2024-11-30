@@ -1,0 +1,430 @@
+[
+    {
+        "id": "O50",
+        "name": "sf",
+        "date": "2024-11-28T19:26",
+        "type": "mongo",
+        "url": "f",
+        "path": "save",
+        "username": "SDFDFS",
+        "password": "1\u00a71213",
+        "metadata": {
+            "23": "23"
+        }
+    },
+    {
+        "id": "A4",
+        "name": "sf",
+        "date": "2024-11-28T19:34",
+        "type": "pgsql",
+        "url": "SDFDSFDS",
+        "path": "c",
+        "username": "xcv",
+        "password": "123123",
+        "metadata": {
+            "wqr": "er"
+        }
+    },
+    {
+        "id": "I73",
+        "name": "nosa",
+        "date": "2024-11-28T19:34",
+        "type": "pgsql",
+        "url": "SDFDSFDS",
+        "path": "c",
+        "username": "xcv",
+        "password": "1234",
+        "metadata": {
+            "wqr": "er"
+        }
+    },
+    {
+        "id": "L78",
+        "name": "szcxxzasdvc",
+        "date": "2024-11-29T00:14",
+        "type": "mongodb",
+        "url": "xzcxzc",
+        "path": "xcvxcv",
+        "username": "zxvxzv",
+        "password": "sadsad",
+        "metadata": {
+            "zxv": "zxv"
+        }
+    },
+    {
+        "id": "W26",
+        "name": "nosa nosa",
+        "date": "2024-11-29T14:10",
+        "type": "csv",
+        "url": "f",
+        "path": "xcvxcv",
+        "username": "xcv",
+        "password": "sfsaf",
+        "metadata": {}
+    },
+    {
+        "id": "O90",
+        "name": "sf",
+        "date": "2024-11-29T14:19",
+        "type": "pgsql",
+        "url": "thgfgj",
+        "path": "fghfghgjhg",
+        "username": "fghfgh",
+        "password": "fhghghj",
+        "metadata": {
+            "fdgfd": "fdgfdg"
+        }
+    },
+    {
+        "id": "K17",
+        "name": "sf",
+        "date": "2024-11-29T14:19",
+        "type": "pgsql",
+        "url": "thgfgj",
+        "path": "fghfghgjhg",
+        "username": "fghfgh",
+        "password": "dgdffdh",
+        "metadata": {
+            "fdgfd": "fdgfdg"
+        }
+    },
+    {
+        "id": "F63",
+        "name": "test1",
+        "date": "2024-11-29T16:36",
+        "type": "neo4j",
+        "url": "axddv",
+        "path": "dvxvxcv",
+        "username": "xdvvxcv",
+        "password": "xdvdvv",
+        "metadata": {
+            "dvcvcxv": "xcvxcvxcv"
+        }
+    },
+    {
+        "id": "L23",
+        "name": "bunny",
+        "date": "2024-11-29T16:43",
+        "type": "csv",
+        "url": "SDFDSFDS",
+        "path": "sdfsdf",
+        "username": "zxvxzv",
+        "password": "sfdf",
+        "metadata": {
+            "dsfdf": "dsfdsfd"
+        }
+    },
+    {
+        "id": "I50",
+        "name": "cbvxc",
+        "date": "2024-11-29T17:34",
+        "type": "pgsql",
+        "url": "",
+        "path": "",
+        "username": "sososo",
+        "password": "sfsdf",
+        "add_dataset": "no",
+        "metadata": {
+            "sdfsdf": "sasaf"
+        }
+    },
+    {
+        "id": "X14",
+        "name": "xvxv",
+        "date": "2024-11-29T17:36",
+        "type": "csv",
+        "url": "habibi",
+        "path": "xcvxcv",
+        "username": "xcvxvc",
+        "password": "xvxcv",
+        "add_dataset": "yes",
+        "metadata": {
+            "xcvxcv": "xcvxcv"
+        }
+    },
+    {
+        "id": "S86",
+        "name": "dxzvxzvxzv",
+        "date": "2024-11-29T17:46",
+        "type": "mongodb",
+        "url": "zfcdvdv",
+        "path": "xvxvv",
+        "username": "xvxv",
+        "password": "xzvzv",
+        "add_dataset": "yes",
+        "metadata": {
+            "zxvzv": "xzvxv"
+        }
+    },
+    {
+        "id": "X57",
+        "name": "safsf",
+        "date": "2024-11-29T17:52",
+        "type": "pgsql",
+        "url": "",
+        "path": "",
+        "username": "safsdf",
+        "password": "sdfdf",
+        "add_dataset": "no",
+        "metadata": {
+            "sdfdf": "sdfdf"
+        }
+    },
+    {
+        "id": "T001",
+        "name": "CulturalPreservationEfforts",
+        "date": "2024-11-27T10:30",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario2/CulturalPreservationEfforts.csv",
+        "path": "/Users/enaso/Desktop/scenario2/CulturalPreservationEfforts.csv",
+        "username": "bunny",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+            "topic": "Cultural Preservation",
+            "region": "Global",
+            "source": "UNESCO Reports"
+        }
+    },
+    {
+        "id": "T002",
+        "name": "GastronomicTourism",
+        "date": "2024-11-27T10:30",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario2/GastronomicTourism.csv",
+        "path": "/Users/enaso/Desktop/scenario2/GastronomicTourism.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+            "topic": "Tourism",
+            "focus": "Food Tourism",
+            "source": "Travel Industry Data"
+        }
+    },
+    {
+        "id": "T003",
+        "name": "GlobalFilmandMediaInfluence",
+        "date": "2024-11-27T10:30",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario2/GlobalFilmandMediaInfluence.csv",
+        "path": "/Users/enaso/Desktop/scenario2/GlobalFilmandMediaInfluence.csv",
+        "username": "amandaa",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+            "topic": "Film and Media",
+            "region": "Worldwide",
+            "source": "Global Entertainment Database"
+        }
+    },
+    {
+        "id": "T004",
+        "name": "IndigenousTraditions",
+        "date": "2024-11-27T10:30",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario2/IndigenousTraditions.csv",
+        "path": "/Users/enaso/Desktop/scenario2/IndigenousTraditions.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+            "topic": "Cultural Studies",
+            "focus": "Indigenous Communities",
+            "source": "Ethnographic Surveys"
+        }
+    },
+    {
+        "id": "T005",
+        "name": "LocalHandicraftIndustries",
+        "date": "2024-11-27T10:30",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario2/LocalHandicraftIndustries.csv",
+        "path": "/Users/enaso/Desktop/scenario2/LocalHandicraftIndustries.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+            "topic": "Handicrafts",
+            "region": "Local",
+            "source": "Economic Surveys"
+        }
+    },
+    {
+        "id": "T006",
+        "name": "SustainableTourismPractices",
+        "date": "2024-11-27T10:30",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario2/SustainableTourismPractices.csv",
+        "path": "/Users/enaso/Desktop/scenario2/SustainableTourismPractices.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+            "topic": "Sustainability",
+            "focus": "Tourism",
+            "source": "Environmental Reports"
+        }
+    },
+    {
+        "id": "T007",
+        "name": "TourismChallenges",
+        "date": "2024-11-27T10:30",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario2/TourismChallenges.csv",
+        "path": "/Users/enaso/Desktop/scenario2/TourismChallenges.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+            "topic": "Tourism",
+            "focus": "Challenges",
+            "source": "Travel Agency Reports"
+        }
+    },
+    {
+        "id": "T008",
+        "name": "TraditionalFestivals",
+        "date": "2024-11-27T10:30",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario2/TraditionalFestivals.csv",
+        "path": "/Users/enaso/Desktop/scenario2/TraditionalFestivals.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+            "topic": "Festivals",
+            "region": "Cultural",
+            "source": "Event Databases"
+        }
+    },
+    {
+        "id": "T009",
+        "name": "WorldHeritageSites",
+        "date": "2024-11-27T10:30",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario2/WorldHeritageSites.csv",
+        "path": "/Users/enaso/Desktop/scenario2/WorldHeritageSites.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+            "topic": "Heritage",
+            "region": "Global",
+            "source": "UNESCO World Heritage"
+        }
+    },
+    {
+        "id": "T010",
+        "name": "international",
+        "date": "2024-11-27T10:30",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario2/international.csv",
+        "path": "/Users/enaso/Desktop/scenario2/international.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+            "topic": "international",
+            "region": "things",
+            "source": " World wide"
+        }
+    },
+    {
+        "id": "T010",
+        "name": "WorldMusicTraditions",
+        "date": "2024-11-27T10:30",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario2/WorldMusicTraditions.csv",
+        "path": "/Users/enaso/Desktop/scenario2/",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+            "topic": "Music",
+            "region": "Worldwide",
+            "source": "Cultural Music Archives"
+        }
+    },
+    {
+        "id": "T011",
+        "name": "Simpsons Characters",
+        "date": "2024-11-30T12:00",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario3/simpsons_characters.csv",
+        "path": "/Users/enaso/Desktop/scenario3/simpsons_characters.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+          "topic": "cartoons",
+          "region": "fictional universe",
+          "source": "The Simpsons"
+        }
+      },
+      {
+        "id": "T012",
+        "name": "HDRO Indicators USA",
+        "date": "2024-11-30T12:00",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario3/hdro_indicators_usa.csv",
+        "path": "/Users/enaso/Desktop/scenario3/hdro_indicators_usa.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+          "topic": "human development",
+          "region": "USA",
+          "source": "United Nations"
+        }
+      },
+      {
+        "id": "T013",
+        "name": "Students Performance",
+        "date": "2024-11-30T12:00",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario3/StudentsPerformance.csv",
+        "path": "/Users/enaso/Desktop/scenario3/StudentsPerformance.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+          "topic": "education",
+          "region": "global",
+          "source": "academic performance data"
+        }
+      },
+      {
+        "id": "T014",
+        "name": "UK Universities",
+        "date": "2024-11-30T12:00",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario3/uk_universities.csv",
+        "path": "/Users/enaso/Desktop/scenario3/uk_universities.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+          "topic": "education",
+          "region": "UK",
+          "source": "university rankings"
+        }
+      },
+      {
+        "id": "T015",
+        "name": "National Per Capita",
+        "date": "2024-11-30T12:00",
+        "type": "CSV",
+        "url": "/Users/enaso/Desktop/scenario3/national_percapita.csv",
+        "path": "/Users/enaso/Desktop/scenario3/national_percapita.csv",
+        "username": "enas",
+        "password": "password",
+        "add_dataset": "yes",
+        "metadata": {
+          "topic": "economics",
+          "region": "national",
+          "source": "statistical bureau"
+        }
+      }
+]
+

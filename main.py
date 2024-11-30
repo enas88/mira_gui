@@ -7,6 +7,7 @@ import logging
 import numpy as np
 import pandas as pd
 from pathlib import Path
+from typing import Optional, Dict
 
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -70,6 +71,10 @@ async def get_form():
 @app.get("/view")
 async def get_form():
     return FileResponse("templates/view.html")
+
+@app.get("/Registered_Data")
+async def get_form():
+    return FileResponse("templates/Registered_Data.html")
 
 #####################################################################
 # CSV Upload API
@@ -177,32 +182,52 @@ async def exhaustive_search(query: Query):
 
     return Response(top_k_results.to_json(orient="records"), media_type="application/json")
 
+#####################################################################
+# Add new record to the dataset catalog #
+
+
+class Dataset(BaseModel):
+    id: str
+    name: str
+    date: str
+    type: str
+    url: Optional[str] = None  # Make URL optional
+    path: Optional[str] = None  # Make Path optional
+    username: str
+    password: str
+    metadata: Dict[str, str]
+    add_dataset: str = "no"  # New field with a default value of "no"
+
+class Dataset(BaseModel):
+    id: str
+    name: str
+    date: str
+    type: str
+    url: str
+    path: str
+    username: str
+    password: str
+    add_dataset: str
+    metadata: dict
+
 @app.post("/dataset_catalog/")
-async def read_dataset(dataset: Dataset):
-    # Define the path to the CSV file
-    file_path = Path("Catalogs/Datasets_Catalog.csv")
-    
-    # Check if the file exists
-    if file_path.exists() and file_path.is_file():
-        # If it exists, append without headers
-        mode = 'a'
-        header = False
-    else:
-        # If not, create a new file with headers 
-        mode = 'w'
-        header = True
-
-    # Convert the data to a DataFrame
-    df = pd.DataFrame(dataset.data, columns=dataset.columns)
-
-    # Try to append or write to the CSV file
+async def add_dataset(dataset: Dataset):
     try:
-        df.to_csv(file_path, mode=mode, index=False, header=header)
+        # Load existing data
+        with open("dataset_catalog.json", "r") as file:
+            data = json.load(file)
+
+        # Append new dataset
+        data.append(dataset.dict())
+
+        # Save updated data
+        with open("dataset_catalog.json", "w") as file:
+            json.dump(data, file, indent=4)
+
+        return {"message": "Dataset added successfully"}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred while saving the dataset: {str(e)}")
-    
-    # Respond with success message
-    return {"message": "Dataset received and appended to DataFrame"}
+        raise HTTPException(status_code=500, detail=str(e))
+#####################################################################
 
 
 @app.post("/exhaustive_search/")
@@ -227,9 +252,7 @@ async def exhaustive_search(query: Query):
     return Response(top_k_results.to_json(orient="records"), media_type="application/json")
 
 
-
-
-
+#####################################################################
 @app.post("/ann_search/")
 async def ann_search(query: Query):
 
@@ -257,7 +280,7 @@ async def ann_search(query: Query):
     return Response(df.to_json(orient="records"), media_type="application/json")
 
 
-
+#####################################################################
 @app.post("/efficient_search")
 async def efficient_search(query: Query):
     # Load table summaries JSON
@@ -311,7 +334,7 @@ async def get_table(dataset_name: str):
     }
     return JSONResponse(content=data)
 
-
+#####################################################################
 @app.get("/download/{dataset_name}")
 async def download_dataset(dataset_name: str):
     # Path to your dataset files
@@ -323,3 +346,95 @@ async def download_dataset(dataset_name: str):
     
     # Return the file for download
     return FileResponse(path=file_path, filename=f"{dataset_name}.csv", media_type="text/csv")
+
+#####################################################################
+@app.get("/api/registered_data")
+async def get_registered_data():
+    try:
+        # Load the JSON file
+        with open("dataset_catalog.json", "r") as file:
+            data = json.load(file)
+        return JSONResponse(content=data)
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+    
+
+
+#####################################################################
+    # Path to your JSON file
+JSON_FILE = "dataset_catalog.json"
+
+@app.delete("/api/delete/{record_id}")
+async def delete_record(record_id: str):
+    try:
+        if not os.path.exists(JSON_FILE):
+            raise HTTPException(status_code=404, detail="JSON file not found.")
+        
+        # Load existing data
+        with open(JSON_FILE, "r") as file:
+            data = json.load(file)
+        
+        # Filter out the record to delete
+        updated_data = [record for record in data if record["id"] != record_id]
+        
+        # Check if a record was deleted
+        if len(updated_data) == len(data):
+            raise HTTPException(status_code=404, detail="Record not found.")
+        
+        # Save the updated data back to the file
+        with open(JSON_FILE, "w") as file:
+            json.dump(updated_data, file, indent=4)
+        
+        return {"message": "Record deleted successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    #####################################################################
+
+    # Update record in the JSON file
+@app.post("/api/process_record/{record_id}")
+async def process_single_record(record_id: str):
+    try:
+        # Load dataset catalog
+        with open("dataset_catalog.json", "r") as file:
+            data = json.load(file)
+
+        # Find the record by ID
+        record = next((rec for rec in data if rec["id"] == record_id), None)
+        if not record:
+            raise HTTPException(status_code=404, detail="Record not found.")
+
+        # Check if the record is eligible for processing
+        if record["add_dataset"] != "yes":
+            raise HTTPException(status_code=400, detail="Record is not eligible for processing.")
+
+        original_file_path = record["path"]  # Use the full file path from JSON
+        logging.info(f"Original file path: {original_file_path}")
+
+        # Validate file existence in its original directory
+        if not os.path.isfile(original_file_path):
+            raise HTTPException(status_code=400, detail=f"File not found: {original_file_path}")
+
+        # Define the target path in the `semantic_matching/data` directory
+        target_file_path = os.path.join(UPLOAD_DIR, os.path.basename(original_file_path))
+
+        # Ensure the target directory exists
+        os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+        # Copy file to `semantic_matching/data` directory
+        shutil.copy(original_file_path, target_file_path)
+        logging.info(f"Copied file to: {target_file_path}")
+
+        # Process the file
+        create_embeddings(os.path.basename(target_file_path), UPLOAD_DIR, BASE_DIR_EMBEDDINGS_DIR_SAVE)
+
+        if qdrant_is_working("localhost", 6333):
+            add_to_collection(os.path.basename(target_file_path), UPLOAD_DIR, BASE_DIR_EMBEDDINGS_DIR_SAVE, client, COLLECTION_NAME)
+
+        logging.info(f"File processed successfully: {os.path.basename(target_file_path)}")
+        return {"success": True, "message": f"Record {record_id} processed successfully."}
+
+    except Exception as e:
+        logging.error(f"Error processing record: {e}")
+        return {"success": False, "message": str(e)}
+

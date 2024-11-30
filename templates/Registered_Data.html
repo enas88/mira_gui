@@ -148,41 +148,40 @@
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">Available Datasets</h1>
-                        <div class="row mt-4">
-                            <div class="col-xl-12">
-                                <input type="text" id="searchDataView" placeholder="Search...">
-                                <table id="csvTable" class="table table-bordered table-hover">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>File Size</th>
-                                            <th>Exists in DB</th>
-                                            <th>Created At</th>
-                                            <th>Modified At</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="csvTableBody">
-                                        <!-- Data will be dynamically inserted here -->
-                                    </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-xl-9 table-container">
-                                    <table id="csvTable_2">
-                                        <thead class="thead-dark">
-                                        </thead>
-                                        <tbody >
-                                            <!-- Data will be dynamically inserted here -->
-                                        </tbody>
-                                </table>
-                            </div>
-                            
 
+
+                <main>
+                    <div class="header-container" style="margin-top: 50px;">
+                        <div class="table-header">
+                          <h2>Dataset Records</h2>
+                        </div>
+                      </div>
+                
+                        <!-- Table Container -->
+                        <div class="table-container">
+                            <table id="dataTable" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Creation Date</th>
+                                        <th>Type</th>
+                                        <th>Address</th>
+                                        <th>Path</th>
+                                        <th>Username</th>
+                                        <th>Metadata</th>
+                                        <th>Edit</th>
+                                        <th>Actions</th> <!-- Dynamic button alignment -->
+                                    </tr>
+                                </thead>
+                                <tbody id="dataTableBody">
+                                    <!-- Data will be dynamically populated here -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </main>
+
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
@@ -200,106 +199,211 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="static/js/scripts.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
         <script>
-            // Function to fetch and display CSV records
-            const csvTableBody = document.getElementById('csvTableBody');
-            csvTableBody.innerHTML = '';  // Clear existing rows
-
-            // Fetch and display all CSV records
-            fetch('/csv/')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(csvRecord => {
-                    const row = document.createElement('tr');
-
-                    const nameCell = document.createElement('td');
-                    nameCell.textContent = csvRecord.name;
-                    nameCell.classList.add('clickable-name');
-                    nameCell.addEventListener('click', () => fetchAndDisplayCSV(csvRecord.name));
-
-                    const file_size = document.createElement('td');
-                    file_size.textContent = csvRecord.file_size;
-
-                    const exists_in_db = document.createElement('td');
-                    exists_in_db.textContent = csvRecord.exists_in_db;
-                    
-                    // Apply conditional formatting based on the value of "exists_in_db"
-                    if (csvRecord.exists_in_db === 'Yes') {
-                        exists_in_db.classList.add('exists-yes');
-                    } else if (csvRecord.exists_in_db === 'No') {
-                        exists_in_db.classList.add('exists-no');
-                    }
-
-                    const created_timestamp = document.createElement('td');
-                    created_timestamp.textContent = csvRecord.created_timestamp;
-
-                    const modified_timestamp = document.createElement('td');
-                    modified_timestamp.textContent = csvRecord.modified_timestamp;
-
-                    row.appendChild(nameCell);
-                    row.appendChild(file_size);
-                    row.appendChild(exists_in_db);
-                    row.appendChild(created_timestamp);
-                    row.appendChild(modified_timestamp);
-                    csvTableBody.appendChild(row);
+            // Fetch data from the API and populate the table
+            fetch('/api/registered_data')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('dataTableBody');
+                    tableBody.innerHTML = ''; // Clear the table
+        
+                    // Populate the table with data
+                    data.forEach(record => {
+                        addRowToTable(record);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
                 });
+        
+// Fetch data from the API and populate the table
+fetch('/api/registered_data')
+    .then(response => response.json())
+    .then(data => {
+        const tableBody = document.getElementById('dataTableBody');
+        tableBody.innerHTML = ''; // Clear the table
+
+        // Populate the table with data
+        data.forEach(record => {
+            const row = document.createElement('tr');
+            row.setAttribute('data-id', record.id); // Add data-id attribute
+
+            // Determine row color based on the record state
+            let rowClass;
+            if (record.processed) {
+                rowClass = "bg-success"; // Green for processed
+            } else if (record.add_dataset === "yes") {
+                rowClass = "bg-warning"; // Yellow for not processed but eligible
+            } else {
+                rowClass = "bg-secondary"; // Gray for ineligible
+            }
+            row.className = rowClass; // Apply class to the row
+
+            // Convert metadata object to a string (or a readable format)
+            const metadataDisplay = Object.entries(record.metadata || {})
+                .map(([key, value]) => `<strong>${key}</strong>: ${value}`)
+                .join('<br>');
+
+            row.innerHTML = `
+                <td>${record.id}</td>
+                <td>${record.name}</td>
+                <td>${record.date}</td>
+                <td>${record.type}</td>
+                <td>${record.url}</td>
+                <td>${record.path}</td>
+                <td>${record.username}</td>
+                <td>${metadataDisplay}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick="editRow(this)">Edit</button>
+                    <button class="btn btn-success btn-sm d-none" onclick="saveRow(this)">Save</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteRecord('${record.id}')">Delete</button> 
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-sm" onclick="processRecord('${record.id}')">Process</button>
+                    <button class="btn btn-info btn-sm" onclick="sampleRecord('${record.id}')">Sample</button>
+                </td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+
+
+        
+            // Function to process a record
+            function processRecord(id) {
+                alert(`Process record with ID: ${id}`);
+                // Add processing logic here
+            }
+        
+            // Function to sample a record
+            function sampleRecord(id) {
+                alert(`Sample record with ID: ${id}`);
+                // Add sampling logic here
+            }
+        
+            // Function to delete a record
+            function deleteRecord(id) {
+                if (confirm('Are you sure you want to delete this record?')) {
+                    // Send DELETE request to the server
+                    fetch(`/api/delete/${id}`, { method: 'DELETE' })
+                        .then(response => {
+                            if (response.ok) {
+                                // Remove the row from the table
+                                const row = document.querySelector(`tr[data-id="${id}"]`);
+                                if (row) {
+                                    row.remove();
+                                }
+                                alert('Record deleted successfully!');
+                            } else {
+                                alert('Failed to delete the record. Please try again.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error deleting record:', error);
+                            alert('An unexpected error occurred.');
+                        });
+                }
+            }
+        
+
+// Function to edit a row
+function editRow(button) {
+    const row = button.closest('tr');
+    const saveButton = row.querySelector('.btn-success');
+    button.classList.add('d-none'); // Hide Edit button
+    saveButton.classList.remove('d-none'); // Show Save button
+
+    Array.from(row.children).forEach((cell, index) => {
+        if (index < 7 && cell.tagName === 'TD') { // Make the first 7 cells editable
+            const value = cell.textContent.trim();
+            cell.innerHTML = `<input type="text" class="form-control" value="${value}">`;
+        }
+    });
+}
+
+// Function to save edited row data
+function saveRow(button) {
+    const row = button.closest('tr');
+    const editButton = row.querySelector('.btn-warning');
+    const inputs = row.querySelectorAll('input');
+    const recordId = row.getAttribute('data-id');
+    const updatedRecord = {};
+
+    inputs.forEach((input, index) => {
+        const fieldName = ['id', 'name', 'date', 'type', 'url', 'path', 'username'][index];
+        updatedRecord[fieldName] = input.value;
+        input.parentElement.textContent = input.value; // Replace input with plain text
+    });
+
+    fetch(`/api/update/${recordId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedRecord)
+    })
+        .then(response => response.json())
+        .then(result => {
+            if (result.message === "Record updated successfully") {
+                alert('Record updated successfully!');
+            } else {
+                alert('Failed to update the record.');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating record:', error);
+            alert('An unexpected error occurred.');
+        });
+
+    button.classList.add('d-none'); // Hide Save button
+    editButton.classList.remove('d-none'); // Show Edit button
+}
+
+// Function to process a single record
+function processRecord(recordId) {
+    // Find the row dynamically by the record ID
+    const row = document.querySelector(`tr[data-id="${recordId}"]`);
+
+    // Check if the record is already processed
+    if (row.classList.contains("bg-success")) {
+        alert("This record is already processed.");
+        return;
+    }
+
+    // Confirm processing action
+    if (confirm(`Are you sure you want to process the record with ID: ${recordId}?`)) {
+        // Send API request to process the record
+        fetch(`/api/process_record/${recordId}`, { method: "POST" })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    // Update row color to green
+                    row.classList.remove("bg-warning", "bg-secondary");
+                    row.classList.add("bg-success");
+                    alert(`Record with ID ${recordId} has been successfully processed.`);
+                } else {
+                    alert(`Error processing record: ${result.message}`);
+                }
             })
             .catch(error => {
-                console.error('Error fetching CSV records:', error);
+                console.error("Error:", error);
+                alert("An unexpected error occurred. Please try again.");
             });
+    }
+}
 
 
-            const csvTable_2 = document.getElementById('csvTable_2');
-            csvTable_2.innerHTML = '';  // Clear existing rows
-        
-            // Function to fetch and display CSV records
-            const fetchAndDisplayCSV = async (fileName) => {
-                // csvTable_2.innerHTML = '';
-                try {
 
-                    // Clear existing tables
-                    const existingTables = document.querySelectorAll('.csvTable_2');
-                    existingTables.forEach(table => table.remove());
 
-                    const response = await fetch(`/csv/${fileName}`);
-                    const csvData = await response.json();
         
-                    // Create a new table for the CSV data
-                    const newTable = document.createElement('table');
-                    newTable.classList.add('table', 'table-bordered', 'table-hover', 'csvTable_2');
-
-                    const newTableBody = document.createElement('tbody');
-        
-                    // Add header row
-                    const headerRow = document.createElement('tr');
-                    Object.keys(csvData[0]).forEach(key => {
-                        const th = document.createElement('th');
-                        th.textContent = key;
-                        headerRow.appendChild(th);
-                    });
-                    newTableBody.appendChild(headerRow);
-        
-                    // Add data rows
-                    csvData.forEach(rowData => {
-                        const row = document.createElement('tr');
-                        Object.values(rowData).forEach(value => {
-                            const td = document.createElement('td');
-                            td.textContent = value;
-                            row.appendChild(td);
-                        });
-                        newTableBody.appendChild(row);
-                    });
-        
-                    newTable.appendChild(newTableBody);
-        
-                    // Append the new table after the existing table
-                    csvTable_2.appendChild(newTable);
-                } catch (error) {
-                    console.error('Error fetching CSV data:', error);
-                }
-            };
-        
-
         </script>
+        
+            
+
+
    </body>
 </html>

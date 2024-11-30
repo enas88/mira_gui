@@ -16,6 +16,8 @@ BASE_DIR_EMBEDDINGS_DIR_SAVE = BASE_DIR_EMBEDDINGS_DIR +'/'
 
 
 # Qdrant collection name
-QDRANT_TOP_K = 10
+QDRANT_TOP_K = 20
 COLLECTION_NAME = 'miraculous'
 COLLECTION_NAME_CLUSTERED = 'miraculous_clustered'
+
+CATALOG_FILE = "dataset_catalog.json"

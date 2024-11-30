@@ -363,9 +363,28 @@ def count_table_occurencies(table_name, client, collection_name):
 
 #############################################################################################
 
-# Functions for the Efficient Search 
+######Functions for the Efficient Search 
 
 def process_csv(csv_file, embeddings_path):
+    """
+    Process a CSV file to extract data and combine it with precomputed embeddings.
+
+    Parameters:
+    - csv_file (str): The path to the CSV file containing the table data.
+    - embeddings_path (str): The path to the file containing precomputed embeddings for each cell in the table.
+
+    Returns:
+    pd.DataFrame: A DataFrame with columns:
+        - 'TableName': The name of the table file (extracted from csv_file).
+        - 'CellValue': The cell value as a string, including column headers as the first row.
+        - 'CellValue_Column': The column name associated with each cell value.
+        - 'Embeddings': The embedding vector corresponding to each cell value.
+
+    Notes:
+    - The function reads the table data from the CSV, loads embeddings, and combines each cell value with its respective embedding.
+    - Column names are added as the first row, so embeddings must match this expanded row count.
+    - Ensure embeddings are precomputed and saved in the specified format using PyTorch's `torch.save` function.
+    """
     print(f'Processing table: {csv_file}')
 
     # Read CSV data
@@ -388,8 +407,31 @@ def process_csv(csv_file, embeddings_path):
 
     return name_and_embs
 
-
+#############################################################################################
 def create_data_and_save_embeddings(csv_directory, embeddings_directory):
+    """
+    Process all CSV files in a directory, combine data with corresponding embeddings, and save the results.
+
+    Parameters:
+    - csv_directory (str): The path to the directory containing CSV files to be processed.
+    - embeddings_directory (str): The path to the directory where embeddings for each CSV file are stored and where combined embeddings will be saved.
+
+    Returns:
+    tuple: A tuple containing:
+        - merged_df (pd.DataFrame): A DataFrame with all data from the processed CSV files, including:
+            - 'TableName': The name of the table file.
+            - 'CellValue': The cell value as a string, including column headers.
+            - 'CellValue_Column': The column name for each cell value.
+            - 'Embeddings': The embedding vector for each cell value.
+        - all_embeddings (list): A list of all embeddings across CSV files.
+
+    Notes:
+    - Each CSV file is processed by `process_csv`, which associates cell values with embeddings.
+    - The final data frame `merged_df` is a concatenation of individual processed CSV data frames.
+    - Combined embeddings are saved in `all_embeddings.pt` within the specified embeddings directory.
+    - Ensure each CSV file has a corresponding embeddings `.pt` file in the embeddings directory.
+    - Optional: Uncomment `merged_df.to_csv()` to save the merged DataFrame as a CSV file.
+    """
     all_data_frames = []
     # all_embeddings = []
 
@@ -415,10 +457,28 @@ def create_data_and_save_embeddings(csv_directory, embeddings_directory):
 
     return merged_df, all_embeddings
 
+#############################################################################################
 # UMAP
-
 def precompute_umap_knn(embeddings_array, n_neighbors, metric, save=False, filename="precomputed_knns.joblib"):
-    """Calculates the k-NN's required for UMAP in order to speed up UMAP's algorithm
+    """
+    Precompute k-nearest neighbors (k-NN) for UMAP to speed up its dimensionality reduction process.
+
+    Parameters:
+    - embeddings_array (array-like): An array of embeddings for which k-nearest neighbors will be calculated.
+    - n_neighbors (int): The number of nearest neighbors to consider for each point.
+    - metric (str): The distance metric to use for calculating nearest neighbors (e.g., 'euclidean', 'cosine').
+    - save (bool, optional): If True, the k-NN results will be saved to a file. Defaults to False.
+    - filename (str, optional): The file path to save the k-NN data if `save` is True. Defaults to "precomputed_knns.joblib".
+
+    Returns:
+    Annoy or NMSlibIndex: A k-NN index object containing the nearest neighbors for each point in `embeddings_array`.
+
+    Notes:
+    - This function calculates k-NN using a specified metric and can save the results to speed up UMAP’s execution.
+    - The function uses joblib to save the k-NN index if `save` is set to True.
+    - Ensure the metric provided is compatible with the UMAP algorithm to achieve accurate neighbor calculation.
+    - The runtime of the computation is printed for reference.
+
     """
     start_time = time.time()
     knn = nearest_neighbors(
@@ -438,7 +498,7 @@ def precompute_umap_knn(embeddings_array, n_neighbors, metric, save=False, filen
 
     return knn
 
-
+#############################################################################################
 def generate_umap_embeddings(n_neighbors, n_components, message_embeddings, pre_computed_knn=False, n_jobs = -1):
     """
     Generate UMAP embeddings for a given set of message embeddings.
@@ -471,10 +531,32 @@ def generate_umap_embeddings(n_neighbors, n_components, message_embeddings, pre_
 
     return umap_embeddings, umap_trans, runtime
 
-
+#############################################################################################
 # HDBSCAN with Medoids
-
 def hdbscan_clustering(text_embeddings, min_samples):
+    """
+    Perform HDBSCAN clustering on a set of text embeddings and identify cluster medoids.
+
+    Parameters:
+    - text_embeddings (array-like): An array of text embeddings to be clustered.
+    - min_samples (int): The minimum number of points required for a cluster in HDBSCAN.
+
+    Returns:
+    tuple: A tuple containing:
+        - cluster_labels (array-like): An array of cluster labels assigned to each embedding.
+        - clustering_index (pd.DataFrame): A DataFrame with columns:
+            - 'Cluster': Unique cluster identifiers.
+            - 'Medoid': The medoid point of each cluster.
+        - cluster_medoids (list): A list of medoid embeddings for each cluster.
+        - runtime (float): The runtime of the clustering process in seconds.
+
+    Notes:
+    - HDBSCAN is used for clustering with an 'euclidean' distance metric, and a minimum spanning tree is generated.
+    - The function calculates cluster medoids, which are the points with the smallest total distance to other points in the cluster.
+    - Medoids are determined by calculating pairwise distances within each cluster and selecting the point with the smallest total distance.
+    - The runtime of the clustering process is printed for reference.
+
+    """
 
     start_time = time.time()
     clusterer = hdbscan.HDBSCAN(min_samples=min_samples, metric='euclidean', gen_min_span_tree=True)
@@ -516,7 +598,7 @@ def hdbscan_clustering(text_embeddings, min_samples):
     return cluster_labels, clustering_index, cluster_medoids, runtime
 
 
-
+#############################################################################################
 def add_to_collection_clustered(table_name, client, embeddings_path, collection_name):
     """
     Adds a file into the specified collection. Works for .csv files for now. 
@@ -563,7 +645,7 @@ def add_to_collection_clustered(table_name, client, embeddings_path, collection_
     # Add to collection
 
     client.upload_records(
-    collection_name=COLLECTION_NAME_CLUSTERED,
+    collection_name = collection_name, # change it to take the parameter from the function
     records=[
         models.Record(
             id=str(uuid.uuid4()), vector=doc['Embeddings'].tolist(), payload={key: value for key, value in doc.items() if key!='Embeddings' }
@@ -575,9 +657,8 @@ def add_to_collection_clustered(table_name, client, embeddings_path, collection_
 
     return "Success"
 
-
+#############################################################################################
 def cluster_search(query_text, top_k_results, top_k_clusters,  clustering_index_path, umap_trans, client, collection_name):
-    
   clustering_index = joblib.load(clustering_index_path)
 
   query_text_emb = model.encode(query_text)

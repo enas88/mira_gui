@@ -85,6 +85,95 @@
   box-sizing: border-box;
 }
 
+
+
+
+#metadataTable {
+  margin: 0;
+  padding: 0;
+}
+
+.bg-warning {
+  background-color: rgb(235, 235, 178) !important; /* Yellow for unprocessed */
+}
+
+.bg-secondary {
+  background-color: rgb(200, 200, 200) !important; /* Grey for "no" datasets */
+}
+
+.bg-success {
+  background-color: rgb(173, 235, 173) !important; /* Green for processed */
+}
+
+
+
+
+
+.table-header {
+  margin-top: 10px; /* Add space above the header */
+  text-align: center;
+  margin-bottom: 20px; /* Add space below the header */
+  border-bottom: 2px solid #f8f8f8; /* Blue divider line */
+  padding-bottom: 10px; /* Spacing between text and divider */
+  padding-left: 100px; /* Add internal space to the left */
+  padding-top: 100px;
+}
+.table-header h2 {
+  font-size: 24px; /* Adjust the font size */
+  font-weight: bold; /* Make the text bold */
+  color: #4c6daf; /* Match header color to table theme */
+  text-transform: uppercase; /* Make the text uppercase */
+  margin: 50; /* Remove extra margin around the heading */
+  padding-left: 90px; /* Add internal space to the left */
+  padding-top: 10px;
+  padding-bottom: 10px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.table-container {
+  display: flex; /* Enable Flexbox */
+  justify-content: center; /* Center the table horizontally */
+  align-items: center; /* Center the table vertically */
+  height: 200vh; /* Optional: Full viewport height for vertical centering */
+  margin: 100 auto; /* Center the container itself if needed */
+}
+
+    #dataTable {
+        width: 90%; /* Stretch table width to fit the container */
+        border-collapse: collapse; /* Remove extra spacing between borders */
+        font-size: 18px; /* Increase font size for better readability */
+    }
+
+    #dataTable th {
+        background-color: #4c6daf; /* Green header color */
+        color: white; /* White text for header */
+        font-size: 20px; /* Larger font size for headers */
+        text-align: center; /* Center-align headers */
+        padding: 15px; /* Add some padding */
+        position: sticky;
+        top: 0;
+        z-index: 10; 
+    }
+
+    #dataTable td {
+        padding: 5px; /* Add padding for cells */
+        text-align: center; /* Center-align cell content */
+    }
+
+    /* Style the action buttons */
+    #dataTable td .btn {
+        margin: 0 5px; /* Add some margin between buttons */
+    }
+
+    /* Ensure buttons are horizontally aligned */
+    #dataTable td .btn-group {
+        display: flex; /* Use flexbox for alignment */
+        justify-content: center; /* Center-align buttons in the column */
+        gap: 5px; /* Add spacing between buttons */
+    }
+
+
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;
@@ -104,6 +193,40 @@ text {
   pointer-events: none; /* So text doesn't interfere with dragging */
 }
 
+
+
+/* Position the logo container */
+#logo-container {
+  position: absolute;
+  right: 50px; /* Adjust this value for horizontal positioning */
+  top: 100px; /* Adjust this value to control vertical positioning */
+  text-align: right; /* Align content within the div */
+}
+
+/* Optional: Adjust size and cursor for the logo image */
+#logo {
+  max-height: 100px; /* Ensures the logo stays within the specified height */
+  cursor: pointer; /* If you want the logo to look clickable */
+}
+
+#logo1 {
+  max-width: 700px; /* Adjust to make the logo bigger */
+  margin-top: 200px; /* Moves the logo further down the page */
+}
+
+.button-group {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 40px; /* Add space between the buttons */
+    margin-top: 10px; /* Optional: Add some space from the top */
+}
+
+.centered-text {
+  font-size: 32px; /* Make the text larger */
+  text-align: center; /* Center the text horizontally */
+  margin-top: 6vh; /* Center vertically by moving it down the page */
+  transform: translateY(-50%); /* Fine-tune vertical alignment */
+}
 
 
 /* ==========================

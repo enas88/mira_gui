@@ -16,37 +16,7 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
-            <!-- Fixed Button in Top-Right Corner -->
-<div style="position: fixed; top: 200px; right: 100px; z-index: 9999;">
-    <button class="btn btn-primary" data-toggle="modal" data-target="#configModal">Config</button>
-</div>
 
-<!-- Modal Structure -->
-<div class="modal fade" id="configModal" tabindex="-1" role="dialog" aria-labelledby="configModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="configModalLabel">Select a Search Method</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h6>Use one of the searching methods</h6>
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="ann">Approximate Nearest Neighbors Search</a></li>
-                    <li class="list-group-item"><a href="optimized">Efficient Search</a></li>
-                    <li class="list-group-item"><a href="index">Exhaustive Search</a></li>
-                </ul>
-                <hr>
-                <p><a href="#" class="link-secondary">Learn more about each type of search method</a> <i class="fas fa-question-circle"></i></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -140,6 +110,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 View 
                             </a>
+                            <a class="nav-link" href="Registered_Data">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Dataset Records 
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
@@ -154,14 +128,14 @@
                     
                             <!-- Header Image -->
     <div class="container-fluid d-flex flex-column align-items-center justify-content-center" style="min-height: 100vh;">
-        <div class="text-center">
-            <img src="static/img/logo6.PNG" alt="Header Image" class="img-fluid" />
-        </div>
-        <div style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
-            <button class="btn btn-primary">Config</button>
-        </div>
+                    <!-- Add the logo at the top of the form -->
+                    <div class="text-center mb-4">
+                        <img src="static/img/logo6.PNG" alt="Logo1" class="img-fluid" style="max-height: 100px;">
+                    </div>
                     
-                    <div class="container-fluid px-4">
+
+                    
+                    <div class="container-fluid px-4 centralised">
                     
                         <div class="row">
                             <div class="col-xl-9">
@@ -172,49 +146,87 @@
                                         </div>
                                         <div class="card-header">
                                             <i class="fas fa-chart-area me-1"></i>
-                                            Register Dataset
+                                            Dataset Record 
                                         </div>
 
                                         <div class="card-body">
                                             
-                                            <!-- Dataset ID Input -->
                                             <div class="mb-3 row">
-                                                <label for="dataset_id" class="col-sm-2 col-form-label">Dataset ID <span class="text-danger">*</span></label>
-                                                <div class="col-sm-10">
-                                                    <input id="dataset_id" class="form-control" type="number" placeholder="Enter your dataset ID" required />
+                                                <label for="dataset_id" class="col-sm-2 col-form-label">Dataset ID</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" id="dataset_id" class="form-control" readonly />
                                                 </div>
                                             </div>
+                                        
+                                            <!-- Dataset Name -->
+                                            <div class="mb-3 row">
+                                                <label for="dataset_name" class="col-sm-2 col-form-label">Dataset Name</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" id="dataset_name" class="form-control" />
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mb-3 row">
+                                                <div class="mb-3 row">
+                                                    <label for="dataset_date" class="col-sm-2 col-form-label">Creation Date<span class="text-danger">*</span></label>
+                                                    <div class="col-sm-10">
+                                                        <input id="dataset_date" class="form-control" type="datetime-local" required />
+                                                    </div>
+                                                </div>
+                                                
                     
-                                            
                                             <div class="mb-3 row">
-                                                <label for="dataset_name" class="col-sm-2 col-form-label">Name <span class="text-danger">*</span></label>
+                                                <label for="dataset_type" class="col-sm-2 col-form-label">Select Option</label>
                                                 <div class="col-sm-10">
-                                                    <input id="dataset_name" class="form-control" type="text" placeholder="String" required />
+                                                    <select id="dataset_type" class="form-control">
+                                                        <option value="">Select Option</option>
+                                                        <optgroup label="Relational">
+                                                            <option value="mysql">MySQL</option>
+                                                            <option value="pgsql">PgSQL</option>
+                                                            <option value="csv">CSV</option>
+                                                        </optgroup>
+                                                        <optgroup label="Document">
+                                                            <option value="json">JSON</option>
+                                                            <option value="mongodb">MongoDB</option>
+                                                        </optgroup>
+                                                        <optgroup label="Graph">
+                                                            <option value="neo4j">NEO4J</option>
+                                                        </optgroup>
+                                                        <optgroup label="RDF">
+                                                            <option value="rdf">RDF</option>
+                                                        </optgroup>
+                                                    </select>
                                                 </div>
                                             </div>
                                             
                                             <div class="mb-3 row">
-                                                <label for="dataset_date" class="col-sm-2 col-form-label">Creation Date<span class="text-danger">*</span> </label>
+                                                <label class="col-sm-2 col-form-label">Add Dataset</label>
                                                 <div class="col-sm-10">
-                                                    <input id="dataset_date" class="form-control" type="date" placeholder="String" required />
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="addDataset" id="addDatasetYes" value="yes">
+                                                        <label class="form-check-label" for="addDatasetYes">Yes</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="addDataset" id="addDatasetNo" value="no" checked>
+                                                        <label class="form-check-label" for="addDatasetNo">No</label>
+                                                    </div>
                                                 </div>
                                             </div>
-                    
+                                            
                                             <div class="mb-3 row">
-                                                <label for="dataset_model" class="col-sm-2 col-form-label">Dataset model</label>
+                                                <label for="dataset_url" class="col-sm-2 col-form-label">IP</label>
                                                 <div class="col-sm-10">
-                                                    <input id="dataset_model" class="form-control" type="text" placeholder="graph/relational/entity" />
+                                                    <input id="dataset_url" class="form-control" type="text" placeholder="Protocol+IP address" disabled />
                                                 </div>
                                             </div>
                                             
                                             <div class="mb-3 row">
-                                                <label for="dataset_url" class="col-sm-2 col-form-label">URL</label>
+                                                <label for="dataset_path" class="col-sm-2 col-form-label">Path</label>
                                                 <div class="col-sm-10">
-                                                    <input id="dataset_url" class="form-control" type="text" placeholder="Protocol+IP address" />
+                                                    <input id="dataset_path" class="form-control" type="text" placeholder="\directory" disabled />
                                                 </div>
                                             </div>
-                                            
-                                            
+
                                             <div class="mb-3 row">
                                                 <label for="dataset_username" class="col-sm-2 col-form-label">Username<span class="text-danger">*</span></label>
                                                 <div class="col-sm-10">
@@ -231,50 +243,54 @@
                                             </div>
                                             
                                             
-                                            <div class="mb-3 row">
-                                                <label for="dataset_path" class="col-sm-2 col-form-label">Path</label>
-                                                <div class="col-sm-10">
-                                                    <input id="dataset_path" class="form-control" type="text" placeholder="\directory" />
+                                                 <!-- Metadata Section -->
+                                                 <div class="mb-3 row align-items-center">
+                                                    <!-- Metadata Label -->
+                                                    <label for="metadataTable" class="col-sm-2 col-form-label">Metadata</label>
+                                                
+                                                    <!-- Metadata Table -->
+                                                    <div class="col-sm-10">
+                                                        <table id="metadataTable" style="border-collapse: collapse; width: 100%;">
+                                                            <thead style="border-bottom: 1px solid #ddd;">
+                                                                <tr>
+                                                                    <th style="text-align: right;">Name</th>
+                                                                    <th style="text-align: center;">:</th>
+                                                                    <th style="text-align: left;">Value</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="text-align: right;">
+                                                                        <input type="text" class="form-control" placeholder="Enter name" style="border: none; box-shadow: none;" />
+                                                                    </td>
+                                                                    <td style="text-align: center;">:</td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control" placeholder="Enter value" style="border: none; box-shadow: none;" />
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <button type="button" onclick="addRow()" class="btn btn-link mt-2">+ Add Row</button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            
 
-                                            <div class="mb-3 row">
-                                                <label for="dataset_format" class="col-sm-2 col-form-label">Format</label>
-                                                <div class="col-sm-10">
-                                                    <input id="dataset_format" class="form-control" type="text" placeholder="NEO4j, MySQL, csv, json, triple, xml, MongoDB" />
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="mb-3 row">
-                                                <label for="dataset_description" class="col-sm-2 col-form-label">Description</label>
-                                                <div class="col-sm-10">
-                                                    <input id="dataset_description" class="form-control" type="text" placeholder=" Dataset description " />
-                                                </div>
-                                            </div>
-                                            
+                                            <!-- Register Button -->
 
-                                            <div class="mb-3 row">
-                                                <label for="dataset_metadata" class="col-sm-2 col-form-label">Metadata</label>
-                                                <div class="col-sm-10">
-                                                    <input id="dataset_metadata" class="form-control" type="text" placeholder="If exists" />
-                                                </div>
-                                            </div>
-
-
-                                            <div class="mb-3 row">
-                                                <label for="dataset_schema" class="col-sm-2 col-form-label">Schema</label>
-                                                <div class="col-sm-10">
-                                                    <input id="dataset_schema" class="form-control" type="text" placeholder="If exists" />
-                                                </div>
-                                            </div>
-                                                                    <!-- Submit Button -->
-                                            <div class="text-center mt-4">
-                                                <button type="submit" class="btn btn-primary">Submit</button>
-                                            </div>
-                                           
-                                        </div>
+    <div class="mb-3 text-center">
+        <button type="button" id="registerButton" class="btn btn-primary">Register</button>
+    </div>
                                     </form>
+                                    <!-- Success Modal -->
+                                    <div id="successModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
+                                        <div style="background: white; padding: 20px; border-radius: 10px; text-align: center; width: 300px;">
+                                            <h4>Dataset Registered Successfully!</h4>
+                                            <div class="mt-3">
+                                                <button onclick="closeModal()" class="btn btn-secondary">OK</button>
+                                                <button onclick="redirectToRecords()" class="btn btn-primary">Go to Records</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -295,6 +311,7 @@
                 </footer>
             </div>
         </div>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
@@ -305,5 +322,125 @@
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script>
+    // Set the current date and time as default
+    document.addEventListener("DOMContentLoaded", function() {
+        const datasetDate = document.getElementById("dataset_date");
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        
+        // Format as "YYYY-MM-DDTHH:MM" for datetime-local input
+        datasetDate.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+    });
+
+    // Toggle fields based on the "Add Dataset" radio button selection
+// Auto-generate a unique ID for the dataset
+document.addEventListener("DOMContentLoaded", () => {
+    function generateUniqueId() {
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const randomLetter = letters.charAt(Math.floor(Math.random() * letters.length));
+        const randomNumber = Math.floor(Math.random() * 100); // Random 2-digit number
+        return randomLetter + randomNumber;
+    }
+
+    const datasetIdField = document.getElementById("dataset_id");
+    if (datasetIdField) {
+        datasetIdField.value = generateUniqueId(); // Set a unique ID when the page loads
+    }
+});
+
+// Toggle fields based on the "Add Dataset" radio button selection
+document.addEventListener("DOMContentLoaded", () => {
+    const addDatasetYes = document.getElementById("addDatasetYes");
+    const addDatasetNo = document.getElementById("addDatasetNo");
+    const ipField = document.getElementById("dataset_url");
+    const pathField = document.getElementById("dataset_path");
+
+    function toggleFields() {
+        const isYesSelected = addDatasetYes.checked;
+        ipField.disabled = !isYesSelected;
+        pathField.disabled = !isYesSelected;
+        if (!isYesSelected) {
+            ipField.value = ""; // Clear the input value
+            pathField.value = ""; // Clear the input value
+        }
+    }
+
+    if (addDatasetYes && addDatasetNo) {
+        addDatasetYes.addEventListener("change", toggleFields);
+        addDatasetNo.addEventListener("change", toggleFields);
+        toggleFields(); // Set initial state
+    }
+});
+
+document.getElementById("registerButton").addEventListener("click", async () => {
+    const addDataset = document.querySelector('input[name="addDataset"]:checked').value;
+
+    // Collect form data
+    const dataset = {
+        id: document.getElementById("dataset_id").value,
+        name: document.getElementById("dataset_name").value,
+        date: document.getElementById("dataset_date").value,
+        type: document.getElementById("dataset_type").value,
+        url: document.getElementById("dataset_url").value || "", // Handle empty fields
+        path: document.getElementById("dataset_path").value || "", // Handle empty fields
+        username: document.getElementById("dataset_username").value,
+        password: document.getElementById("dataset_password").value,
+        add_dataset: addDataset,
+        metadata: {}
+    };
+
+    // Collect metadata
+    const metadataTable = document.querySelector("#metadataTable tbody");
+    metadataTable.querySelectorAll("tr").forEach((row) => {
+        const name = row.querySelector("td:nth-child(1) input").value.trim();
+        const value = row.querySelector("td:nth-child(3) input").value.trim();
+        if (name && value) {
+            dataset.metadata[name] = value;
+        }
+    });
+
+    try {
+        const response = await fetch("/dataset_catalog/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dataset),
+        });
+
+        if (response.ok) {
+            showModal(); // Show success modal
+        } else {
+            alert("Error registering dataset. Please try again.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An unexpected error occurred. Please try again.");
+    }
+});
+
+
+// Success Modal Functions
+function showModal() {
+    const modal = document.getElementById("successModal");
+    modal.style.display = "flex"; // Show the modal
+}
+
+function closeModal() {
+    const modal = document.getElementById("successModal");
+    modal.style.display = "none"; // Hide the modal
+    document.getElementById("datasetForm").reset(); // Clear the form
+    document.getElementById("dataset_id").value = generateUniqueId(); // Regenerate ID
+}
+
+function redirectToRecords() {
+    window.location.href = "/Registered_Data"; // Redirect to records page
+}
+
+</script>
+
     </body>
 </html>

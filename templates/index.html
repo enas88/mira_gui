@@ -14,12 +14,12 @@
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand ps-3" href="/">Miraculous</a>
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle"><i class="fas fa-bars"></i></button>
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        <!-- <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             <div class="input-group">
                 <input id="query_text" class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." />
                 <button class="btn btn-primary" onclick="query_search(event, '/exhaustive_search', 'table')"><i class="fas fa-search"></i></button>
             </div>
-        </form>
+        </form> -->
     </nav>
 
     <div id="layoutSidenav">
@@ -52,6 +52,20 @@
                         <a class="nav-link" href="/optimized">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                             Optimized Search
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Dataset</div>
+                        <a class="nav-link" href="upload">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            Upload 
+                        </a>
+                        <a class="nav-link" href="view">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            View 
+                        </a>
+
+                        <a class="nav-link" href="Registered_Data">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Dataset Records 
                         </a>
                     </div>
                 </div>

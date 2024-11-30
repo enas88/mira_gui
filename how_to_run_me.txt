@@ -4,4 +4,6 @@
 4. check qdrant images: docker images REPOSITORY
 5. run qdrant: docker run -p 6333:6333 qdrant/qdrant
 6. start uvicorn through this command: /Users/enaso/Library/CloudStorage/OneDrive-UniversiteitUtrecht/_GitHub/mira_gui/.venv/bin/python -m uvicorn main:app --reload
+instead use now: /Users/enaso/Library/CloudStorage/OneDrive-UniversiteitUtrecht/_GitHub/mira_gui/.venv/bin/python -m uvicorn main:app --reload --reload-dir .
+
 7. start working

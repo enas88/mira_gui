@@ -297,3 +297,18 @@ csvUploadForm.addEventListener("submit", function (event) {
     }
 
 });
+
+
+
+function applyAnimation(animationType) {
+    const logo = document.getElementById("logo");
+
+    // Remove any existing animation classes
+    logo.classList.remove("drop", "fade");
+
+    // Trigger reflow to reset animation (allows reapplying the same animation)
+    void logo.offsetWidth;
+
+    // Add the selected animation class
+    logo.classList.add(animationType);
+}
