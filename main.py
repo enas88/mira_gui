@@ -6,7 +6,9 @@ import logging
 
 import numpy as np
 import pandas as pd
+import mysql.connector
 from pathlib import Path
+from mysql.connector import Error
 from typing import Optional, Dict
 
 from fastapi.responses import JSONResponse
@@ -43,6 +45,14 @@ client = QdrantClient("localhost", port=6333)
 @app.get("/")
 async def get_form():
     return FileResponse("templates/dashboard.html")
+
+@app.get("/dashboard")
+async def get_dashboard():
+    return FileResponse("templates/dashboard.html")
+
+@app.get("/about")
+async def get_about():
+    return FileResponse("templates/about.html")
 
 @app.get("/catalog")
 async def get_form():
@@ -321,6 +331,7 @@ async def efficient_search(query: Query):
             "CellValue_Column": row['CellValue_Column'],
             "SimilarityScores": row['SimilaritiyScores']
         })   
+
     return Response(json.dumps(formatted_results), media_type="application/json")
 
 @app.get("/get_table/{dataset_name}")
@@ -446,3 +457,13 @@ async def process_single_record(record_id: str):
         logging.error(f"Unexpected error: {e}")
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
 
+
+@app.post("/redirect-to-dashboard")
+async def redirect_to_dashboard():
+    # Redirect to the /dashboard route
+    return RedirectResponse(url="/dashboard", status_code=303)
+
+@app.post("/redirect-to-about")
+async def redirect_to_about():
+    # Redirect to the /about route
+    return RedirectResponse(url="/about", status_code=303)

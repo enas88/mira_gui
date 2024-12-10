@@ -1,181 +1,10 @@
 [
     {
-        "id": "O50",
-        "name": "sf",
-        "date": "2024-11-28T19:26",
-        "type": "mongo",
-        "url": "f",
-        "path": "save",
-        "username": "SDFDFS",
-        "password": "1\u00a71213",
-        "metadata": {
-            "23": "23"
-        }
-    },
-    {
-        "id": "A4",
-        "name": "sf",
-        "date": "2024-11-28T19:34",
-        "type": "pgsql",
-        "url": "SDFDSFDS",
-        "path": "c",
-        "username": "xcv",
-        "password": "123123",
-        "metadata": {
-            "wqr": "er"
-        }
-    },
-    {
-        "id": "I73",
-        "name": "nosa",
-        "date": "2024-11-28T19:34",
-        "type": "pgsql",
-        "url": "SDFDSFDS",
-        "path": "c",
-        "username": "xcv",
-        "password": "1234",
-        "metadata": {
-            "wqr": "er"
-        }
-    },
-    {
-        "id": "L78",
-        "name": "szcxxzasdvc",
-        "date": "2024-11-29T00:14",
-        "type": "mongodb",
-        "url": "xzcxzc",
-        "path": "xcvxcv",
-        "username": "zxvxzv",
-        "password": "sadsad",
-        "metadata": {
-            "zxv": "zxv"
-        }
-    },
-    {
-        "id": "W26",
-        "name": "nosa nosa",
-        "date": "2024-11-29T14:10",
-        "type": "csv",
-        "url": "f",
-        "path": "xcvxcv",
-        "username": "xcv",
-        "password": "sfsaf",
-        "metadata": {}
-    },
-    {
-        "id": "O90",
-        "name": "sf",
-        "date": "2024-11-29T14:19",
-        "type": "pgsql",
-        "url": "thgfgj",
-        "path": "fghfghgjhg",
-        "username": "fghfgh",
-        "password": "fhghghj",
-        "metadata": {
-            "fdgfd": "fdgfdg"
-        }
-    },
-    {
-        "id": "K17",
-        "name": "sf",
-        "date": "2024-11-29T14:19",
-        "type": "pgsql",
-        "url": "thgfgj",
-        "path": "fghfghgjhg",
-        "username": "fghfgh",
-        "password": "dgdffdh",
-        "metadata": {
-            "fdgfd": "fdgfdg"
-        }
-    },
-    {
-        "id": "F63",
-        "name": "test1",
-        "date": "2024-11-29T16:36",
-        "type": "neo4j",
-        "url": "axddv",
-        "path": "dvxvxcv",
-        "username": "xdvvxcv",
-        "password": "xdvdvv",
-        "metadata": {
-            "dvcvcxv": "xcvxcvxcv"
-        }
-    },
-    {
-        "id": "L23",
-        "name": "bunny",
-        "date": "2024-11-29T16:43",
-        "type": "csv",
-        "url": "SDFDSFDS",
-        "path": "sdfsdf",
-        "username": "zxvxzv",
-        "password": "sfdf",
-        "metadata": {
-            "dsfdf": "dsfdsfd"
-        }
-    },
-    {
-        "id": "I50",
-        "name": "cbvxc",
-        "date": "2024-11-29T17:34",
-        "type": "pgsql",
-        "url": "",
-        "path": "",
-        "username": "sososo",
-        "password": "sfsdf",
-        "add_dataset": "no",
-        "metadata": {
-            "sdfsdf": "sasaf"
-        }
-    },
-    {
-        "id": "X14",
-        "name": "xvxv",
-        "date": "2024-11-29T17:36",
-        "type": "csv",
-        "url": "habibi",
-        "path": "xcvxcv",
-        "username": "xcvxvc",
-        "password": "xvxcv",
-        "add_dataset": "yes",
-        "metadata": {
-            "xcvxcv": "xcvxcv"
-        }
-    },
-    {
-        "id": "S86",
-        "name": "dxzvxzvxzv",
-        "date": "2024-11-29T17:46",
-        "type": "mongodb",
-        "url": "zfcdvdv",
-        "path": "xvxvv",
-        "username": "xvxv",
-        "password": "xzvzv",
-        "add_dataset": "yes",
-        "metadata": {
-            "zxvzv": "xzvxv"
-        }
-    },
-    {
-        "id": "X57",
-        "name": "safsf",
-        "date": "2024-11-29T17:52",
-        "type": "pgsql",
-        "url": "",
-        "path": "",
-        "username": "safsdf",
-        "password": "sdfdf",
-        "add_dataset": "no",
-        "metadata": {
-            "sdfdf": "sdfdf"
-        }
-    },
-    {
         "id": "T001",
         "name": "CulturalPreservationEfforts",
         "date": "2024-11-27T10:30",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario2/CulturalPreservationEfforts.csv",
+        "url": "https://xlcpu.disi.unitn.it/Dataset/Enas/Cloud_mira/",
         "path": "/Users/enaso/Desktop/scenario2/CulturalPreservationEfforts.csv",
         "username": "bunny",
         "password": "password",
@@ -184,15 +13,14 @@
             "topic": "Cultural Preservation",
             "region": "Global",
             "source": "UNESCO Reports"
-        },
-        "processed": true
+        }
     },
     {
         "id": "T002",
         "name": "GastronomicTourism",
         "date": "2024-11-27T10:30",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario2/GastronomicTourism.csv",
+        "url": "PostgreSQL://hostname:5432/mira_DB/",
         "path": "/Users/enaso/Desktop/scenario2/GastronomicTourism.csv",
         "username": "enas",
         "password": "password",
@@ -208,7 +36,7 @@
         "name": "GlobalFilmandMediaInfluence",
         "date": "2024-11-27T10:30",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario2/GlobalFilmandMediaInfluence.csv",
+        "url": "PostgreSQL://hostname:5432/mira_DB/",
         "path": "/Users/enaso/Desktop/scenario2/GlobalFilmandMediaInfluence.csv",
         "username": "amandaa",
         "password": "password",
@@ -224,7 +52,7 @@
         "name": "IndigenousTraditions",
         "date": "2024-11-27T10:30",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario2/IndigenousTraditions.csv",
+        "url": "PostgreSQL://hostname:5432/mira_DB/",
         "path": "/Users/enaso/Desktop/scenario2/IndigenousTraditions.csv",
         "username": "enas",
         "password": "password",
@@ -240,7 +68,7 @@
         "name": "LocalHandicraftIndustries",
         "date": "2024-11-27T10:30",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario2/LocalHandicraftIndustries.csv",
+        "url": "PostgreSQL://hostname:5432/mira_DB/",
         "path": "/Users/enaso/Desktop/scenario2/LocalHandicraftIndustries.csv",
         "username": "enas",
         "password": "password",
@@ -256,7 +84,7 @@
         "name": "SustainableTourismPractices",
         "date": "2024-11-27T10:30",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario2/SustainableTourismPractices.csv",
+        "url": "PostgreSQL://hostname:5432/mira_DB/",
         "path": "/Users/enaso/Desktop/scenario2/SustainableTourismPractices.csv",
         "username": "enas",
         "password": "password",
@@ -272,7 +100,7 @@
         "name": "TourismChallenges",
         "date": "2024-11-27T10:30",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario2/TourismChallenges.csv",
+        "url": "PostgreSQL://hostname:5432/mira_DB/",
         "path": "/Users/enaso/Desktop/scenario2/TourismChallenges.csv",
         "username": "enas",
         "password": "password",
@@ -288,7 +116,7 @@
         "name": "TraditionalFestivals",
         "date": "2024-11-27T10:30",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario2/TraditionalFestivals.csv",
+        "url": "https://xlcpu.disi.unitn.it/Dataset/Enas/Cloud_mira/",
         "path": "/Users/enaso/Desktop/scenario2/TraditionalFestivals.csv",
         "username": "enas",
         "password": "password",
@@ -304,7 +132,7 @@
         "name": "WorldHeritageSites",
         "date": "2024-11-27T10:30",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario2/WorldHeritageSites.csv",
+        "url": "MySQL://127.0.0.1:3306/miraculous_DB/",
         "path": "/Users/enaso/Desktop/scenario2/WorldHeritageSites.csv",
         "username": "enas",
         "password": "password",
@@ -320,7 +148,7 @@
         "name": "international",
         "date": "2024-11-27T10:30",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario2/international.csv",
+        "url": "MySQL://127.0.0.1:3306/miraculous_DB/ ",
         "path": "/Users/enaso/Desktop/scenario2/international.csv",
         "username": "enas",
         "password": "password",
@@ -336,8 +164,8 @@
         "name": "WorldMusicTraditions",
         "date": "2024-11-27T10:30",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario2/WorldMusicTraditions.csv",
-        "path": "/Users/enaso/Desktop/scenario2/",
+        "url": "https://xlcpu.disi.unitn.it/Dataset/Enas/Cloud_mira/",
+        "path": "/Users/enaso/Desktop/scenario2/WorldMusicTraditions.csv",
         "username": "enas",
         "password": "password",
         "add_dataset": "yes",
@@ -352,7 +180,7 @@
         "name": "Simpsons Characters",
         "date": "2024-11-30T12:00",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario3/simpsons_characters.csv",
+        "url": "MySQL://127.0.0.1:3306/miraculous_DB/",
         "path": "/Users/enaso/Desktop/scenario3/simpsons_characters.csv",
         "username": "enas",
         "password": "password",
@@ -368,7 +196,7 @@
         "name": "HDRO Indicators USA",
         "date": "2024-11-30T12:00",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario3/hdro_indicators_usa.csv",
+        "url": "https://xlcpu.disi.unitn.it/Dataset/Enas/Cloud_mira/",
         "path": "/Users/enaso/Desktop/scenario3/hdro_indicators_usa.csv",
         "username": "enas",
         "password": "password",
@@ -384,7 +212,7 @@
         "name": "Students Performance",
         "date": "2024-11-30T12:00",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario3/StudentsPerformance.csv",
+        "url": "MySQL://127.0.0.1:3306/miraculous_DB/",
         "path": "/Users/enaso/Desktop/scenario3/StudentsPerformance.csv",
         "username": "enas",
         "password": "password",
@@ -400,7 +228,7 @@
         "name": "UK Universities",
         "date": "2024-11-30T12:00",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario3/uk_universities.csv",
+        "url": "MySQL://127.0.0.1:3306/miraculous_DB/",
         "path": "/Users/enaso/Desktop/scenario3/uk_universities.csv",
         "username": "enas",
         "password": "password",
@@ -416,7 +244,7 @@
         "name": "National Per Capita",
         "date": "2024-11-30T12:00",
         "type": "CSV",
-        "url": "/Users/enaso/Desktop/scenario3/national_percapita.csv",
+        "url": "https://xlcpu.disi.unitn.it/Dataset/Enas/Cloud_mira/",
         "path": "/Users/enaso/Desktop/scenario3/national_percapita.csv",
         "username": "enas",
         "password": "password",
@@ -428,17 +256,59 @@
         }
     },
     {
-        "id": "Z4",
-        "name": "klhklb",
-        "date": "2024-11-30T17:01",
-        "type": "pgsql",
+        "id": "H62",
+        "name": "cbvxc",
+        "date": "2024-12-09T09:12",
+        "type": "",
         "url": "",
         "path": "",
-        "username": "jbjb",
-        "password": "kjbkb",
+        "username": "dsfdf",
+        "password": "",
         "add_dataset": "no",
         "metadata": {
-            "jhb": "kjbjb"
+            "dsf": "sdff"
+        }
+    },
+    {
+        "id": "H62",
+        "name": "cbvxc",
+        "date": "2024-12-09T09:12",
+        "type": "",
+        "url": "",
+        "path": "",
+        "username": "dsfdf",
+        "password": "",
+        "add_dataset": "no",
+        "metadata": {
+            "dsf": "sdff"
+        }
+    },
+    {
+        "id": "DS-BUKN06EYG",
+        "name": "xcvcxvcv",
+        "date": "2024-12-09T22:15",
+        "type": "",
+        "url": "",
+        "path": "",
+        "username": "sf",
+        "password": "dzcxdcv",
+        "add_dataset": "no",
+        "metadata": {
+            "cxvxcv": "xcvcxv"
+        }
+    },
+    {
+        "id": "DS-MSBJVIOL2",
+        "name": "sDFsdfsdf",
+        "date": "2024-12-10T02:12",
+        "type": "mysql",
+        "url": "sdfdsg",
+        "path": "dsgdsg",
+        "username": "dfgfg",
+        "password": "sdgfsdg",
+        "add_dataset": "yes",
+        "metadata": {
+            "asdfgdsfg": "sdgffsag"
         }
     }
 ]

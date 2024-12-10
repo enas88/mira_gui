@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Optimized Search</title>
+    <title>Clustered Targeted Search</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="static/css/styles.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
@@ -34,9 +34,16 @@
                     <li class="list-group-item"><a href="ann">Approximate Nearest Neighbors Search</a></li>
                     <li class="list-group-item"><a href="optimized">Efficient Search</a></li>
                     <li class="list-group-item"><a href="index">Exhaustive Search</a></li>
+                    <hr>
+                    <h6>Other functionalities</h6>
+                    <hr>
+                    <!-- <li class="list-group-item"><a href="useful">Dataset Usefulness</a></li> -->
+                    <li class="list-group-item"><a href="upload">Upload Dataset</a></li>
+                    <li class="list-group-item"><a href="view">View Dataset updates</a></li>
                 </ul>
                 <hr>
-                <p><a href="#" class="link-secondary">Learn more about each type of search method</a> <i class="fas fa-question-circle"></i></p>
+               
+                <p><a href="about" class="link-secondary">Learn more about each type of search method</a> <i class="fas fa-question-circle"></i></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -45,7 +52,7 @@
     </div>
 </div>
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand ps-3" href="/">Miraculous</a>
+        <a class="navbar-brand ps-3" href="dashboard">Miraculous</a>
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle"><i class="fas fa-bars"></i></button>
         <!-- <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             <div class="input-group">
@@ -62,46 +69,30 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link" href="/base">
+             
+                        <a class="nav-link" href="/dashboard">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
                         <div class="sb-sidenav-menu-heading">Dataset Discovery</div>
                         <a class="nav-link" href="/catalog">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Dataset Catalog 
+                            Register Dataset  
                         </a>
-                        <a class="nav-link" href="/useful">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Dataset Usefulness
-                        </a>                          
-                        <a class="nav-link" href="/exhaustive">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Exhaustive Search 
-                        </a>
-                        <a class="nav-link" href="/ann">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Approximate Search 
-                        </a>
-                        <a class="nav-link" href="/optimized">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Optimized Search 
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Dataset</div>
-                        <a class="nav-link" href="upload">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                            Upload 
-                        </a>
-                        <a class="nav-link" href="view">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            View 
-                        </a>
-
                         <a class="nav-link" href="Registered_Data">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Dataset Records 
+                            Dataset Catalog 
                         </a>
+                        <a class="nav-link" href="/optimized">
+                            <div class="sb-nav-link-icon"><i class="fas fa-search"></i></div>
+                            Search Dataset
+                        </a>
+
+                        <a class="nav-link" href="/about">
+                            <div class="sb-nav-link-icon"><i class="fas fa-search"></i></div>
+                            About 
+                        </a>
+
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
@@ -138,15 +129,7 @@
                         </form>
                     </div>
 
-                    <!-- Top Matching Tables Section, positioned beneath the search results -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-chart-bar me-1"></i> Top Matching Tables
-                        </div>
-                        <div id="matchingTablesContainer" class="p-3" style="max-height: 300px; overflow-y: auto;">
-                            <!-- JavaScript will dynamically insert matching table names here -->
-                        </div>
-                    </div>
+
 
                     <!-- Modal for displaying the table -->
                     <div class="modal fade" id="tableViewModal" tabindex="-1" aria-labelledby="tableViewModalLabel" aria-hidden="true">
@@ -182,6 +165,7 @@
 </div>
                 </div>
             </main>
+
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">

@@ -1,5 +1,5 @@
 1. Open the terminal and activate the virtual environment (source .venv/bin/activate)
-2. run the virtual environment through: source .venv/bin/activate
+2. run the virtual environment through: source .venv/bin/activate>
 3. check the requirements: pip freeze
 4. check qdrant images: docker images REPOSITORY
 5. run qdrant: docker run -p 6333:6333 qdrant/qdrant
@@ -7,3 +7,19 @@
 instead use now: /Users/enaso/Library/CloudStorage/OneDrive-UniversiteitUtrecht/_GitHub/mira_gui/.venv/bin/python -m uvicorn main:app --reload --reload-dir .
 
 7. start working
+
+
+source .venv/bin/activate  
+ docker start mysql 
+  docker exec -it mysql mysql -uroot -p
+
+  docker run -p 6333:6333 -v /Users/enaso/Library/CloudStorage/OneDrive-UniversiteitUtrecht/_GitHub/mira_gui/qdrant:/qdrant/storage qdrant/qdrant
+
+/Users/enaso/Library/CloudStorage/OneDrive-UniversiteitUtrecht/_GitHub/mira_gui/.venv/bin/python -m uvicorn main:app --reload --reload-dir .
+
+
+how to see the database:
+1. SHOW DATABASES;
+2.  USE miraculous_catalog;
+3. SELECT * FROM your_table_name LIMIT 5;
+

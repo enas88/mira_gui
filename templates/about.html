@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>About Miraculous</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="static/css/styles.css" rel="stylesheet" />
+        <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <style>
+            .section {
+                margin-bottom: 30px;
+            }
+            ul {
+                list-style-type: disc;
+                padding-left: 20px;
+            }
+            h2 {
+                color: #4CAF50;
+                margin-top: 20px;
+            }
+            h3 {
+                color: #2196F3;
+                margin-top: 15px;
+            }
+            p, ul {
+                line-height: 1.6;
+            }
+        </style>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand ps-3" href="/dashboard">Miraculous</a>
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <a class="nav-link" href="/dashboard">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Dataset Discovery</div>
+                            <a class="nav-link" href="/catalog">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Register Dataset
+                            </a>
+                            <a class="nav-link" href="Registered_Data">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Dataset Catalog
+                            </a>
+                            <a class="nav-link" href="/optimized">
+                                <div class="sb-nav-link-icon"><i class="fas fa-search"></i></div>
+                                Search Dataset
+                            </a>
+                            <a class="nav-link" href="/about">
+                                <div class="sb-nav-link-icon"><i class="fas fa-clipboard"></i></div>
+                                About
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                        User
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main class="container">
+
+                    
+                    <section>
+                        <div style="height: 100px;"></div>
+                        <h2 >Explore More About Miraculous</h2>
+                        <!-- Dropdown List -->
+                        <div class="accordion" id="aboutSections">
+                            <!-- Section 1: What is Miraculous -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        What is Miraculous?
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#aboutSections">
+                                    <div class="accordion-body">
+                                        Miraculous is an innovative dataset discovery system designed to empower researchers and professionals 
+                                        to efficiently find, explore, and integrate datasets across federated systems. It uses semantic matching, 
+                                        interactive search, and other advanced techniques to redefine dataset discovery.
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Section 2: Key Features -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Key Features
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#aboutSections">
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li>Integration with various data repositories (local, relational, document-based).</li>
+                                            <li>Semantic search powered by Exhaustive, Approximate, and Clustered Targeted methods.</li>
+                                            <li>Interactive query refinement based on user preferences.</li>
+                                            <li>Support for both keyword and table-based queries.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Section 3: Search Methods -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        Search Methods
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#aboutSections">
+                                    <div class="accordion-body">
+                                        <h4>Exhaustive Search</h4>
+                                        <p>This method thoroughly compares the input query against every cell in every dataset. While it guarantees comprehensive results, it is computationally intensive, making it ideal for scenarios where completeness is crucial.</p>
+                                        <h4>Approximate Nearest Neighbors</h4>
+                                        <p>ANN focuses on finding the closest matches to the query by using approximation algorithms. This method strikes a balance between speed and accuracy, making it suitable for large-scale or time-sensitive searches.</p>
+                                        <h4>Clustered Targeted Search</h4>
+                                        <p>This method organizes datasets into clusters based on semantic similarity and searches only within the most relevant clusters. It provides both precision and efficiency, particularly for diverse and complex datasets.</p>
+                                    </div>
+                                </div>
+                            </div>
+                                                        <!-- Section 3: Search Methods -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        Search Methods
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#aboutSections">
+                                    <div class="accordion-body">
+                                        <h4>Exhaustive Search</h4>
+                                        <p>This method thoroughly compares the input query against every cell in every dataset. While it guarantees comprehensive results, it is computationally intensive, making it ideal for scenarios where completeness is crucial.</p>
+                                        <h4>Approximate Nearest Neighbors</h4>
+                                        <p>ANN focuses on finding the closest matches to the query by using approximation algorithms. This method strikes a balance between speed and accuracy, making it suitable for large-scale or time-sensitive searches.</p>
+                                        <h4>Clustered Targeted Search</h4>
+                                        <p>This method organizes datasets into clusters based on semantic similarity and searches only within the most relevant clusters. It provides both precision and efficiency, particularly for diverse and complex datasets.</p>
+                                    </div>
+                                </div>
+                                                        <!-- Section 4: Why Choose Miraculous? -->
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header" id="headingThree">
+                                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                    Why Choose Miraculous?
+                                                                </button>
+                                                            </h2>
+                                                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#aboutSections">
+                                                                <div class="accordion-body">
+                                                                    <h4>Improvement in Retrieval Accuracy</h4>
+                                                                    <p>Find the most relevant datasets faster and with greater precision.</p>
+                                                                    <h4>User-Centric Design</h4>
+                                                                    <p> Interactive tools and intuitive interfaces make dataset discovery simple and enjoyable.</p>
+                                                                    <h4>Federated System Support</h4>
+                                                                    <p>Discover and work with datasets across multiple platforms seamlessly.</p>
+                                                                    <h4>Unmatched Speed</h4>
+                                                                    <p>With advanced techniques like clustering and ANN, retrieval times are reduced by up to 98%.</p>
+                                                                    <h4>Contextual Understanding</h4>
+                                                                    <p> The system leverages semantic matching to understand the true intent behind your queries.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 class="text-center">System Architecture</h2>
+                        <p class="text-center">
+                            Below is the system architecture of Miraculous, designed to streamline dataset discovery, 
+                            integration, and search. It connects to multiple data sources, processes and indexes datasets, 
+                            and delivers accurate results using advanced search techniques.
+                        </p>
+                        <img src="/static/img/systems_arch.png" 
+                             alt="System Architecture of Miraculous" style="max-width: 60%; height: auto; display: block; margin: 20px auto;>
+                        <figcaption class="text-center">System Architecture of Miraculous Dataset Discovery System</figcaption>
+                    </section>
+                </main>
+
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Miraculous 2024</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="static/js/scripts.js"></script>
+    </body>
+</html>

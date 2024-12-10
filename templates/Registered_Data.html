@@ -2,162 +2,101 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Dashboard </title>
+        <title>Dashboard</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="static/css/styles.css" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
-        
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-
         <style>
-            
+            /* Updated styles for a full-width table */
+            .table-container {
+                width: 100%; /* Make the table span the full width of the page */
+                overflow-x: auto; /* Allow horizontal scrolling if needed */
+            }
+
+            table {
+                width: 100%; /* Ensure the table uses the full width of its container */
+            }
+
+            th {
+                background-color: #f8f9fa; /* Header background color */
+                position: sticky;
+                top: 0; /* Sticky header */
+                z-index: 1;
+            }
+
             td.exists-yes {
-            color: green; /* Set the background color to green for 'Yes' */
+                color: rgb(216, 231, 216);
             }
 
             td.exists-no {
-                color: red; /* Set the background color to red for 'No' */
+                color: red;
             }
 
-            #csvTableBody td.clickable-name {
+            #dataTableBody td.clickable-name {
                 cursor: pointer;
-                color: blue; /* Change the color to your preference */
-                text-decoration: underline; /* Underline the text to indicate it's clickable */
-                pointer-events: auto; /* Allow pointer events on the text */
+                color: blue;
+                text-decoration: underline;
             }
+            .bg-warning {
+            background-color: rgb(237, 237, 195) !important; /* Yellow for unprocessed */
+        }
 
-            .table-container {
-                max-height: 800px; /* Set a maximum height for the container */
-                overflow-y: auto; /* Enable vertical scrolling */
-            }
+        .bg-secondary {
+            background-color: rgb(184, 173, 173) !important; /* Grey for "no" datasets */
+        }
 
-            #csvTable_2 th {
-                position: -webkit-sticky;  
-                position: sticky;
-                top: 0;
-                background-color: #f8f9fa; /* Optional: Set a background color for the second header */
-            }
+        .bg-success {
+            background-color: rgb(186, 215, 186) !important; /* Green for processed */
+        }
         </style>
     </head>
     <body class="sb-nav-fixed">
+        <!-- Top Navigation Bar -->
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="dashboard.html">Miraculous</a>
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
+            <a class="navbar-brand ps-3" href="dashboard">Miraculous</a>
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle"><i class="fas fa-bars"></i></button>
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <nav class="sb-sidenav accordion sb-sidenav-dark">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="/">
+                            <a class="nav-link" href="/dashboard">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
                             <div class="sb-sidenav-menu-heading">Dataset Discovery</div>
                             <a class="nav-link" href="/catalog">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Dataset Catalog 
-                            </a> 
-                            <a class="nav-link" href="/useful">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Dataset Usefulness
-                            </a> 
-                            <a class="nav-link" href="/exhaustive">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Exhaustive Search 
-                            </a>
-                            <a class="nav-link" href="/ann">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Approximate Search 
-                            </a>
-                            <a class="nav-link" href="/optimized">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Optimized Search 
-                            </a>
-                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Authentication
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="login.html">Login</a>
-                                            <a class="nav-link" href="register.html">Register</a>
-                                            <a class="nav-link" href="password.html">Forgot Password</a>
-                                        </nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="401.html">401 Page</a>
-                                            <a class="nav-link" href="404.html">404 Page</a>
-                                            <a class="nav-link" href="500.html">500 Page</a>
-                                        </nav>
-                                    </div>
-                                </nav>
-                            </div>
-                            <div class="sb-sidenav-menu-heading">Dataset</div>
-                            <a class="nav-link" href="upload">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Upload
-                            </a>
-                            <a class="nav-link" href="view">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                View 
+                                Register Dataset
                             </a>
                             <a class="nav-link" href="Registered_Data">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Dataset Records 
+                                Dataset Catalog
+                            </a>
+                            <a class="nav-link" href="/optimized">
+                                <div class="sb-nav-link-icon"><i class="fas fa-search"></i></div>
+                                Search Dataset
+                            </a>
+                            <a class="nav-link" href="/about">
+                                <div class="sb-nav-link-icon"><i class="fas fa-clipboard"></i></div>
+                                About
                             </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        User
+                        Mira
                     </div>
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-
-
                 <main>
-                    <div class="header-container" style="margin-top: 50px;">
-                        <div class="table-header">
-                          <h2>Dataset Records</h2>
-                        </div>
-                      </div>
-                
-                        <!-- Table Container -->
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Dataset Records</h1>
+                        <!-- Full-Width Table Container -->
                         <div class="table-container">
                             <table id="dataTable" class="table table-bordered table-hover">
                                 <thead>
@@ -167,21 +106,19 @@
                                         <th>Creation Date</th>
                                         <th>Type</th>
                                         <th>Address</th>
-                                        <th>Path</th>
                                         <th>Username</th>
                                         <th>Metadata</th>
                                         <th>Edit</th>
-                                        <th>Actions</th> <!-- Dynamic button alignment -->
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="dataTableBody">
-                                    <!-- Data will be dynamically populated here -->
+                                    <!-- Table data will be populated dynamically -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </main>
-
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
@@ -189,7 +126,7 @@
                             <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;
-                                <a href="#">Terms &amp; Conditions</a>
+                                <a href="#">Terms & Conditions</a>
                             </div>
                         </div>
                     </div>
@@ -197,203 +134,174 @@
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="static/js/scripts.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Fetch data from the API and populate the table
-                fetch("/api/registered_data")
-                    .then((response) => response.json())
-                    .then((data) => {
-                        const tableBody = document.getElementById("dataTableBody");
-                        tableBody.innerHTML = ""; // Clear the table
-        
-                        // Populate the table with data
-                        data.forEach((record) => {
-                            const row = document.createElement("tr");
-                            row.setAttribute("data-id", record.id); // Add data-id attribute
-        
-                            // Determine row color
-                            if (record.processed) {
-                                row.classList.add("bg-success"); // Green for processed
-                            } else if (record.add_dataset === "yes") {
-                                row.classList.add("bg-warning"); // Yellow for unprocessed and add_dataset = yes
-                            } else {
-                                row.classList.add("bg-secondary"); // Grey for add_dataset = no
-                            }
-        
-                            // Convert metadata to a readable format
-                            const metadataDisplay = Object.entries(record.metadata || {})
-                                .map(([key, value]) => `<strong>${key}</strong>: ${value}`)
-                                .join("<br>");
-        
-                            // Add row HTML
-                            row.innerHTML = `
-                                <td>${record.id}</td>
-                                <td>${record.name}</td>
-                                <td>${record.date}</td>
-                                <td>${record.type}</td>
-                                <td>${record.url}</td>
-                                <td>${record.path}</td>
-                                <td>${record.username}</td>
-                                <td>${metadataDisplay}</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm" onclick="editRow(this)">Edit</button>
-                                    <button class="btn btn-success btn-sm d-none" onclick="saveRow(this)">Save</button>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteRecord('${record.id}')">Delete</button>
-                                </td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm" onclick="processSingleRecord(this, '${record.id}')">Process</button>
-                                </td>
-                            `;
-                            tableBody.appendChild(row);
-                        });
-                    })
-                    .catch((error) => {
-                        console.error("Error fetching data:", error);
-                    });
-            });
-        // Show the spinner
-function showSpinner() {
-    const spinner = document.getElementById("spinner");
-    spinner.style.display = "flex";
-}
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch data from the API and populate the table
+    fetch("/api/registered_data")
+        .then((response) => response.json())
+        .then((data) => {
+            const tableBody = document.getElementById("dataTableBody");
+            tableBody.innerHTML = ""; // Clear the table
 
-// Hide the spinner
-function hideSpinner() {
-    const spinner = document.getElementById("spinner");
-    spinner.style.display = "none";
-}
+            // Populate the table with data
+            data.forEach((record) => {
+                const row = document.createElement("tr");
+                row.setAttribute("data-id", record.id); // Add data-id attribute
 
-// Example: Process a record with spinner
-function processSingleRecord(button, recordId) {
-    const row = button.closest("tr");
-
-    // Check if the record is already processed
-    if (row.classList.contains("bg-success")) {
-        alert("This record is already processed.");
-        return;
-    }
-
-    if (confirm(`Are you sure you want to process the record with ID: ${recordId}?`)) {
-        // Show the spinner
-        showSpinner();
-
-        fetch(`/api/process_record/${recordId}`, { method: "POST" })
-            .then((response) => response.json())
-            .then((result) => {
-                if (result.success) {
-                    // Update row color to green
-                    row.classList.remove("bg-warning");
-                    row.classList.remove("bg-secondary");
-                    row.classList.add("bg-success");
-
-                    // Update the JSON file to mark the dataset as processed
-                    fetch(`/api/update/${recordId}`, {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ processed: true }),
-                    })
-                        .then((updateResponse) => updateResponse.json())
-                        .then((updateResult) => {
-                            if (!updateResult.success) {
-                                console.error("Failed to update the JSON file:", updateResult.message);
-                            }
-                        })
-                        .catch((error) => console.error("Error updating JSON:", error));
-
-                    // Show success message
-                    alert(`Record with ID ${recordId} has been successfully processed.`);
+                // Determine row color
+                if (record.processed) {
+                    row.classList.add("bg-success"); // Green for processed
+                } else if (record.add_dataset === "yes") {
+                    row.classList.add("bg-warning"); // Yellow for add_dataset = yes
                 } else {
-                    alert(`Error processing record: ${result.message}`);
+                    row.classList.add("bg-secondary"); // Grey for add_dataset = no
                 }
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-                alert("An unexpected error occurred. Please try again.");
-            })
-            .finally(() => {
-                // Hide the spinner after processing
-                hideSpinner();
-            });
-    }
-}
 
-            // Function to edit a row
-            function editRow(button) {
-                const row = button.closest("tr");
-                const saveButton = row.querySelector(".btn-success");
-                button.classList.add("d-none"); // Hide Edit button
-                saveButton.classList.remove("d-none"); // Show Save button
-        
-                Array.from(row.children).forEach((cell, index) => {
-                    if (index < 7 && cell.tagName === "TD") {
-                        const value = cell.textContent.trim();
-                        cell.innerHTML = `<input type="text" class="form-control" value="${value}">`;
+                // Convert metadata to a readable format
+                const metadataDisplay = Object.entries(record.metadata || {})
+                    .map(([key, value]) => `<strong>${key}</strong>: ${value}`)
+                    .join("<br>");
+
+                // Add row HTML
+                row.innerHTML = `
+                    <td>${record.id}</td>
+                    <td>${record.name}</td>
+                    <td>${record.date}</td>
+                    <td>${record.type}</td>
+                    <td>${record.url}</td>
+               
+                    <td>${record.username}</td>
+                    <td>${metadataDisplay}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm edit-btn">Edit</button>
+                        <button class="btn btn-success btn-sm save-btn d-none">Save</button>
+                        <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm process-btn">Process</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching data:", error);
+        });
+
+    // Event delegation for all buttons
+    const tableBody = document.getElementById("dataTableBody");
+
+    // Handle Edit button
+    tableBody.addEventListener("click", (event) => {
+        if (event.target.classList.contains("edit-btn")) {
+            const row = event.target.closest("tr");
+            const saveButton = row.querySelector(".save-btn");
+            event.target.classList.add("d-none"); // Hide Edit button
+            saveButton.classList.remove("d-none"); // Show Save button
+
+            Array.from(row.children).forEach((cell, index) => {
+                if (index < 7 && cell.tagName === "TD") {
+                    const value = cell.textContent.trim();
+                    cell.innerHTML = `<input type="text" class="form-control" value="${value}">`;
+                }
+            });
+        }
+    });
+
+    // Handle Save button
+    tableBody.addEventListener("click", (event) => {
+        if (event.target.classList.contains("save-btn")) {
+            const row = event.target.closest("tr");
+            const editButton = row.querySelector(".edit-btn");
+            const inputs = row.querySelectorAll("input");
+            const recordId = row.getAttribute("data-id");
+            const updatedRecord = {};
+
+            inputs.forEach((input, index) => {
+                const fieldName = ["id", "name", "date", "type", "url",  "username"][index];
+                updatedRecord[fieldName] = input.value;
+                input.parentElement.textContent = input.value; // Replace input with plain text
+            });
+
+            fetch(`/api/update/${recordId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedRecord),
+            })
+                .then((response) => response.json())
+                .then((result) => {
+                    if (result.success) {
+                        alert("Record updated successfully!");
+                    } else {
+                        alert("Failed to update the record.");
                     }
-                });
-            }
-        
-            // Function to save edited row data
-            function saveRow(button) {
-                const row = button.closest("tr");
-                const editButton = row.querySelector(".btn-warning");
-                const inputs = row.querySelectorAll("input");
-                const recordId = row.getAttribute("data-id");
-                const updatedRecord = {};
-        
-                inputs.forEach((input, index) => {
-                    const fieldName = ["id", "name", "date", "type", "url", "path", "username"][index];
-                    updatedRecord[fieldName] = input.value;
-                    input.parentElement.textContent = input.value; // Replace input with plain text
-                });
-        
-                fetch(`/api/update/${recordId}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(updatedRecord),
                 })
-                    .then((response) => response.json())
-                    .then((result) => {
-                        if (result.message === "Record updated successfully") {
-                            alert("Record updated successfully!");
+                .catch((error) => {
+                    console.error("Error updating record:", error);
+                    alert("An unexpected error occurred.");
+                });
+
+            event.target.classList.add("d-none"); // Hide Save button
+            editButton.classList.remove("d-none"); // Show Edit button
+        }
+    });
+
+    // Handle Delete button
+    tableBody.addEventListener("click", (event) => {
+        if (event.target.classList.contains("delete-btn")) {
+            const row = event.target.closest("tr");
+            const recordId = row.getAttribute("data-id");
+
+            if (confirm("Are you sure you want to delete this record?")) {
+                fetch(`/api/delete/${recordId}`, { method: "DELETE" })
+                    .then((response) => {
+                        if (response.ok) {
+                            row.remove(); // Remove row from the table
+                            alert("Record deleted successfully.");
                         } else {
-                            alert("Failed to update the record.");
+                            alert("Failed to delete the record. Please try again.");
                         }
                     })
                     .catch((error) => {
-                        console.error("Error updating record:", error);
+                        console.error("Error deleting record:", error);
                         alert("An unexpected error occurred.");
                     });
-        
-                button.classList.add("d-none"); // Hide Save button
-                editButton.classList.remove("d-none"); // Show Edit button
             }
-        
-            // Function to delete a record
-            function deleteRecord(recordId) {
-                if (confirm("Are you sure you want to delete this record?")) {
-                    fetch(`/api/delete/${recordId}`, { method: "DELETE" })
-                        .then((response) => {
-                            if (response.ok) {
-                                const row = document.querySelector(`tr[data-id="${recordId}"]`);
-                                if (row) row.remove();
-                                alert("Record deleted successfully.");
-                            } else {
-                                alert("Failed to delete the record. Please try again.");
-                            }
-                        })
-                        .catch((error) => console.error("Error deleting record:", error));
-                }
+        }
+    });
+
+    // Handle Process button
+    tableBody.addEventListener("click", (event) => {
+        if (event.target.classList.contains("process-btn")) {
+            const row = event.target.closest("tr");
+            const recordId = row.getAttribute("data-id");
+
+            if (row.classList.contains("bg-success")) {
+                alert("This record is already processed.");
+                return;
             }
+
+            if (confirm(`Are you sure you want to process the record with ID: ${recordId}?`)) {
+                fetch(`/api/process_record/${recordId}`, { method: "POST" })
+                    .then((response) => response.json())
+                    .then((result) => {
+                        if (result.success) {
+                            row.classList.remove("bg-warning", "bg-secondary");
+                            row.classList.add("bg-success");
+                            alert(`Record with ID ${recordId} has been successfully processed.`);
+                        } else {
+                            alert(`Error processing record: ${result.message}`);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                        alert("An unexpected error occurred. Please try again.");
+                    });
+            }
+        }
+    });
+});
+
         </script>
-        
-        <div id="spinner" class="spinner-overlay">
-            <div class="spinner-border text-light spinner-element" role="status">
-                <span class="sr-only">Processing...</span>
-            </div>
-        </div>
-        
+    </body>
 </html>
